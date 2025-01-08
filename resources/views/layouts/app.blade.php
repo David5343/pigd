@@ -22,17 +22,22 @@
 
 <body class="font-sans antialiased">
     <x-banner />
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
-                </div>
-                <div class="shrink-0 flex items-center">
-                    <p>Fideicomiso de Prestaciones de Seguridad Social</p>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <x-application-logo class="block h-12 w-auto" />
+                    <div>
+                        <p class="text-gray-500">
+                            Fideicomiso de Prestaciones de Seguridad Social
+                        </p>
+                        <p class="text-gray-500">
+                            Para los Trabajadores del Sector Policial Operativo
+                        </p>
+                        <p class="text-gray-500">
+                            Al Servicio del Poder Ejecutivo del Estado de Chiapas
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
