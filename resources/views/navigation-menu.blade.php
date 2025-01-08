@@ -13,16 +13,45 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Inicio') }}
+                        {{ __('Coordinación General') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
-                        {{ __('CMedica') }}
+                        {{ __('Administración General') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Área Jurídica') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                        {{ __('Coordinación Médica') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Recursos Humanos') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                        {{ __('Recursos Financieros') }}
+                    </x-nav-link>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Recursos Materiales') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                            {{ __('Prestaciones') }}
+                        </x-nav-link>
+                    </div>
+                </div>
             </div>
-
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -156,10 +185,28 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Coordinación General') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
-                {{ __('CMedica') }}
+                {{ __('Administración General') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                {{ __('Área Jurídica') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                {{ __('Coordinación Médica') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                {{ __('Recursos Humanos') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                {{ __('Recursos Financieros') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                {{ __('Recursos Materiales') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                {{ __('Prestaciones') }}
             </x-responsive-nav-link>
         </div>
 
@@ -196,7 +243,7 @@
                     @csrf
 
                     <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                        {{ __('Salir') }}
+                        {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
 
