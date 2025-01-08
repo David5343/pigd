@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MedicalCoordination\MedicalCoordinationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,7 +16,5 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('cmedica', function () {
-        return view('cmedica.index');
-    })->name('cmedica');
+    Route::get('cmedica', [MedicalCoordinationController::class,'index'])->name('cmedica');
 });
