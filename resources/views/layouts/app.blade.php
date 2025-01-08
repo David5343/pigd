@@ -22,7 +22,21 @@
 
 <body class="font-sans antialiased">
     <x-banner />
-
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex">
+                <!-- Logo -->
+                <div class="shrink-0 flex items-center">
+                    <a href="{{ route('dashboard') }}">
+                        <x-application-mark class="block h-9 w-auto" />
+                    </a>
+                </div>
+                <div class="shrink-0 flex items-center">
+                    <p>Fideicomiso de Prestaciones de Seguridad Social</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="min-h-screen bg-gray-100">
         @livewire('navigation-menu')
 
