@@ -15,4 +15,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('cmedica',function (){
+        return view('cmedica.index');
+    })->name('cmedica');
 });
