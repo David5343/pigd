@@ -7,6 +7,7 @@ use App\Http\Controllers\HumanResources\HumanResourcesController;
 use App\Http\Controllers\LegalDepartment\LegalDepartmentController;
 use App\Http\Controllers\MaterialResources\MaterialResourcesController;
 use App\Http\Controllers\MedicalCoordination\MedicalCoordinationController;
+use App\Http\Controllers\SocioeconomicBenefits\SocioeconomicBenefitsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,4 +30,5 @@ Route::middleware([
     Route::get('/human_resources', [HumanResourcesController::class, 'index'])->name('hresources');
     Route::get('/financial_resources', [FinancialResourcesController::class, 'index'])->name('fresources');
     Route::get('/material_resources', [MaterialResourcesController::class, 'index'])->name('mresources');
+    Route::get('/socioeconomic_benefits', [SocioeconomicBenefitsController::class, 'index'])->name('scbenefits');
 });
