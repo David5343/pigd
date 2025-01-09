@@ -8,7 +8,7 @@ class MedicalCoordinationController extends Controller
 {
     public function index()
     {
-        return view('cmedica.index');
+        return view('medical_coordination.index');
 
     }
 }
