@@ -17,7 +17,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                    <x-nav-link href="{{ route('gadministration') }}" :active="request()->routeIs('gadministration')">
                         {{ __('Administración General') }}
                     </x-nav-link>
                 </div>
