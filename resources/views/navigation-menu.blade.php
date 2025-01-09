@@ -184,28 +184,28 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('gcoordination') }}" :active="request()->routeIs('gcoordination')">
                 {{ __('Coordinación General') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('gadministration') }}" :active="request()->routeIs('gadministration')">
                 {{ __('Administración General') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('ldepartment') }}" :active="request()->routeIs('ldepartment')">
                 {{ __('Área Jurídica') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('mcoordination') }}" :active="request()->routeIs('mcoordination')">
                 {{ __('Coordinación Médica') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('hresources') }}" :active="request()->routeIs('hresources')">
                 {{ __('Recursos Humanos') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('fresources') }}" :active="request()->routeIs('fresources')">
                 {{ __('Recursos Financieros') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('mresources') }}" :active="request()->routeIs('mresources')">
                 {{ __('Recursos Materiales') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link href="{{ route('scbenefits') }}" :active="request()->routeIs('scbenefits')">
                 {{ __('Prestaciones') }}
             </x-responsive-nav-link>
         </div>
