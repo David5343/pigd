@@ -5,6 +5,7 @@ use App\Http\Controllers\GeneralAdministration\GeneralAdministrationController;
 use App\Http\Controllers\GeneralCoordination\GeneralCoordinationController;
 use App\Http\Controllers\HumanResources\HumanResourcesController;
 use App\Http\Controllers\LegalDepartment\LegalDepartmentController;
+use App\Http\Controllers\MaterialResources\MaterialResourcesController;
 use App\Http\Controllers\MedicalCoordination\MedicalCoordinationController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,5 @@ Route::middleware([
     Route::get('/medical_coordination', [MedicalCoordinationController::class, 'index'])->name('mcoordination');
     Route::get('/human_resources', [HumanResourcesController::class, 'index'])->name('hresources');
     Route::get('/financial_resources', [FinancialResourcesController::class, 'index'])->name('fresources');
+    Route::get('/material_resources', [MaterialResourcesController::class, 'index'])->name('mresources');
 });
