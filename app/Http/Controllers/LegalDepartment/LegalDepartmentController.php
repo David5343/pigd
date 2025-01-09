@@ -6,5 +6,9 @@ use App\Http\Controllers\Controller;
 
 class LegalDepartmentController extends Controller
 {
-    //
+    public function index()
+    {
+        return view('legal_department.index');
+
+    }
 }
