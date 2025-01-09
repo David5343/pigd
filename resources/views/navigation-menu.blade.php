@@ -27,7 +27,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                    <x-nav-link href="{{ route('mcoordination') }}" :active="request()->routeIs('mcoordination')">
                         {{ __('Coordinación Médica') }}
                     </x-nav-link>
                 </div>
@@ -37,7 +37,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Recursos Financieros') }}
                     </x-nav-link>
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -46,7 +46,7 @@
                         </x-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                             {{ __('Prestaciones') }}
                         </x-nav-link>
                     </div>
@@ -187,25 +187,25 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Coordinación General') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Administración General') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Área Jurídica') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Coordinación Médica') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Recursos Humanos') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Recursos Financieros') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Recursos Materiales') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('cmedica') }}" :active="request()->routeIs('cmedica')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Prestaciones') }}
             </x-responsive-nav-link>
         </div>
