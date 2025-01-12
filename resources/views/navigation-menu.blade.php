@@ -17,7 +17,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('gadministration') }}" :active="request()->routeIs('gadministration')">
+                    <x-nav-link href="{{ route('gadministration.index') }}" :active="request()->routeIs('gadministration.index')">
                         {{ __('Administración General') }}
                     </x-nav-link>
                 </div>
@@ -187,7 +187,7 @@
             <x-responsive-nav-link href="{{ route('gcoordination') }}" :active="request()->routeIs('gcoordination')">
                 {{ __('Coordinación General') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('gadministration') }}" :active="request()->routeIs('gadministration')">
+            <x-responsive-nav-link href="{{ route('gadministration.index') }}" :active="request()->routeIs('gadministration.index')">
                 {{ __('Administración General') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('ldepartment') }}" :active="request()->routeIs('ldepartment')">
