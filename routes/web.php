@@ -24,7 +24,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
     Route::get('/general_coordination', [GeneralCoordinationController::class, 'index'])->name('gcoordination');
-    Route::get('/general_administration', [GeneralAdministrationController::class, 'index'])->name('gadministration');
+    Route::get('/general_administration', [GeneralAdministrationController::class, 'index'])->name('gadministration.index');
     Route::get('/legal_department', [LegalDepartmentController::class, 'index'])->name('ldepartment');
     Route::get('/medical_coordination', [MedicalCoordinationController::class, 'index'])->name('mcoordination');
     Route::get('/human_resources', [HumanResourcesController::class, 'index'])->name('hresources');
