@@ -8,6 +8,7 @@ use App\Http\Controllers\LegalDepartment\LegalDepartmentController;
 use App\Http\Controllers\MaterialResources\MaterialResourcesController;
 use App\Http\Controllers\MedicalCoordination\MedicalCoordinationController;
 use App\Http\Controllers\SocioeconomicBenefits\SocioeconomicBenefitsController;
+use App\Http\Controllers\Users\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,14 +16,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])->group(function () {
+    Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
     Route::get('/general_coordination', [GeneralCoordinationController::class, 'index'])->name('gcoordination');
     Route::get('/general_administration', [GeneralAdministrationController::class, 'index'])->name('gadministration.index');
     Route::get('/legal_department', [LegalDepartmentController::class, 'index'])->name('ldepartment');
@@ -31,4 +26,5 @@ Route::middleware([
     Route::get('/financial_resources', [FinancialResourcesController::class, 'index'])->name('fresources');
     Route::get('/material_resources', [MaterialResourcesController::class, 'index'])->name('mresources');
     Route::get('/socioeconomic_benefits', [SocioeconomicBenefitsController::class, 'index'])->name('scbenefits');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 });
