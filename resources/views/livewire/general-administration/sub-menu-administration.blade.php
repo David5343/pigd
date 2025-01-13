@@ -24,11 +24,11 @@
                                     Usuarios
                                 </a></li>
                             <li><a href="#"
-                                    class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">Opción
-                                    2</a></li>
+                                    class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">
+                                    Roles</a></li>
                             <li><a href="#"
-                                    class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">Opción
-                                    3</a></li>
+                                    class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">
+                                    Permisos</a></li>
                         </ul>
                     </div>
                 </div>
