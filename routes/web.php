@@ -7,6 +7,7 @@ use App\Http\Controllers\HumanResources\HumanResourcesController;
 use App\Http\Controllers\LegalDepartment\LegalDepartmentController;
 use App\Http\Controllers\MaterialResources\MaterialResourcesController;
 use App\Http\Controllers\MedicalCoordination\MedicalCoordinationController;
+use App\Http\Controllers\Roles\RoleController;
 use App\Http\Controllers\SocioeconomicBenefits\SocioeconomicBenefitsController;
 use App\Http\Controllers\Users\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,5 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])
     Route::get('/material_resources', [MaterialResourcesController::class, 'index'])->name('mresources');
     Route::get('/socioeconomic_benefits', [SocioeconomicBenefitsController::class, 'index'])->name('scbenefits');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 });
