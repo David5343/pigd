@@ -19,7 +19,7 @@
                     <div class="absolute left-0 mt-2 w-56 bg-white shadow-lg rounded-lg border border-gray-200 z-10"
                         x-data="{ open: @entangle('isSubmenu1Visible') }" x-show="open" x-transition>
                         <ul class="text-sm">
-                            <li><a href="{{ route('gadministration.index') }}"
+                            <li><a href="{{ route('users.index') }}"
                                     class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">
                                     Usuarios
                                 </a></li>
