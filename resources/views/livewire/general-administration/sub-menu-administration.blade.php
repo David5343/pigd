@@ -7,7 +7,7 @@
                 <!-- Dropdown 1 -->
                 <div class="relative">
                     <button
-                        class="flex items-center justify-between w-full md:w-auto px-4 py-2 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
+                        class="flex items-center justify-between w-full md:w-auto px-2 py-0 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
                         wire:click="toggleSubmenu('submenu1')">
                         Tenologías
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
@@ -23,7 +23,7 @@
                                     class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">
                                     Usuarios
                                 </a></li>
-                            <li><a href="#"
+                            <li><a href="{{ route('roles.index') }}"
                                     class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">
                                     Roles</a></li>
                             <li><a href="#"
@@ -36,7 +36,7 @@
                 <!-- Dropdown 2 -->
                 <div class="relative">
                     <button
-                        class="flex items-center justify-between w-full md:w-auto px-4 py-2 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
+                        class="flex items-center justify-between w-full md:w-auto px-2 py-0 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
                         wire:click="toggleSubmenu('submenu2')">
                         Archivo
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"
@@ -64,7 +64,7 @@
                 <!-- Dropdown 3 -->
                 <div class="relative">
                     <button
-                        class="flex items-center justify-between w-full md:w-auto px-4 py-2 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
+                        class="flex items-center justify-between w-full md:w-auto px-2 py-0 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
                         wire:click="toggleSubmenu('submenu3')">
                         Transparencia
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24"

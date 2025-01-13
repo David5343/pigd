@@ -9,6 +9,7 @@ class SubMenuAdministration extends Component
     public $isSubmenu1Visible = false;
     public $isSubmenu2Visible = false;
     public $isSubmenu3Visible = false;
+    
     public function toggleSubmenu($submenu)
     {
         if ($submenu === 'submenu1') {
