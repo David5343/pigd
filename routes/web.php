@@ -10,6 +10,7 @@ use App\Http\Controllers\MedicalCoordination\MedicalCoordinationController;
 use App\Http\Controllers\Roles\RoleController;
 use App\Http\Controllers\SocioeconomicBenefits\SocioeconomicBenefitsController;
 use App\Http\Controllers\Users\UserController;
+use App\Http\Middleware\CheckIfActive;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,7 +18,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',])->group(function () {
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],[CheckIfActive::class])->group(function () {
     Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
     Route::get('/general_coordination', [GeneralCoordinationController::class, 'index'])->name('gcoordination');
     Route::get('/general_administration', [GeneralAdministrationController::class, 'index'])->name('gadministration.index');
