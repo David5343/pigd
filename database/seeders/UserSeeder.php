@@ -16,12 +16,12 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'name' => 'David Sánchez de la Cruz',
-                'email' => 'david@pigd.com',
+                'email' => 'david@pigd.gob.mx',
                 'password' => bcrypt('david2023'),
             ],
             [
                 'name' => 'Luis Adelfo Roblez Vazquez',
-                'email' => 'adelfo@pigd.com',
+                'email' => 'adelfo@pigd.gob.mx',
                 'password' => bcrypt('adelfo2023'),
             ],
         ];
