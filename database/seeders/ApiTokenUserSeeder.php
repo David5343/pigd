@@ -34,7 +34,7 @@ class ApiTokenUserSeeder extends Seeder
             $user->api_token = $token->plainTextToken;
         }
 
-        $user->modified_by = 'david@pigd.com';
+        $user->modified_by = 'david@pigd.gob.mx';
         $user->save();
     }
 }
