@@ -13,7 +13,7 @@ class ApiTokenUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $userEmails = ['david@pigd.com', 'adelfo@pigd.com'];
+        $userEmails = ['david@pigd.gob.mx', 'adelfo@pigd.gob.mx'];
         foreach ($userEmails as $email) {
             $user = User::where('email', $email)->first();
             if ($user) {
