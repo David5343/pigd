@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\SocioeconomicBenefits;
 
 use App\Http\Controllers\Controller;
 
-class SocioeconomicBenefitsController extends Controller
+class SocioeconomicBenefitsApiController extends Controller
 {
     public function index()
     {
