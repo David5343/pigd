@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api\Catalogs;
 
 use App\Http\Controllers\Controller;
-use App\Models\Catalogs\Subdependency;
+use App\Models\Catalogs\Bank;
 
-class SubdependencyApiController extends Controller
+class BankApiController extends Controller
 {
     public function listar()
     {
-        $query = Subdependency::where('status', 'active')->get();
+        $query = Bank::where('status', 'active')->get();
 
         //$subdepe["subdependencias"] = $query;
         return response()->json($query);

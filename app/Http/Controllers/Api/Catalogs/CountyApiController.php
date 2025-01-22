@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Api\Catalogs;
 
 use App\Http\Controllers\Controller;
-use App\Models\Catalogs\Subdependency;
+use App\Models\Catalogs\County;
 
-class SubdependencyApiController extends Controller
+class CountyApiController extends Controller
 {
     public function listar()
     {
-        $query = Subdependency::where('status', 'active')->get();
+        $query = County::where('status', 'active')->get();
 
         //$subdepe["subdependencias"] = $query;
         return response()->json($query);
