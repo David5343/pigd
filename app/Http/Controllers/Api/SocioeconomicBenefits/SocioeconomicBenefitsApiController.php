@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\SocioeconomicBenefits;
+namespace App\Http\Controllers\Api\SocioeconomicBenefits;
 
 use App\Http\Controllers\Controller;
 
