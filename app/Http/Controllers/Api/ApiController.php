@@ -12,7 +12,11 @@ class ApiController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::all();
+        if ($request->has('status')) {
+            $users = User::where('status', 'active')->get();
+        } else {
+            $users = User::all();
+        }
 
         return response()->json($users);
 
@@ -20,30 +24,31 @@ class ApiController extends Controller
 
     public function login(Request $request)
     {
-        $response = ['status' => 0,
-            'msg' => ''];
+        $response = ['Status' => 0,
+            'Msg' => ''];
         $data = json_decode($request->getContent());
         if (isset($data->email)) {
             $user = User::where('email', $data->email)->first();
             if ($user) {
                 if (Hash::check($data->password, $user->password)) {
                     //$token = $user->createToken($data->email);
-                    $response['status'] = 1;
+                    $response['Status'] = 1;
                     //$response["token"] = $token->plainTextToken;
-                    $response['msg'] = 'Inicio de Session exitoso.';
-                    $response['user'] = $user;
+                    $response['Msg'] = 'Inicio de Session exitoso.';
+                    $response['User'] = $user;
                 } else {
-                    $response['msg'] = 'Estas Credenciales no coinciden con nuestros registros.';
+                    $response['Msg'] = 'Estas Credenciales no coinciden con nuestros registros.';
                 }
             } else {
-                $response['msg'] = 'Usuario no encontrado.';
+                $response['Msg'] = 'Usuario no encontrado.';
             }
 
         } else {
-            $response['msg'] = 'Ingrese Parametros validos.';
+            $response['Msg'] = 'Ingrese Parametros validos.';
         }
 
         return response()->json($response);
+
     }
 
     public function logout(Request $request)
