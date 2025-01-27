@@ -14,15 +14,20 @@ class UserSocioeconomicBenefitsSeeder extends Seeder
     public function run(): void
     {
         $users = [
+//             [
+//                 'name' => 'Victor Manuel Santiago Muñoz',
+//                 'email' => 'vsantiago@fidsecpol.gob.mx',
+//                 'password' => bcrypt('YLrAMNMi*5sJ
+// '),
+//             ],
+//             [
+//                 'name' => 'Milton Damian Ochoa',
+//                 'email' => 'mdamian@fidsecpol.gob.mx',
+//                 'password' => bcrypt('oK2}Z=]]q)!s'),
+//             ],
             [
-                'name' => 'Victor Manuel Santiago Muñoz',
-                'email' => 'vsantiago@fidsecpol.gob.mx',
-                'password' => bcrypt('YLrAMNMi*5sJ
-'),
-            ],
-            [
-                'name' => 'Milton Damian Ochoa',
-                'email' => 'mdamian@fidsecpol.gob.mx',
+                'name' => 'Andrés Cabrera González',
+                'email' => 'acabrera@fidsecpol.gob.mx',
                 'password' => bcrypt('oK2}Z=]]q)!s'),
             ],
         ];

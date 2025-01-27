@@ -13,7 +13,8 @@ class ApiTokenUserSocioeconomicBenefitsSeeder extends Seeder
      */
     public function run(): void
     {
-        $userEmails = ['vsantiago@fidsecpol.gob.mx', 'mdamian@fidsecpol.gob.mx'];
+        //$userEmails = ['vsantiago@fidsecpol.gob.mx', 'mdamian@fidsecpol.gob.mx'];
+        $userEmails = ['acabrera@fidsecpol.gob.mx'];
         foreach ($userEmails as $email) {
             $user = User::where('email', $email)->first();
             if ($user) {
