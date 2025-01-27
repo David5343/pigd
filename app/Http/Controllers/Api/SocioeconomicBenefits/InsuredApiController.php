@@ -263,7 +263,7 @@ class InsuredApiController extends Controller
         $response['insured'] = '';
         $response['beneficiary'] = '';
         $response['debug'] = '0';
-        $titular = Insured::where('affiliate_status', 'Activo')
+        $titular = Insured::where('affiliate_status','!=', 'Baja')
             ->where('file_number', $dato)
             ->with('subdependency')
             ->with('rank')
@@ -294,7 +294,7 @@ class InsuredApiController extends Controller
         $response['insured'] = '';
         $response['beneficiary'] = '';
         $response['debug'] = '0';
-        $titular = Insured::where('affiliate_status', 'Activo')
+        $titular = Insured::where('affiliate_status','!=', 'Baja')
             ->where('rfc', $dato)
             ->with('subdependency')
             ->with('rank')
@@ -325,7 +325,7 @@ class InsuredApiController extends Controller
         $response['insured'] = '';
         $response['beneficiary'] = '';
         $response['debug'] = '0';
-        $titular = Insured::where('affiliate_status', 'Activo')
+        $titular = Insured::where('affiliate_status','!=', 'Baja')
             ->where('curp', $dato)
             ->with('subdependency')
             ->with('rank')
