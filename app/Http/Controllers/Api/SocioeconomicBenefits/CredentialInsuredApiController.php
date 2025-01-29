@@ -116,4 +116,32 @@ class CredentialInsuredApiController extends Controller
 
         }
     }
+    public function busqueda(Request $request)
+    {
+        $dato = trim($request->dato);
+        $response['Status'] = 'fail';
+        $response['Message'] = 'No hay Datos que mostrar.';
+        $response['Errors'] = null;
+        $response['Insured'] = null;
+        $response['Beneficiary'] = null;
+        $response['Retiree'] = null;
+        $response['Debug'] = null;
+
+        $insured = CredentialInsured::with('insured')
+            ->whereHas('insured', function ($query) use ($dato) {
+                $query->where('file_number', $dato)
+                    ->orWhere('rfc', $dato)
+                    ->orWhere('curp', $dato)
+                    ->orWhere('name', 'LIKE', "%{$dato}%")
+                    ->orWhere('last_name_1', 'LIKE', "%{$dato}%")
+                    ->orWhere('last_name_2', 'LIKE', "%{$dato}%");
+            })->get();
+        if ($insured->isNotEmpty()) {
+            $response['Status'] = 'success';
+            $response['Message'] = 'Se encontraron los siguientes Datos.';
+            $response['Insured'] = $insured;
+        } 
+
+        return response()->json($response, 200);
+    }
 }
