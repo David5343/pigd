@@ -96,6 +96,7 @@ class InsuredApiController extends Controller
             'Last_name_1' => 'required|min:2|max:20',
             'Last_name_2' => 'nullable|min:2|max:20',
             'Name' => 'required|min:2|max:30',
+            'Blood_type'=>'required',
             'Birthday' => 'nullable|max:10|date',
             'Birthplace' => 'nullable|min:3|max:85',
             'Sex' => 'required',
@@ -173,6 +174,7 @@ class InsuredApiController extends Controller
             $titular->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
             $titular->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
             $titular->name = Str::of($request->input('Name'))->trim();
+            $titular->blood_type = $request->input('Blood_type');
             $titular->birthday = $request->input('Birthday');
             $titular->birthplace = Str::of($request->input('Birthplace'))->trim();
             $titular->sex = $request->input('Sex');
@@ -368,6 +370,7 @@ class InsuredApiController extends Controller
             'Last_name_1' => 'required|min:2|max:20',
             'Last_name_2' => 'nullable|min:2|max:20',
             'Name' => 'required|min:2|max:30',
+            'Blood_type'=>'required',
             'Birthday' => 'nullable|max:10|date',
             'Birthplace' => 'nullable|min:3|max:85',
             'Sex' => 'required',
@@ -436,6 +439,7 @@ class InsuredApiController extends Controller
             $titular->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
             $titular->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
             $titular->name = Str::of($request->input('Name'))->trim();
+            $titular->blood_type = $request->input('Blood_type');
             $titular->birthday = $request->input('Birthday');
             $titular->birthplace = Str::of($request->input('Birthplace'))->trim();
             $titular->sex = $request->input('Sex');
@@ -591,12 +595,10 @@ class InsuredApiController extends Controller
     {
         $todo = $request->all();
         $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['history'] = '';
+        $response['Status'] = 'fail';
+        $response['Message'] = '';
+        $response['Errors'] = '';
+        $response['Insured'] = '';
         $response['debug'] = '';
         $rules = [
 
