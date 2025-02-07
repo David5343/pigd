@@ -92,7 +92,7 @@ class RetireeApiController extends Controller
         $response['debug'] = '';
 
         $rules = [
-            'Noi_number' => 'nullable| max:5',
+            'Noi_number' => 'nullable| max:5 | unique:retirees,noi_number',
             'Pension_type_id' => 'required | numeric',
             'Start_date' => 'required|date_format:Y-m-d',
         ];
