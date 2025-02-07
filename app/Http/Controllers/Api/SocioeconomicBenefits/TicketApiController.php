@@ -123,7 +123,7 @@ class TicketApiController extends Controller
         $response['Retiree'] = null;
         $response['Debug'] = null;
 
-        $turno = Ticket::with(['insured.subdependency', 'beneficiary.insured.subdependency', 'retiree', 'retiree.insured', 'retiree.beneficiary'])
+        $turno = Ticket::with(['insured.subdependency', 'beneficiary.insured.subdependency', 'retiree', 'retiree.insured.subdependency', 'retiree.beneficiary'])
             ->find($id);
         if ($turno != null) {
             $response['Status'] = 'success';
