@@ -38,8 +38,8 @@ class CredentialRetireeApiController extends Controller
         $response['credential'] = '0';
         $response['debug'] = '0';
         $credencial = CredentialRetiree::where('id', $id)
-            ->with('retiree.insured.subdependency')
-            ->with('retiree.beneficiary.insured.subdependency')
+            ->with('retiree.insured.subdependency.dependency')
+            ->with('retiree.beneficiary.insured.subdependency.dependency')
             ->first();
         if ($credencial == null) {
             $response['message'] = 'Registro no encontrado';
