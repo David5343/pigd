@@ -24,6 +24,8 @@ class RoleSeeder extends Seeder
             'RecursosoMateriales',
             'PrestacionesSocioEcnomicas',
             'Tecnologias',
+            'Archivo',
+            'Transparencia',
             'JefaturaCoordinacion',
             'JefaturaAdministracion',
             'JefaturaJuridica',
@@ -33,6 +35,8 @@ class RoleSeeder extends Seeder
             'JefaturaMateriales',
             'JefaturaPrestaciones',
             'JefaturaTecnologias',
+            'CoordinadorArchivo',
+            'ResponsableTransparencia',
             'Admin',
             'Default',
         ];
