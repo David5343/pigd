@@ -37,7 +37,7 @@ class RoleSeeder extends Seeder
             'JefaturaTecnologias',
             'CoordinadorArchivo',
             'ResponsableTransparencia',
-            'Admin',
+            'SuperAdmin',
             'Default',
         ];
 
