@@ -35,7 +35,7 @@ class CredentialBeneficiaryApiController extends Controller
         $response['credential'] = '0';
         $response['debug'] = '0';
         $credencial = CredentialBeneficiary::where('id', $id)
-            ->with('beneficiary.insured.subdependency')
+            ->with('beneficiary.insured.subdependency.dependency')
             ->first();
         if ($credencial == null) {
             $response['message'] = 'Registro no encontrado';
