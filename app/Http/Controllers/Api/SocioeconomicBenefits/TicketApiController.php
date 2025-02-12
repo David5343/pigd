@@ -28,9 +28,9 @@ class TicketApiController extends Controller
         $response['Beneficiary'] = null;
         $response['Retiree'] = null;
         $response['Debug'] = null;
-
+        $hoy = Carbon::today();
         $turnos = Ticket::with(['insured', 'beneficiary', 'retiree', 'retiree.insured', 'retiree.beneficiary'])
-            ->whereDate('Ticket_date', Carbon::today())
+            ->where('ticket_date', $hoy->toDateString())
             ->latest()
             ->get();
         if (! $turnos->isEmpty()) {
@@ -123,7 +123,7 @@ class TicketApiController extends Controller
         $response['Retiree'] = null;
         $response['Debug'] = null;
 
-        $turno = Ticket::with(['insured.subdependency', 'beneficiary.insured.subdependency', 'retiree', 'retiree.insured.subdependency', 'retiree.beneficiary'])
+        $turno = Ticket::with(['insured.subdependency', 'beneficiary.insured.subdependency', 'retiree', 'retiree.insured.subdependency', 'retiree.beneficiary.insured.subdependency'])
             ->find($id);
         if ($turno != null) {
             $response['Status'] = 'success';
