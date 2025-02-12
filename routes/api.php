@@ -35,7 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/prestaciones/titulares/porcurp/{dato}', [InsuredApiController::class, 'porcurp']);
     Route::put('/prestaciones/titulares/update/{id}', [InsuredApiController::class, 'update']);
     Route::put('/prestaciones/titulares/baja/{id}', [InsuredApiController::class, 'baja']);
-    Route::put('/prestaciones/titulares/guardarfoto/{id}', [InsuredApiController::class, 'guardarfoto']);
+    //Route::put('/prestaciones/titulares/guardarfoto/{id}', [InsuredApiController::class, 'guardarfoto']);
+    Route::put('/prestaciones/titulares/guardarfoto/{data}', [InsuredApiController::class, 'guardarfoto']);
     Route::put('/prestaciones/titulares/guardarfirma/{id}', [InsuredApiController::class, 'guardarfirma']);
     //Rutas de familiares
     Route::get('/prestaciones/familiares/idgenerator', [BeneficiaryApiController::class, 'idgenerator']);
