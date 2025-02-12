@@ -429,7 +429,7 @@ class InsuredApiController extends Controller
         try {
             //$id = $request->input('Id');
             $titular = Insured::find($id);
-            //$titular->subdependency_id = $request->input('Subdependency_id');
+            $titular->subdependency_id = $request->input('Subdependency_id');
             $titular->rank_id = $request->input('Rank_id');
             $titular->start_date = $request->input('Start_date');
             $titular->work_place = Str::of($request->input('Work_place'))->trim();
