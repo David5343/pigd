@@ -28,7 +28,7 @@
                                     Memorandums</a></li>
                             <li><a href="#"
                                     class="block px-4 py-2 text-gray-800 hover:bg-blue-100 transition duration-200 ease-in-out">
-                                    circulares</a></li>
+                                    Circulares</a></li>
                         </ul>
                     </div>
                 </div>
