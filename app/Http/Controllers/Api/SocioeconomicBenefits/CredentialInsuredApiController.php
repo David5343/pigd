@@ -127,7 +127,7 @@ class CredentialInsuredApiController extends Controller
         $response['Retiree'] = null;
         $response['Debug'] = null;
 
-        $insured = CredentialInsured::with('insured')
+        $insured = CredentialInsured::with('insured.subdependency')
             ->whereHas('insured', function ($query) use ($dato) {
                 $query->where('file_number', $dato)
                     ->orWhere('rfc', $dato)
