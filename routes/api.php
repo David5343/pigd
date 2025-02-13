@@ -65,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/prestaciones/credencialtitular/guardar', [CredentialInsuredApiController::class, 'store']);
     Route::get('/prestaciones/credencialtitular/busqueda/{dato}', [CredentialInsuredApiController::class, 'busqueda']);
     Route::get('/prestaciones/credencialtitular/{id}', [CredentialInsuredApiController::class, 'show']);
+    Route::put('/prestaciones/credencialtitular/finalizar/{id}',[CredentialInsuredApiController::class, 'finalizar']);
     //Credencial Familiares
     Route::get('/prestaciones/credencialfamiliar', [CredentialBeneficiaryApiController::class, 'index']);
     Route::post('/prestaciones/credencialfamiliar/guardar', [CredentialBeneficiaryApiController::class, 'store']);
