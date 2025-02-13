@@ -526,18 +526,7 @@ class InsuredApiController extends Controller
                 // $titular->status = "inactive";
                 $titular->modified_by = Auth::user()->email;
                 $titular->save();
-
-                $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
-                    'inactive_date' => $fecha_baja,
-                    'inactive_motive' => $motivo_baja.' del Titular',
-                    'affiliate_status' => 'Baja',
-                    //'status' => "inactive",
-                    'modified_by' => Auth::user()->email,
-                ]);
-
-                $msg = ($affectedRows === 0) ?
-                    'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
-                    'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
+                $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
             } elseif ($motivo_baja == 'Defunsión') {
                 $titular->inactive_date = $fecha_baja;
                 $titular->inactive_date_dependency = $baja_dependencia;
@@ -546,17 +535,7 @@ class InsuredApiController extends Controller
                 //$titular->status = "inactive";
                 $titular->modified_by = Auth::user()->email;
                 $titular->save();
-
-                $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
-                    'inactive_date' => $fecha_baja,
-                    'inactive_motive' => $motivo_baja.' del Titular',
-                    'affiliate_status' => 'Baja por Aplicar',
-                    'modified_by' => Auth::user()->email,
-                ]);
-
-                $msg = ($affectedRows === 0) ?
-                    'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
-                    'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
+                $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
             } elseif ($motivo_baja == 'Pensión' || $motivo_baja == 'Renuncia') {
                 $titular->inactive_date = $fecha_baja;
                 $titular->inactive_date_dependency = $baja_dependencia;
@@ -565,16 +544,7 @@ class InsuredApiController extends Controller
                 $titular->modified_by = Auth::user()->email;
                 $titular->save();
 
-                $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
-                    'inactive_date' => $fecha_baja,
-                    'inactive_motive' => $motivo_baja.' del Titular',
-                    'affiliate_status' => 'Baja por Aplicar',
-                    'modified_by' => Auth::user()->email,
-                ]);
-
-                $msg = ($affectedRows === 0) ?
-                    'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
-                    'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
+                $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
             }
 
             DB::commit();
