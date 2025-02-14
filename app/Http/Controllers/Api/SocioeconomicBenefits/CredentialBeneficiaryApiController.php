@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\SocioeconomicBenefits;
 
 use App\Http\Controllers\Controller;
 use App\Models\SocioeconomicBenefits\CredentialBeneficiary;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -138,5 +139,35 @@ class CredentialBeneficiaryApiController extends Controller
         } 
 
         return response()->json($response, 200);
+    }
+    public function finalizar(Request $request)
+    {
+        $response['Status'] = 'fail';
+        $response['Message'] = 'No hay Datos que mostrar.';
+        $response['Errors'] = null;
+        $response['Insured'] = null;
+        $response['Beneficiary'] = null;
+        $response['Retiree'] = null;
+        $response['Debug'] = null;
+
+        $hoy = Carbon::today();
+        $id = $request->input('Id');
+        $credencial = CredentialBeneficiary::find($id);
+        if ($credencial->credential_status == 'VENCIDA') {
+            $response['Status'] = 'fail';
+            $response['Message'] = 'Esta credencial ya fue finalizada con anterioridad.';
+
+            return response()->json($response, 200);
+        } else {
+            $credencial->expires_at = $hoy->toDateString();
+            $credencial->credential_status = 'VENCIDA';
+            $credencial->modified_by = Auth::user()->email;
+            $credencial->save();
+            $response['Status'] = 'success';
+            $response['Message'] = 'La credencial fue finalizada con éxito.';
+
+            return response()->json($response, 200);
+        }
+
     }
 }
