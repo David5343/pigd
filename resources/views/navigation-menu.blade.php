@@ -40,17 +40,203 @@
                     <x-nav-link href="{{ route('fresources') }}" :active="request()->routeIs('fresources')">
                         {{ __('Recursos Financieros') }}
                     </x-nav-link>
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link href="{{ route('mresources') }}" :active="request()->routeIs('mresources')">
-                            {{ __('Recursos Materiales') }}
-                        </x-nav-link>
-                    </div>
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link href="{{ route('scbenefits') }}" :active="request()->routeIs('scbenefits')">
-                            {{ __('Prestaciones') }}
-                        </x-nav-link>
-                    </div>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition">
+                                {{ __('Recursos Financieros') }}
+                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                </svg>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <div class="px-4 py-2 text-sm text-gray-500">
+                                {{ __('Documentos') }}
+                            </div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Oficios') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Memorandums') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Circulares') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <!-- Título de la segunda sección -->
+                            <div class="px-4 py-2 text-sm text-gray-500">
+                                {{ __('Reportes') }}
+                            </div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Medicamentos') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Proveedores') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Productos') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Servicios') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Pago de Credenciales') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Partidas') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Resguardos') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition">
+                                {{ __('Recursos Materiales') }}
+                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                </svg>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <div class="px-4 py-2 text-sm text-gray-500">
+                                {{ __('Documentos') }}
+                            </div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Oficios') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Memorandums') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Circulares') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <!-- Título de la segunda sección -->
+                            <div class="px-4 py-2 text-sm text-gray-500">
+                                {{ __('Catalogos') }}
+                            </div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Medicamentos') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Proveedores') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Productos') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Servicios') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Licitaciones') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Inventario') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Resguardos') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition">
+                                {{ __('Prestaciones SocioEconómicas') }}
+                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                                </svg>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            <div class="px-4 py-2 text-sm text-gray-500">
+                                {{ __('Documentos') }}
+                            </div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Oficios') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Memorandums') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Circulares') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <!-- Título de la segunda sección -->
+                            <div class="px-4 py-2 text-sm text-gray-500">
+                                {{ __('Catalogos') }}
+                            </div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Dependencias') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Subdependecias') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Tipos de Pensión') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Afiliación') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Pensiones') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            <x-dropdown-link href="{{ route('membership.index') }}">
+                                {{ __('Prestamos') }}
+                            </x-dropdown-link>
+                        </x-slot>
+                    </x-dropdown>
+                </div>
+
             </div>
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->
@@ -64,7 +250,8 @@
                                         {{ Auth::user()->currentTeam->name }}
 
                                         <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
                                         </svg>
@@ -116,7 +303,8 @@
                                 <button
                                     class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="h-8 w-8 rounded-full object-cover"
-                                        src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                        src="{{ Auth::user()->profile_photo_url }}"
+                                        alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
@@ -125,7 +313,8 @@
                                         {{ Auth::user()->name }}
 
                                         <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                         </svg>

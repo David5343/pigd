@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],
     Route::get('/financial_resources', [FinancialResourcesController::class, 'index'])->name('fresources');
     Route::get('/material_resources', [MaterialResourcesController::class, 'index'])->name('mresources');
     Route::get('/socioeconomic_benefits', [SocioeconomicBenefitsController::class, 'index'])->name('scbenefits');
-    Route::get('/socioeconomic_benefits/membership', [SocioeconomicBenefitsController::class, 'membership'])->name('membership');
+    Route::get('/socioeconomic_benefits/membership', [SocioeconomicBenefitsController::class, 'membership'])->name('membership.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 });
