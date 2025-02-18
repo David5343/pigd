@@ -11,4 +11,9 @@ class SocioeconomicBenefitsController extends Controller
         return view('socioeconomic_benefits.index');
 
     }
+    public function membership()
+    {
+        return view('socioeconomic_benefits.membership-menu');
+
+    }
 }
