@@ -11,7 +11,7 @@
                 </div> --}}
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-1 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
                     <x-dropdown-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Inicio') }}
                     </x-dropdown-link>
@@ -126,7 +126,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="hidden space-x-1 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
@@ -169,7 +169,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="hidden space-x-1 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
@@ -231,7 +231,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="hidden space-x-1 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
@@ -313,7 +313,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="hidden space-x-1 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
@@ -374,7 +374,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="hidden space-x-1 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
@@ -437,7 +437,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="hidden space-x-1 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
