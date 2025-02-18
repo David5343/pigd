@@ -3,7 +3,7 @@
         {{-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Administración General') }}
         </h2> --}}
-        @livewire('general-administration.sub-menu-administration')
+        {{-- @livewire('general-administration.sub-menu-administration') --}}
     </x-slot>
 
     <div class="py-12">

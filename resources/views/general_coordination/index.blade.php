@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @livewire('general-coordination.sub-menu-coordination')
+        {{-- @livewire('general-coordination.sub-menu-coordination') --}}
     </x-slot>
 
     <div class="py-12">

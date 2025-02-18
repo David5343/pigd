@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @livewire('medical-coordination.sub-menu-medical-coordination')
+        {{-- @livewire('medical-coordination.sub-menu-medical-coordination') --}}
     </x-slot>
 
     <div class="py-12">
