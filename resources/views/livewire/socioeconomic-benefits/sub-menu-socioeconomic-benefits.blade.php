@@ -61,7 +61,7 @@
                     class="w-full md:w-auto px-2 py-0 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
                     Pensiones
                 </button>
-                <button
+                <button wire:click="goToSearch"
                     class="w-full md:w-auto px-2 py-0 bg-emerald-600 text-white rounded-lg text-lg font-semibold shadow-md transition duration-300 ease-in-out hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
                     Afiliacion
                 </button>

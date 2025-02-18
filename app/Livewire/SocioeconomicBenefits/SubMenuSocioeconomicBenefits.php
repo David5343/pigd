@@ -26,6 +26,10 @@ class SubMenuSocioeconomicBenefits extends Component
         $this->isSubmenu2Visible = false;
         $this->isSubmenu3Visible = false;
     }
+    public function goToSearch()
+    {
+        return redirect()->route('membership');
+    }
     public function render()
     {
         return view('livewire.socioeconomic-benefits.sub-menu-socioeconomic-benefits');
