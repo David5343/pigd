@@ -16,7 +16,7 @@
                         {{ __('Inicio') }}
                     </x-dropdown-link>
                 </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
@@ -74,7 +74,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-5 sm:flex">
+                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
