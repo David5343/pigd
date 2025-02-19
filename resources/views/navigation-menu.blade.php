@@ -35,13 +35,13 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -50,13 +50,13 @@
                             <div class="px-4 py-2 text-sm text-gray-500">
                                 {{ __('Archivo') }}
                             </div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Ubicación') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -65,10 +65,10 @@
                                 {{ __('Transparencia') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -93,13 +93,13 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -108,19 +108,19 @@
                             <div class="px-4 py-2 text-sm text-gray-500">
                                 {{ __('Tecnologías') }}
                             </div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Usuarios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Tickets') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Diagnostico') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Fondo Revolvente') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -145,25 +145,25 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Dictamenes') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Reportes') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -188,13 +188,13 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -204,28 +204,28 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Medicamentos') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Afiliados') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Facturas') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Reembolsos') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Reportes') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -250,13 +250,13 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -266,48 +266,48 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Areas') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Bancos') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Categorias') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Plazas') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Estados') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Municipios') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Empleados') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Credenciales') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Permisos') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Vacaciones') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Reportes') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -332,13 +332,13 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -348,27 +348,27 @@
                                 {{ __('Reportes') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Medicamentos') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Proveedores') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Productos') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Servicios') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Pago de Credenciales') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Partidas') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -393,13 +393,13 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -409,29 +409,29 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Proveedores') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Productos') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Servicios') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Licitaciones') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Inventario') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Resguardos') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -456,13 +456,13 @@
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Oficios') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Memorandums') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Circulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -472,29 +472,29 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Dependencias') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Subdependecias') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Tipos de Pensión') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Afiliación') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Pensiones') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('membership.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Prestamos') }}
                             </x-dropdown-link>
                         </x-slot>
