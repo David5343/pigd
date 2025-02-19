@@ -1,7 +1,7 @@
 <div>
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
         <h1 class="mt-8 text-2xl font-medium text-gray-900">
-            Bienvenido a la Plataforma Institucional de Gestión de Datos
+            PIGD
         </h1>
 
         <div class="flex flex-col">
@@ -12,34 +12,32 @@
                             <thead class="border-b border-neutral-200 font-medium dark:border-white/10">
                                 <tr>
                                     <th scope="col" class="px-6 py-4">#</th>
-                                    <th scope="col" class="px-6 py-4">First</th>
-                                    <th scope="col" class="px-6 py-4">Last</th>
-                                    <th scope="col" class="px-6 py-4">Handle</th>
+                                    <th scope="col" class="px-6 py-4">Folio</th>
+                                    <th scope="col" class="px-6 py-4">Nombre</th>
+                                    <th scope="col" class="px-6 py-4">RFC</th>
+                                    <th scope="col" class="px-6 py-4">Ver</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="border-b border-neutral-200 dark:border-white/10">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                                    <td class="whitespace-nowrap px-6 py-4">Mark</td>
-                                    <td class="whitespace-nowrap px-6 py-4">Otto</td>
-                                    <td class="whitespace-nowrap px-6 py-4">@mdo</td>
-                                </tr>
-                                <tr class="border-b border-neutral-200 dark:border-white/10">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">2</td>
-                                    <td class="whitespace-nowrap px-6 py-4">Jacob</td>
-                                    <td class="whitespace-nowrap px-6 py-4">Thornton</td>
-                                    <td class="whitespace-nowrap px-6 py-4">@fat</td>
-                                </tr>
-                                <tr class="border-b border-neutral-200 dark:border-white/10">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">3</td>
-                                    <td class="whitespace-nowrap px-6 py-4">Larry</td>
-                                    <td class="whitespace-nowrap px-6 py-4">Wild</td>
-                                    <td class="whitespace-nowrap px-6 py-4">@twitter</td>
-                                </tr>
+                                @if ($lista->count())
+                                    @foreach ($lista as $item)
+                                        <tr class="border-b border-neutral-200 dark:border-white/10">
+                                            <td class="whitespace-nowrap px-6 py-4 font-medium">{{ $item->id }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4">{{ $item->file_number }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4">
+                                                {{ $item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4">{{ $item->rfc }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4">@mdo</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
+
                     </div>
                 </div>
+                {{ $lista->links() }}
             </div>
         </div>
     </div>
