@@ -484,7 +484,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('membership.index') }}">
                                 {{ __('Afiliación') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -636,28 +636,28 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('gcoordination') }}" :active="request()->routeIs('gcoordination')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Coordinación General') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('gadministration.index') }}" :active="request()->routeIs('gadministration.index')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Administración General') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('ldepartment') }}" :active="request()->routeIs('ldepartment')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Área Jurídica') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('mcoordination') }}" :active="request()->routeIs('mcoordination')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Coordinación Médica') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('hresources') }}" :active="request()->routeIs('hresources')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Recursos Humanos') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('fresources') }}" :active="request()->routeIs('fresources')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Recursos Financieros') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('mresources') }}" :active="request()->routeIs('mresources')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Recursos Materiales') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('scbenefits') }}" :active="request()->routeIs('scbenefits')">
+            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Prestaciones') }}
             </x-responsive-nav-link>
         </div>
