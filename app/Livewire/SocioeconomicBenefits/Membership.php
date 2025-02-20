@@ -9,9 +9,13 @@ use Livewire\WithPagination;
 class Membership extends Component
 {
     use WithPagination;
-    public $query = '';
+    public $search = '';
     public $numberRows = 10;
-    public function search()
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    public function updatingnumberRows()
     {
         $this->resetPage();
     }
@@ -19,9 +23,10 @@ class Membership extends Component
     {
         $lista = Insured::where('status', 'active')
         ->where(function($query) {
-            $query->where('name', 'like', '%'.$this->query.'%')
-                  ->orWhere('last_name_1', 'like', '%'.$this->query.'%')
-                  ->orWhere('last_name_2', 'like', '%'.$this->query.'%');
+            $query->where('name', 'like', '%'.$this->search.'%')
+                  ->orWhere('last_name_1', 'like', '%'.$this->search.'%')
+                  ->orWhere('last_name_2', 'like', '%'.$this->search.'%')
+                  ->orWhere('rfc', 'like', '%'.$this->search.'%');
         })
         ->latest() // Equivalente a orderBy('created_at', 'desc')
         ->take(50) // Tomar solo los últimos 50 registros
