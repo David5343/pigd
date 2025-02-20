@@ -16,6 +16,7 @@
                                     <th scope="col" class="px-6 py-4">Folio</th>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
                                     <th scope="col" class="px-6 py-4">RFC</th>
+                                    <th scope="col" class="px-6 py-4">Estatus</th>
                                     <th scope="col" class="px-6 py-4">Ver</th>
                                 </tr>
                             </thead>
@@ -29,6 +30,7 @@
                                                 {{ $item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name }}
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4">{{ $item->rfc }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4">{{ $item->affiliate_status }}</td>
                                             <td class="whitespace-nowrap px-6 py-4">{{ $item->id }}</td>
                                         </tr>
                                     @endforeach
