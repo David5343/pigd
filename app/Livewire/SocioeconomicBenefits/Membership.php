@@ -23,10 +23,12 @@ class Membership extends Component
     {
         $lista = Insured::where('status', 'active')
         ->where(function($query) {
-            $query->where('name', 'like', '%'.$this->search.'%')
+            $query->where('file_number', 'like', '%'.$this->search.'%')
+                  ->orWhere('name', 'like', '%'.$this->search.'%')
                   ->orWhere('last_name_1', 'like', '%'.$this->search.'%')
                   ->orWhere('last_name_2', 'like', '%'.$this->search.'%')
-                  ->orWhere('rfc', 'like', '%'.$this->search.'%');
+                  ->orWhere('rfc', 'like', '%'.$this->search.'%')
+                  ->orWhere('curp', 'like', '%'.$this->search.'%');
         })
         ->latest() // Equivalente a orderBy('created_at', 'desc')
         ->take(50) // Tomar solo los últimos 50 registros
