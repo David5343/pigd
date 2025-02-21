@@ -108,7 +108,7 @@
                             <div class="px-4 py-2 text-sm text-gray-500">
                                 {{ __('Tecnologías') }}
                             </div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('users.index') }}">
                                 {{ __('Usuarios') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
