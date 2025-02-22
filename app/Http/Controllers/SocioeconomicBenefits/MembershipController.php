@@ -15,7 +15,12 @@ class MembershipController extends Controller
     }
     public function show(string $id)
     {
-        $row = Insured::find($id);
+        $row = Insured::where('id', $id)
+            ->with('subdependency.dependency')
+            ->with('rank')
+            ->with('bank')
+            ->with('beneficiaries')
+            ->first();
         return view('socioeconomic_benefits.membership.show',['titular'=> $row]);
 
     }
