@@ -68,46 +68,86 @@
                             </button>
                         </h2>
                         <div x-show="open" x-collapse class="px-5 py-4 border-t bg-white dark:bg-gray-800">
-                            <p><strong>FOLIO AFILIACIÓN:</strong> {{ $titular->file_number }}</p>
-                            <p><strong>DEPENDENCIA:</strong> {{ $titular->subdependency->dependency->name }}</p>
-                            <p><strong>SUBDEPENDENCIA:</strong> {{ $titular->subdependency->name }}</p>
-                            <p><strong>CATEGORÍA:</strong> {{ $titular->rank->name }}</p>
-                            <p><strong>FECHA DE INGRESO:</strong> {{ $titular->start_date }}</p>
-                            <p><strong>LUGAR DE TRABAJO:</strong>
-                                @if (($titular->work_place == '') | ($titular->work_place == null))
-                                    NO DISPONIBLE
-                                @else
-                                    {{ $titular->work_place }}
-                                @endif
-                            </p>
-                            <p><strong>MOTIVO DE REGISTRO:</strong>
-                                @if (($titular->register_motive == '') | ($titular->register_motive == null))
-                                    NO DISPONIBLE
-                                @else
-                                    {{ $titular->register_motive }}
-                                @endif
-                            </p>
-                            <p><strong>OBSERVACIONES:</strong>
-                                @if (($titular->observations == '') | ($titular->observations == null))
-                                    NO DISPONIBLE
-                                @else
-                                    {{ $titular->observations }}
-                                @endif
-                            </p>
-                            <p><strong>FECHA DE BAJA (DEPENDENCIA):</strong>
-                                @if (($titular->inactive_date_dependency == '') | ($titular->inactive_date_dependency == null))
-                                    NO DISPONIBLE
-                                @else
-                                    {{ $titular->inactive_date_dependency }}
-                                @endif
-                            </p>
-                            <p><strong>FECHA DE BAJA DE SISTEMA:</strong>
-                                @if (($titular->inactive_date == '') | ($titular->inactive_date == null))
-                                    NO DISPONIBLE
-                                @else
-                                    {{ $titular->inactive_date }}
-                                @endif
-                            </p>
+                            <!-- Tabla -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse border border-gray-300 dark:border-gray-700">
+                                    <tbody>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>FOLIO AFILIACIÓN:</strong> {{ $titular->file_number }}</p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>DEPENDENCIA:</strong>
+                                                    {{ $titular->subdependency->dependency->name }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>SUBDEPENDENCIA:</strong> {{ $titular->subdependency->name }}
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>CATEGORÍA:</strong> {{ $titular->rank->name }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>FECHA DE INGRESO:</strong> {{ $titular->start_date }}</p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>LUGAR DE TRABAJO:</strong>
+                                                    @if (($titular->work_place == '') | ($titular->work_place == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->work_place }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>MOTIVO DE REGISTRO:</strong>
+                                                    @if (($titular->register_motive == '') | ($titular->register_motive == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->register_motive }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>OBSERVACIONES:</strong>
+                                                    @if (($titular->observations == '') | ($titular->observations == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->observations }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>FECHA DE BAJA (DEPENDENCIA):</strong>
+                                                    @if (($titular->inactive_date_dependency == '') | ($titular->inactive_date_dependency == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->inactive_date_dependency }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>FECHA DE BAJA DE SISTEMA:</strong>
+                                                    @if (($titular->inactive_date == '') | ($titular->inactive_date == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->inactive_date }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <p><strong>MOTIVO DE BAJA:</strong>
                                 @if (($titular->inactive_motive == '') | ($titular->inactive_motive == null))
                                     NO DISPONIBLE
@@ -146,7 +186,10 @@
                             </button>
                         </h2>
                         <div x-show="open" x-collapse class="px-5 py-4 border-t bg-white dark:bg-gray-800">
-                            <strong>Este es el contenido de la sección 2.</strong> Agrega aquí más información.
+                            <p><strong>NOMBRE:</strong>
+                                {{ $titular->last_name_1 . ' ' . $titular->last_name_2 . ' ' . $titular->name }}</p>
+                            <p><strong>NOMBRE:</strong>
+                                {{ $titular->last_name_1 . ' ' . $titular->last_name_2 . ' ' . $titular->name }}</p>
                         </div>
                     </div>
 
