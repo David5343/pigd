@@ -104,7 +104,7 @@
                                                 </p>
                                             </td>
                                         </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
                                             <td class="border border-gray-300 px-4 py-2">
                                                 <p><strong>MOTIVO DE REGISTRO:</strong>
                                                     @if (($titular->register_motive == '') | ($titular->register_motive == null))
@@ -144,25 +144,38 @@
                                                 </p>
                                             </td>
                                         </tr>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>MOTIVO DE BAJA:</strong>
+                                                    @if (($titular->inactive_motive == '') | ($titular->inactive_motive == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->inactive_motive }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>FECHA DE REINGRESO:</strong>
+                                                    @if (($titular->reentry_date == '') | ($titular->reentry_date == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->reentry_date }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>ESTATUS DE REGISTRO:</strong> {{ $titular->status }}</p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong></strong>
+                                                </p>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-
-                            <p><strong>MOTIVO DE BAJA:</strong>
-                                @if (($titular->inactive_motive == '') | ($titular->inactive_motive == null))
-                                    NO DISPONIBLE
-                                @else
-                                    {{ $titular->inactive_motive }}
-                                @endif
-                            </p>
-                            <p><strong>FECHA DE REINGRESO:</strong>
-                                @if (($titular->reentry_date == '') | ($titular->reentry_date == null))
-                                    NO DISPONIBLE
-                                @else
-                                    {{ $titular->reentry_date }}
-                                @endif
-                            </p>
-                            <p><strong>ESTATUS DE REGISTRO:</strong> {{ $titular->status }}</p>
                         </div>
                     </div>
 
@@ -186,10 +199,198 @@
                             </button>
                         </h2>
                         <div x-show="open" x-collapse class="px-5 py-4 border-t bg-white dark:bg-gray-800">
-                            <p><strong>NOMBRE:</strong>
-                                {{ $titular->last_name_1 . ' ' . $titular->last_name_2 . ' ' . $titular->name }}</p>
-                            <p><strong>NOMBRE:</strong>
-                                {{ $titular->last_name_1 . ' ' . $titular->last_name_2 . ' ' . $titular->name }}</p>
+                            <!-- Tabla -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse border border-gray-300 dark:border-gray-700">
+                                    <tbody>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>NOMBRE:</strong>
+                                                    {{ $titular->last_name_1 . ' ' . $titular->last_name_2 . ' ' . $titular->name }}
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>FECHA DE NACIMIENTO:</strong>
+                                                    @if (($titular->birthday == '') | ($titular->birthday == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->birthday }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>LUGAR DE NACIMIENTO:</strong>
+                                                    @if (($titular->birthplace == '') | ($titular->birthplace == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->birthplace }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>SEXO:</strong> {{ $titular->sexo }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>ESTADO CIVIL:</strong>
+                                                    @if (($titular->marital_status == '') | ($titular->marital_status == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->marital_status }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>RFC:</strong>
+                                                    @if (($titular->rfc == '') | ($titular->rfc == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->rfc }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>CURP:</strong>
+                                                    @if (($titular->curp == '') | ($titular->curp == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->curp }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>TELEFONO:</strong>
+                                                    @if (($titular->phone == '') | ($titular->phone == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->phone }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>CORREO ELECTÓNICO:</strong>
+                                                    @if (($titular->email == '') | ($titular->email == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->email }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>ESTADO:</strong>
+                                                    @if (($titular->state == '') | ($titular->state == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->state }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>MUNICIPIO:</strong>
+                                                    @if (($titular->county == '') | ($titular->county == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->county }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>COLONIA:</strong>
+                                                    @if (($titular->neighborhood == '') | ($titular->neighborhood == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->neighborhood }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>TIPO DE VIALIDAD:</strong>
+                                                    @if (($titular->roadway_type == '') | ($titular->roadway_type == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->roadway_type }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>NOMBRE DE LA VIALIDAD (CALLE):</strong>
+                                                    @if (($titular->street == '') | ($titular->street == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->street }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>NO. DE EXTERIOR:</strong>
+                                                    @if (($titular->outdoor_number == '') | ($titular->outdoor_number == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->outdoor_number }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>NO. DE INTERIOR:</strong>
+                                                    @if (($titular->interior_number == '') | ($titular->interior_number == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->interior_number }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>CP:</strong>
+                                                    @if (($titular->cp == '') | ($titular->cp == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->cp }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong>LOCALIDAD:</strong>
+                                                    @if (($titular->locality == '') | ($titular->locality == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->locality }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-gray-100 dark:bg-gray-700">
+                                            <td class="border border-gray-300 px-4 py-2">
+                                                <p><strong>TIPO DE SANGRE:</strong>
+                                                    @if (($titular->blood_type == '') | ($titular->blood_type == null))
+                                                        NO DISPONIBLE
+                                                    @else
+                                                        {{ $titular->blood_type }}
+                                                    @endif
+                                                </p>
+                                            </td>
+                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
+                                                <p><strong></strong>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -200,7 +401,11 @@
                             <button @click="open = !open"
                                 class="group relative flex w-full items-center border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
                                 type="button">
-                                Accordion Item #3
+                                FAMILIARES
+                                @php
+                                    $count = $titular->beneficiaries->count();
+                                @endphp
+                                {{ '(' . $count . ')' }}
                                 <span
                                     class="-me-1 ms-auto h-5 w-5 shrink-0 transition-transform duration-200 ease-in-out"
                                     :class="open ? 'rotate-180' : ''">
