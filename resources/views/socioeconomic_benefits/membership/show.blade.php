@@ -418,7 +418,107 @@
                             </button>
                         </h2>
                         <div x-show="open" x-collapse class="px-5 py-4 border-t bg-white dark:bg-gray-800">
-                            <strong>Este es el contenido de la sección 3.</strong> Última sección del acordeón.
+                            @if ($count > 0)
+                                @foreach ($titular->beneficiaries as $fam)
+                                    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                                            <div class="overflow-hidden">
+                                                <table
+                                                    class="min-w-full text-left text-sm font-light text-surface dark:text-white">
+                                                    <thead
+                                                        class="border-b border-neutral-200 bg-white font-medium dark:border-white/10 dark:bg-body-dark">
+                                                        <tr>
+                                                            <th scope="col" class="px-6 py-12">
+                                                                PARENTESCO:{{ $fam->relationship }}
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            class="border-b border-neutral-200 bg-black/[0.02] dark:border-white/10">
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>FOLIO AFILIACIÓN:</strong>
+                                                                    @if (($fam->file_number == '') | ($fam->file_number == null))
+                                                                        NO DISPONIBLE
+                                                                    @else
+                                                                        {{ $fam->file_number }}
+                                                                    @endif
+                                                                </p>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>FECHA DE INGRESO:</strong>
+                                                                    @if (($fam->start_date == '') | ($fam->start_date == null))
+                                                                        NO DISPONIBLE
+                                                                    @else
+                                                                        {{ $fam->start_date }}
+                                                                    @endif
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            class="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-body-dark">
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>NOMBRE:</strong>
+                                                                    {{ $fam->last_name_1 . ' ' . $fam->last_name_2 . ' ' . $fam->name }}
+                                                                </p>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>FECHA DE NACIMIENTO:</strong>
+                                                                    @if (($fam->birthday == '') | ($fam->birthday == null))
+                                                                        NO DISPONIBLE
+                                                                    @else
+                                                                        {{ $fam->birthday }}
+                                                                    @endif
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            class="border-b border-neutral-200 bg-black/[0.02] dark:border-white/10">
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>CURP:</strong>
+                                                                    @if (($fam->curp == '') | ($fam->curp == null))
+                                                                        NO DISPONIBLE
+                                                                    @else
+                                                                        {{ $fam->curp }}
+                                                                    @endif
+                                                                </p>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>ESTATUS DE AFILIACIÓ:</strong>
+                                                                    @if (($fam->affiliate_status == '') | ($fam->affiliate_status == null))
+                                                                        NO DISPONIBLE
+                                                                    @else
+                                                                        {{ $fam->affiliate_status }}
+                                                                    @endif
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            class="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-body-dark">
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>SEXO:</strong>
+                                                                    {{ $fam->sex }}
+                                                                </p>
+                                                            </td>
+                                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                                <p><strong>CAPACIDADES DIFERENTES:</strong>
+                                                                    @if (($fam->disabled_person == '') | ($fam->disabled_person == null))
+                                                                        NO DISPONIBLE
+                                                                    @else
+                                                                        {{ $fam->disabled_person }}
+                                                                    @endif
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <strong>{{ $titular->file_number . ':' }}</strong> No tiene familiares registrados.
+                            @endif
                         </div>
                     </div>
                 </div>
