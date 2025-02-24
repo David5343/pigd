@@ -14,8 +14,10 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],[CheckIfActive::class])->group(function () {
     Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
     Route::get('/socioeconomic_benefits/membership', [MembershipController::class, 'index'])->name('membership.index');
+    Route::get('/socioeconomic_benefits/membership/create', [MembershipController::class, 'create'])->name('membership.create');
     Route::get('/socioeconomic_benefits/membership/{id}', [MembershipController::class, 'show'])->name('membership.show');
     Route::get('/socioeconomic_benefits/beneficiaries', [BeneficiariesController::class, 'index'])->name('beneficiaries.index');
+    Route::get('/socioeconomic_benefits/beneficiaries/create', [BeneficiariesController::class, 'create'])->name('beneficiaries.create');
     Route::get('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiariesController::class, 'show'])->name('beneficiaries.show');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
