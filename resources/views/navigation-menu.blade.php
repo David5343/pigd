@@ -483,9 +483,16 @@
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
+                            <!-- Título de la segunda sección -->
+                            <div class="px-4 py-2 text-sm text-gray-500">
+                                {{ __('Afiliación') }}
+                            </div>
                             <!-- Opciones del Dropdown -->
                             <x-dropdown-link href="{{ route('membership.index') }}">
-                                {{ __('Afiliación') }}
+                                {{ __('Titulares') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('beneficiaries.index') }}">
+                                {{ __('Familiares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
