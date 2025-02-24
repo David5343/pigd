@@ -13,6 +13,10 @@ class MembershipController extends Controller
         return view('socioeconomic_benefits.membership.index');
 
     }
+    public function create()
+    {
+        return view('socioeconomic_benefits.membership.create');
+    }
     public function show(string $id)
     {
         $row = Insured::where('id', $id)
