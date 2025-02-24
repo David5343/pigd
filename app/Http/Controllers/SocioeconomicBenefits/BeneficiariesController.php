@@ -13,6 +13,10 @@ class BeneficiariesController extends Controller
         return view('socioeconomic_benefits.beneficiaries.index');
 
     }
+    public function create()
+    {
+        return view('socioeconomic_benefits.beneficiaries.create');
+    }
     public function show(string $id)
     {
         $row = Beneficiary::where('id', $id)
