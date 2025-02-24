@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Prestaciones SocioEconómicas/Afiliación') }}
+            {{ __('Prestaciones SocioEconómicas/Afiliación/Titulares') }}
         </h2>
     </x-slot>
     <div class="py-12">
@@ -9,7 +9,10 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class=" text-center">
                     <p>
-                    <h3 class="mb-2 mt-0 text-3xl font-medium leading-tight text-primary">FOLIO AFILIACIÓN:</h3>
+                    <h3 class="mb-2 mt-0 text-3xl font-medium leading-tight text-primary">FICHA TÉCNICA</h3>
+                    </p>
+                    <p>
+                    <h4 class="mb-2 mt-0 text-2xl font-medium leading-tight text-primary">FOLIO AFILIACIÓN:</h4>
                     </p>
                     <p>
                     <h5 class="mb-2 mt-0 text-xl font-medium leading-tight text-primary">{{ $titular->file_number }}</h5>
