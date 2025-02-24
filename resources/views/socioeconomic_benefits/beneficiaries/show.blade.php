@@ -187,7 +187,7 @@
                                                 </p>
                                             </td>
                                             <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>SEXO:</strong> {{ $familiar->sexo }}</p>
+                                                <p><strong>SEXO:</strong> {{ $familiar->sex }}</p>
                                             </td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
@@ -231,8 +231,8 @@
                             <button @click="open = !open"
                                 class="group relative flex w-full items-center border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
                                 type="button">
-                                FAMILIAR DE
-                                {{ '(' . $familiar->insured->last_name_1 . ' ' . $familiar->insured->last_name_2 . ' ' . $familiar->insured->name . ')' }}
+                                FAMILIAR DE:
+                                {{ $familiar->insured->last_name_1 . ' ' . $familiar->insured->last_name_2 . ' ' . $familiar->insured->name . '-(' . $familiar->insured->file_number . ')' }}
                                 <a class="mx-3"
                                     href="{{ url('socioeconomic_benefits/membership/' . $familiar->insured->id) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
