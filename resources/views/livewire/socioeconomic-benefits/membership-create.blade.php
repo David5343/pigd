@@ -217,7 +217,7 @@
             <input wire:model="locality" type="text" id="locality" name="locality"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
         </div>
-        <fieldset class="flex flex-col w-full md:w-1/2">
+        {{-- <fieldset class="flex flex-col w-full md:w-1/2">
             <legend class="text-sm font-medium text-gray-700">Preferencias</legend>
             <div class="flex items-center gap-2">
                 <input type="checkbox" id="notificaciones" class="focus:ring focus:ring-blue-200">
@@ -227,7 +227,7 @@
                 <input type="checkbox" id="ofertas" class="focus:ring focus:ring-blue-200">
                 <label for="ofertas">Recibir ofertas</label>
             </div>
-        </fieldset>
+        </fieldset> --}}
         <!-- Botones alineados a la derecha -->
         <div class="w-full flex justify-end gap-3 mt-4">
             <button type="reset"
