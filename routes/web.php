@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\SocioeconomicBenefits\BeneficiariesController;
+use App\Http\Controllers\Catalogs\DependencyController;
+use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
 use App\Http\Controllers\SocioeconomicBenefits\MembershipController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Middleware\CheckIfActive;
@@ -16,9 +17,10 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],
     Route::get('/socioeconomic_benefits/membership', [MembershipController::class, 'index'])->name('membership.index');
     Route::get('/socioeconomic_benefits/membership/create', [MembershipController::class, 'create'])->name('membership.create');
     Route::get('/socioeconomic_benefits/membership/{id}', [MembershipController::class, 'show'])->name('membership.show');
-    Route::get('/socioeconomic_benefits/beneficiaries', [BeneficiariesController::class, 'index'])->name('beneficiaries.index');
-    Route::get('/socioeconomic_benefits/beneficiaries/create', [BeneficiariesController::class, 'create'])->name('beneficiaries.create');
-    Route::get('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiariesController::class, 'show'])->name('beneficiaries.show');
+    Route::get('/socioeconomic_benefits/beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
+    Route::get('/socioeconomic_benefits/beneficiaries/create', [BeneficiaryController::class, 'create'])->name('beneficiaries.create');
+    Route::get('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiaryController::class, 'show'])->name('beneficiaries.show');
+    Route::get('/socioeconomic_benefits/dependencies', [DependencyController::class, 'index'])->name('dependencies.index');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 });
