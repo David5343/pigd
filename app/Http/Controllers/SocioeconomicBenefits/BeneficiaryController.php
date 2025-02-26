@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SocioeconomicBenefits\Beneficiary;
 use Illuminate\Http\Request;
 
-class BeneficiariesController extends Controller
+class BeneficiaryController extends Controller
 {
     public function index()
     {
