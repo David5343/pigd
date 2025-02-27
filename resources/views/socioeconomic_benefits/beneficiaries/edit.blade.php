@@ -182,8 +182,10 @@
                         </div>
                         <!-- Botones alineados a la derecha -->
                         <div class="w-full flex justify-end gap-3 mt-4">
-                            <button type="reset"
-                                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">Cancelar</button>
+                            <a href="{{ route('beneficiaries.index') }}"
+                                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
+                                Cancelar
+                            </a>
                             <button type="submit"
                                 class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Enviar</button>
                         </div>
