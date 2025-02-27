@@ -196,6 +196,9 @@
                 <option>Hijo/a</option>
                 <option>Concubina</option>
             </select>
+            @error('relationship')
+                <span class="text-red-500 text-xs">{{ $message }}</span>
+            @enderror
         </div>
         <div class="flex flex-col w-full md:w-3/4">
             <label for="nombre" class="text-sm font-medium text-gray-700">* Direccion</label>

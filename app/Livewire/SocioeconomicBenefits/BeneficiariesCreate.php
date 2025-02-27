@@ -51,9 +51,9 @@ class BeneficiariesCreate extends Component
             $this->name_insured = $row->last_name_1.' '.$row->last_name_2.' '.$row->name;
             $this->insured_id = $row->id;
             $this->rfc = $row->rfc;
-
+            $this->busqueda = '';
         } else {
-            //('msg_tipo_busqueda', 'info');
+            $this->busqueda = '';
             session()->flash('msg_busqueda', 'No se encontro ningun registro.');
         }
 
@@ -98,14 +98,16 @@ class BeneficiariesCreate extends Component
             $familiar->affiliate_status = 'Activo';
             $familiar->status = 'active';
             $familiar->modified_by = Auth::user()->email;
-            switch ($this->parentesco) {
+            switch ($this->relationship) {
                 case 'Padre':
                     if ($papa->count() == 0) {
                         sleep(1);
                         $familiar->save();
+                        $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
                     } else {
+                        $this->limpiar();
                         session()->flash('msg_warning', 'Ya existe un registro con el parentesco:Padre para este Trabajador');
                         $this->js("alert('Ya existe un registro con el parentesco:Padre para este Trabajador')");
                     }
@@ -114,9 +116,11 @@ class BeneficiariesCreate extends Component
                     if ($mama->count() == 0) {
                         sleep(1);
                         $familiar->save();
+                        $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
                     } else {
+                        $this->limpiar();
                         session()->flash('msg_warning', 'Ya existe un registro con el parentesco:Madre para este Trabajador');
                         $this->js("alert('Ya existe un registro con el parentesco:Madre para este Trabajador')");
                     }
@@ -125,9 +129,11 @@ class BeneficiariesCreate extends Component
                     if ($esposa->count() == 0 && $concubina->count() == 0) {
                         sleep(1);
                         $familiar->save();
+                        $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
                     } else {
+                        $this->limpiar();
                         session()->flash('msg_warning', 'Ya existe un registro con el parentesco:Esposa o Concubina para este Trabajador');
                         $this->js("alert('Ya existe un registro con el parentesco:Esposa o Concubina para este Trabajador')");
                     }
@@ -136,9 +142,11 @@ class BeneficiariesCreate extends Component
                     if ($concubina->count() == 0 && $esposa->count() == 0) {
                         sleep(1);
                         $familiar->save();
+                        $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
                     } else {
+                        $this->limpiar();
                         session()->flash('msg_warning', 'Ya existe un registro con el parentesco:Concubina o Esposa para este Trabajador');
                         $this->js("alert('Ya existe un registro con el parentesco:Concubina o Esposa para este Trabajador')");
                     }
@@ -146,12 +154,18 @@ class BeneficiariesCreate extends Component
                 case 'Hijo/a':
                     sleep(1);
                     $familiar->save();
+                    $this->limpiar();
                     session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                     $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
                     break;
                 default:
                     break;
             }
+    }
+    public function limpiar()
+    {
+        $this->reset();
+        $this->resetValidation();
     }
     public function render()
     {
