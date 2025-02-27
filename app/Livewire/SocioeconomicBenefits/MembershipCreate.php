@@ -6,117 +6,161 @@ use App\Models\Catalogs\Bank;
 use App\Models\Catalogs\County;
 use App\Models\Catalogs\State;
 use App\Models\Catalogs\Subdependency;
+use App\Models\SocioeconomicBenefits\Insured;
 use App\Models\SocioeconomicBenefits\Rank;
+use Exception;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class MembershipCreate extends Component
 {
-    #[Validate('required|max:8|unique:insureds,file_number')]
     public $folio;
+    #[Validate('required|max:8|unique:insureds,file_number')]
+    public $file_number;
 
     #[Validate('required')]
-    public $subdepe_id;
+    public $subdependency_id;
 
     #[Validate('required')]
-    public $categoria_id;
+    public $rank_id;
 
     #[Validate('required|max:10|date')]
-    public $fecha_ingreso;
+    public $start_date;
 
-    #[Validate('nullable|min:3|max:85')]
-    public $lugar_trabajo;
+    #[Validate('nullable|max:85')]
+    public $work_place;
 
     #[Validate('nullable|min:3|max:120')]
-    public $motivo_alta;
+    public $register_motive;
 
     #[Validate('required')]
-    public $estatus_afiliado;
+    public $affiliate_status;
 
     #[Validate('nullable|min:5|max:180')]
-    public $observaciones;
+    public $observations;
 
     #[Validate('required|min:2|max:20')]
-    public $apaterno;
+    public $last_name_1;
 
     #[Validate('required|min:2|max:20')]
-    public $amaterno;
+    public $last_name_2;
 
     #[Validate('nullable|min:2|max:30')]
-    public $nombre;
-
-    #[Validate('nullable|max:10|date')]
-    public $fecha_nacimiento;
-
-    #[Validate('nullable | min:3| max:85')]
-    public $lugar_nacimiento;
+    public $name;
 
     #[Validate('required')]
-    public $sexo;
+    public $blood_type;
+
+    #[Validate('nullable|date')]
+    public $birthday;
+
+    #[Validate('nullable | min:3| max:85')]
+    public $birthplace;
+
+    #[Validate('required')]
+    public $sex;
 
     #[Validate('nullable')]
-    public $estado_civil;
+    public $marital_status;
 
-    #[Validate('required|max:13|alpha_num:ascii|unique:insureds,rfc')]
+    #[Validate('required|max:13|alpha_num:ascii')]
     public $rfc;
 
-    #[Validate('nullable|max:18|alpha_num:ascii|unique:insureds,curp')]
+    #[Validate('nullable|max:18|alpha_num:ascii')]
     public $curp;
 
     #[Validate('nullable|numeric|digits:10')]
-    public $telefono;
+    public $phone;
 
     #[Validate('nullable|email|min:5|max:50|unique:insureds,email')]
     public $email;
 
-    #[Validate('nullable|min:5|max:85')]
-    public $estado;
+    #[Validate('nullable|max:85')]
+    public $state;
 
     #[Validate('nullable|min:3|max:85')]
-    public $municipio;
+    public $county;
 
     #[Validate('nullable|min:5|max:50')]
-    public $colonia;
+    public $neighborhood;
 
     #[Validate('nullable|min:5|max:50')]
-    public $tipo_vialidad;
+    public $roadway_type;
 
     #[Validate('nullable|min:5|max:50')]
-    public $calle;
+    public $street;
 
     #[Validate('nullable|max:7')]
-    public $num_exterior;
+    public $outdoor_number;
 
     #[Validate('nullable|max:7')]
-    public $num_interior;
+    public $interior_number;
 
     #[Validate('nullable|numeric|digits:5')]
     public $cp;
 
     #[Validate('nullable|min:5|max:85')]
-    public $localidad;
-
-    #[Validate('nullable|digits:10')]
-    public $num_cuenta;
-
-    #[Validate('nullable|digits:18')]
-    public $clabe;
-
-    #[Validate('nullable')]
-    public $banco_id;
-
-    #[Validate('nullable| max:40')]
-    public $nombre_representante;
-
-    #[Validate('nullable|max:13|alpha_num:ascii')]
-    public $rfc_representante;
-
-    #[Validate('nullable| max:18|alpha_num:ascii')]
-    public $curp_representante;
-
-    #[Validate('nullable')]
-    public $parentesco_representante;
+    public $locality;
+    public function guardar()
+    {
+        DB::beginTransaction();
+        try {
+            $this->validate();
+            $titular = new Insured();
+            $titular->file_number = Str::of($this->file_number)->trim();
+            $titular->subdependency_id = $this->subdependency_id;
+            $titular->rank_id = $this->rank_id;
+            $titular->start_date = $this->start_date;
+            $titular->work_place = Str::of($this->work_place)->trim();
+            $titular->register_motive = Str::of($this->register_motive)->trim();
+            $titular->affiliate_status = $this->affiliate_status;
+            $titular->observations = Str::of($this->observations)->trim();
+            $titular->last_name_1 = Str::of($this->last_name_1)->trim();
+            $titular->last_name_2 = Str::of($this->last_name_2)->trim();
+            $titular->name = Str::of($this->name)->trim();
+            $titular->blood_type = Str::of($this->blood_type)->trim();
+            $titular->birthday = $this->birthday;
+            $titular->birthplace = Str::of($this->birthplace)->trim();
+            $titular->sex = $this->sex;
+            $titular->marital_status = $this->marital_status;
+            $rfc = Str::of($this->rfc)->trim();
+            $titular->rfc = Str::upper($rfc);
+            $curp = Str::of($this->curp)->trim();
+            $titular->curp = Str::upper($curp);
+            $titular->phone = Str::of($this->phone)->trim();
+            $email = Str::of($this->email)->trim();
+            $titular->email = Str::lower($email);
+            $titular->state = Str::of($this->state)->trim();
+            $titular->county = Str::of($this->county)->trim();
+            $titular->neighborhood = Str::of($this->neighborhood)->trim();
+            $titular->roadway_type = Str::of($this->roadway_type)->trim();
+            $titular->street = Str::of($this->street)->trim();
+            $titular->outdoor_number = Str::of($this->outdoor_number)->trim();
+            $titular->interior_number = Str::of($this->interior_number)->trim();
+            $titular->cp = Str::of($this->cp)->trim();
+            $titular->locality = Str::of($this->locality)->trim();
+            $titular->status = 'active';
+            $titular->modified_by = Auth::user()->email;
+            sleep(1);
+            $titular->save();
+            DB::commit();
+            $this->limpiar();
+            session()->flash('msg', 'Registro con No. de Expediente: '.$titular->file_number.' creado con éxito!');
+            $this->js("alert('Registro con No. de Expediente:".$titular->file_number." creado con éxito!')");
+        } catch (Exception $e) {
+            DB::rollBack();
+            session()->flash('msg_warning', $e->getMessage());
+        }
+    }
+    public function limpiar()
+    {
+        $this->reset();
+        $this->resetValidation();
+    }
     public function render()
     {
         $select1 = Subdependency::where('status', 'active')->get();
@@ -124,7 +168,9 @@ class MembershipCreate extends Component
         $select3 = County::where('status', 'active')->get();
         $select4 = Bank::where('status', 'active')->get();
         $select5 = Rank::where('status', 'active')->get();
+        
         $this->folio = IdGenerator::generate(['table' => 'insureds', 'field' => 'file_number', 'length' => 8, 'prefix' => 'T']);
+        $this->file_number = $this->folio;
         return view('livewire.socioeconomic-benefits.membership-create', ['select1' => $select1,
         'select2' => $select2,
         'select3' => $select3,
