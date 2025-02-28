@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],
     Route::put('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
     //Rutas para Dependencias
     Route::get('/socioeconomic_benefits/dependencies', [DependencyController::class, 'index'])->name('dependencies.index');
+    //Rutas de Usuarios
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 });
