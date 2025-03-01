@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Catalogs\DependencyController;
+use App\Http\Controllers\Permissions\PermissionController;
 use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
 use App\Http\Controllers\SocioeconomicBenefits\MembershipController;
 use App\Http\Controllers\Users\UserController;
@@ -31,4 +32,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],
     //Rutas de Usuarios
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    //Rutas de Permisos
+    Route::get('/permisions', [PermissionController::class, 'index'])->name('permissions.index');
 });
