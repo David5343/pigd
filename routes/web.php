@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Catalogs\DependencyController;
 use App\Http\Controllers\Permissions\PermissionController;
+use App\Http\Controllers\Roles\RoleController;
 use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
 use App\Http\Controllers\SocioeconomicBenefits\MembershipController;
 use App\Http\Controllers\Users\UserController;
@@ -35,4 +36,6 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],
     //Rutas de Permisos
     Route::get('/permisions', [PermissionController::class, 'index'])->name('permissions.index');
     Route::get('/permisions/create', [PermissionController::class, 'create'])->name('permissions.create');
+    //Rutas de Roles
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 });
