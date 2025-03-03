@@ -28,6 +28,7 @@ class PermissionsCreate extends Component
         $permiso->save();
         $rol = Role::findById($this->role_id, 'web');
         $permiso->assignRole($rol);
+        DB::commit();
         $this->limpiar();
         session()->flash('msg', 'Permiso creado con éxito!');
         $this->js("alert('Permiso creado con éxito!')");
