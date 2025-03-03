@@ -12,4 +12,9 @@ class PermissionController extends Controller
         return view('permissions.index');
 
     }
+    public function create()
+    {
+        return view('permissions.create');
+
+    }
 }

@@ -34,4 +34,5 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     //Rutas de Permisos
     Route::get('/permisions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::get('/permisions/create', [PermissionController::class, 'create'])->name('permissions.create');
 });
