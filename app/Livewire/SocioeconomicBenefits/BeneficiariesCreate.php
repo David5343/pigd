@@ -37,7 +37,7 @@ class BeneficiariesCreate extends Component
     public $disabled_person = '';
     #[Validate('required')]
     public $relationship = '';
-    #[Validate('required | max:150')]
+    #[Validate('nullable | max:150')]
     public $address = '';
 
     #[Validate('nullable | max:150')]

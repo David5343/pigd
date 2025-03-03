@@ -201,7 +201,7 @@
             @enderror
         </div>
         <div class="flex flex-col w-full md:w-3/4">
-            <label for="nombre" class="text-sm font-medium text-gray-700">* Direccion</label>
+            <label for="nombre" class="text-sm font-medium text-gray-700">Direccion</label>
             <input wire:model="address" type="text" id="address" name="address"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
         </div>
