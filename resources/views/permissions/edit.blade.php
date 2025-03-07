@@ -67,7 +67,8 @@
                     <h2 class="text-xl font-bold text-gray-700 mb-4 mt-4">Permisos de Sistema.</h2>
                     <h5 class="text-base font-bold text-gray-700 mb-4">Convencion de Nombres (Ejemplo:usuarios.create)
                     </h5>
-                    <form method="POST" class="flex flex-wrap gap-2" action="{{ url('permissions/' . $row->id) }}">
+                    <form method="POST" class="flex flex-wrap gap-2"
+                        action="{{ url('socioeconomic_benefits/membership/' . $row->id) }}">
                         @method('PUT')
                         @csrf
                         @if ($errors->any())
