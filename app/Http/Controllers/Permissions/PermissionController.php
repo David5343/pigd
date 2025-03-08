@@ -32,26 +32,51 @@ class PermissionController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'max:30'],
-            'role' =>['required']
+            'role' => ['required', 'exists:roles,id'] // Validamos que el rol exista
         ]);
+
         DB::beginTransaction();
 
         try {
+            $permission = Permission::findById($id, 'web');
 
-            $permission = Permission::findById($id,'web');
+            if (!$permission) {
+                return back()->with('msg_warning', 'Permiso no encontrado');
+            }
+
+            // Actualizar nombre del permiso
             $permission->name = Str::of($request->input('name'))->trim();
-            $permission->guard_name = 'web';
             $permission->save();
-            $rol_old = Role::findById($permission->roles->first(), 'web');
+
+            // Obtener el rol actualmente asignado seleccionado por el usuario (si existe)
+            $rol_old = $permission->roles->firstWhere('id', $request->input('old_role'));
+
+            // Obtener el nuevo rol seleccionado por el usuario
             $rol_new = Role::findById($request->input('role'), 'web');
-            $rol_old->revokePermissionTo($row->name);
+
+            if (!$rol_new) {
+                return back()->with('msg_warning', 'El nuevo rol no existe');
+            }
+
+            // Si el permiso está asignado a otro rol, no hacer nada, solo actualizar el nombre
+            if ($rol_new->hasPermissionTo($permission->name)) {
+                DB::commit();
+                return back()->with('msg', 'Permiso actualizado correctamente, sin cambios en los roles');
+            }
+
+            // Revocar solo del rol anterior seleccionado si existe
+            if ($rol_old && $rol_old->id !== $rol_new->id) {
+                $rol_old->revokePermissionTo($permission);
+            }
+
+            // Asignar el permiso al nuevo rol
+            $rol_new->givePermissionTo($permission);
+
             DB::commit();
-            session()->flash('msg', 'Registro de Rol actualizado con éxito!');
-            return back();
+            return back()->with('msg', 'Permiso actualizado y asignado al nuevo rol correctamente');
         } catch (Exception $e) {
             DB::rollBack();
-            session()->flash('msg_warning', $e->getMessage());
-            return back();
+            return back()->with('msg_warning', 'Error: ' . $e->getMessage());
         }
     }
 }

@@ -14,7 +14,7 @@ class PermissionsCreate extends Component
     public $roles;
     public $role_id='';
 
-    #[Validate('required | string |max:30')]
+    #[Validate('required | string |max:30|unique:permissions,name')]
     public $name = '';
 
     public function guardar()

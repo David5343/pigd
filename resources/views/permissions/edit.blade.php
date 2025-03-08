@@ -85,7 +85,7 @@
                                 <label for="nombre" class="text-sm font-medium text-gray-700">* Nombre</label>
                                 <input type="text" id="name" name="name"
                                     class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200"
-                                    value="{{ $row->name }}">
+                                    value="{{ old('name', $row->name) }}" required>
                             </div>
                         </div>
                         <!-- Dropdown de Roles -->
@@ -95,14 +95,16 @@
                             <div class="flex flex-col w-full md:w-1/3">
                                 <select id="role" name="role"
                                     class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
-                                    <option value="">Elije...</option>
-                                    @foreach ($lista as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ $row->roles->contains($item->id) ? 'selected' : '' }}>
-                                            {{ $item->name }}
+                                    @foreach ($lista as $role)
+                                        <option value="{{ $role->id }}"
+                                            {{ $row->roles->first() && $row->roles->first()->id == $role->id ? 'selected' : '' }}>
+                                            {{ $role->name }}
                                         </option>
                                     @endforeach
                                 </select>
+                                <!-- Campo oculto para enviar el rol anterior -->
+                                <input type="hidden" name="old_role"
+                                    value="{{ $row->roles->first() ? $row->roles->first()->id : '' }}">
                             </div>
                         </div>
                         <!-- Botones alineados a la derecha -->
