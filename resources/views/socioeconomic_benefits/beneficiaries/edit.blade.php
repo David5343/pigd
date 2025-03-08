@@ -8,9 +8,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-                    @session('msg')
-                        <div class="p-4" x-data="{ show: true }">
-                            <div x-show="show" x-transition
+                    @if (session('msg'))
+                        <div class="p-4">
+                            <div id="alert-success"
                                 class="inline-flex w-full items-center rounded-lg bg-green-100 px-6 py-5 text-base text-green-800 dark:bg-green-900 dark:text-green-300"
                                 role="alert">
                                 <span class="me-2 h-6 w-6">
@@ -22,9 +22,10 @@
                                     </svg>
                                 </span>
                                 <p>
-                                    <strong>PIGD ¡Atención!</strong> {{ $value }}
+                                    <strong>PIGD ¡Atención!</strong> {{ session('msg') }}
                                 </p>
-                                <button @click="show = false" type="button"
+                                <button onclick="document.getElementById('alert-success').style.display='none'"
+                                    type="button"
                                     class="ms-auto box-content rounded-md border-none p-1 text-black opacity-50 hover:opacity-75 focus:outline-none dark:text-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                         class="h-6 w-6">
@@ -35,10 +36,11 @@
                                 </button>
                             </div>
                         </div>
-                    @endsession
-                    @session('msg_warning')
-                        <div class="p-4" x-data="{ show: true }">
-                            <div x-show="show" x-transition
+                    @endif
+
+                    @if (session('msg_warning'))
+                        <div class="p-4">
+                            <div id="alert-warning"
                                 class="inline-flex w-full items-center rounded-lg bg-red-100 px-6 py-5 text-base text-red-800 dark:bg-red-900 dark:text-red-300"
                                 role="alert">
                                 <span class="me-2 h-6 w-6">
@@ -50,9 +52,10 @@
                                     </svg>
                                 </span>
                                 <p>
-                                    <strong>PIGD ¡Atención!</strong> {{ $value }}
+                                    <strong>PIGD ¡Atención!</strong> {{ session('msg_warning') }}
                                 </p>
-                                <button @click="show = false" type="button"
+                                <button onclick="document.getElementById('alert-warning').style.display='none'"
+                                    type="button"
                                     class="ms-auto box-content rounded-md border-none p-1 text-black opacity-50 hover:opacity-75 focus:outline-none dark:text-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                         class="h-6 w-6">
@@ -63,7 +66,7 @@
                                 </button>
                             </div>
                         </div>
-                    @endsession
+                    @endif
                     <h2 class="text-xl font-bold text-gray-700 mb-4 mt-4">Datos Generales</h2>
                     <h5 class="text-base font-bold text-gray-700 mb-4">(*) Campos Obligatorios.</h5>
                     <form method="POST" class="flex flex-wrap gap-2"
@@ -71,13 +74,24 @@
                         @method('PUT')
                         @csrf
                         @if ($errors->any())
-                            <div class="w-full items-center rounded-lg bg-danger-100 px-6 py-5 text-base text-danger-700 dark:bg-[#2c0f14] dark:text-danger-500"
-                                role="alert" id="alert-static-danger" data-twe-alert-init="">
-                                <ul>
+                            <div id="alert-static-danger"
+                                class="w-full rounded-lg bg-red-100 px-6 py-5 text-base text-red-700 dark:bg-[#2c0f14] dark:text-red-500 relative"
+                                role="alert">
+                                <ul class="list-disc pl-5">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
+                                <button onclick="document.getElementById('alert-static-danger').style.display='none'"
+                                    type="button"
+                                    class="absolute top-2 right-2 text-red-700 opacity-75 hover:opacity-100 focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                        class="h-6 w-6">
+                                        <path fill-rule="evenodd"
+                                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </button>
                             </div>
                         @endif
                         <div class="flex flex-col w-full md:w-32">
