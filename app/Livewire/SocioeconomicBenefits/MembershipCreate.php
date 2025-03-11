@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Illuminate\Database\QueryException;
+use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class MembershipCreate extends Component
 {
@@ -107,8 +110,8 @@ class MembershipCreate extends Component
     public $locality;
     public function guardar()
     {
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
             $this->validate();
             $titular = new Insured();
             $titular->file_number = Str::of($this->file_number)->trim();
@@ -145,15 +148,19 @@ class MembershipCreate extends Component
             $titular->locality = Str::of($this->locality)->trim();
             $titular->status = 'active';
             $titular->modified_by = Auth::user()->email;
-            sleep(1);
             $titular->save();
             DB::commit();
             $this->limpiar();
             session()->flash('msg', 'Registro con No. de Expediente: '.$titular->file_number.' creado con éxito!');
             $this->js("alert('Registro con No. de Expediente:".$titular->file_number." creado con éxito!')");
-        } catch (Exception $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
-            session()->flash('msg_warning', $e->getMessage());
+            Log::error('Error en la consulta SQL: ' . $e->getMessage());
+            session()->flash('msg_warning', 'Error en la base de datos. Contacte al administrador.');
+        } catch (Throwable $e) {
+            DB::rollBack();
+            Log::error('Error inesperado: ' . $e->getMessage());
+            session()->flash('msg_warning', 'Ocurrió un error inesperado. Contacte al administrador.');
         }
     }
     public function limpiar()

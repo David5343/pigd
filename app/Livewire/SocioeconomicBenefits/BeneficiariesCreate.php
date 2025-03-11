@@ -8,6 +8,10 @@ use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class BeneficiariesCreate extends Component
 {
@@ -60,8 +64,10 @@ class BeneficiariesCreate extends Component
     }
     public function guardar()
     {
-        $this->validate();
-        $esposa = Beneficiary::where('affiliate_status', 'Activo')
+        try{
+            DB::beginTransaction();
+            $this->validate();
+            $esposa = Beneficiary::where('affiliate_status', 'Activo')
             ->where('insured_id', $this->insured_id)
             ->where('relationship', 'Esposa')->get();
         $concubina = Beneficiary::where('affiliate_status', 'Activo')
@@ -101,8 +107,8 @@ class BeneficiariesCreate extends Component
             switch ($this->relationship) {
                 case 'Padre':
                     if ($papa->count() == 0) {
-                        sleep(1);
                         $familiar->save();
+                        DB::commit();
                         $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
@@ -114,8 +120,8 @@ class BeneficiariesCreate extends Component
                     break;
                 case 'Madre':
                     if ($mama->count() == 0) {
-                        sleep(1);
                         $familiar->save();
+                        DB::commit();
                         $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
@@ -127,8 +133,8 @@ class BeneficiariesCreate extends Component
                     break;
                 case 'Esposa':
                     if ($esposa->count() == 0 && $concubina->count() == 0) {
-                        sleep(1);
                         $familiar->save();
+                        DB::commit();
                         $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
@@ -140,8 +146,8 @@ class BeneficiariesCreate extends Component
                     break;
                 case 'Concubina':
                     if ($concubina->count() == 0 && $esposa->count() == 0) {
-                        sleep(1);
                         $familiar->save();
+                        DB::commit();
                         $this->limpiar();
                         session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                         $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
@@ -154,6 +160,7 @@ class BeneficiariesCreate extends Component
                 case 'Hijo/a':
                     sleep(1);
                     $familiar->save();
+                    DB::commit();
                     $this->limpiar();
                     session()->flash('msg', 'Registro con No. de Expediente: '.$familiar->file_number.' creado con éxito!');
                     $this->js("alert('Registro con No. de Expediente:".$familiar->file_number." creado con éxito!')");
@@ -161,6 +168,17 @@ class BeneficiariesCreate extends Component
                 default:
                     break;
             }
+
+    } catch (QueryException $e) {
+        DB::rollBack();
+        Log::error('Error en la consulta SQL: ' . $e->getMessage());
+        session()->flash('msg_warning', 'Error en la base de datos. Contacte al administrador.');
+    } catch (Throwable $e) {
+        DB::rollBack();
+        Log::error('Error inesperado: ' . $e->getMessage());
+        session()->flash('msg_warning', 'Ocurrió un error inesperado. Contacte al administrador.');
+    }
+
     }
     public function limpiar()
     {
