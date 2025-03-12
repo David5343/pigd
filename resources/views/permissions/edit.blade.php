@@ -88,25 +88,6 @@
                                     value="{{ old('name', $row->name) }}" required>
                             </div>
                         </div>
-                        <!-- Dropdown de Roles -->
-                        <div class="flex flex-col w-full">
-                            <h5 class="text-base font-bold text-gray-700 mb-4">Elije el Rol al que pertenecerá este
-                                Permiso.</h5>
-                            <div class="flex flex-col w-full md:w-1/3">
-                                <select id="role" name="role"
-                                    class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
-                                    @foreach ($lista as $role)
-                                        <option value="{{ $role->id }}"
-                                            {{ $row->roles->first() && $row->roles->first()->id == $role->id ? 'selected' : '' }}>
-                                            {{ $role->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <!-- Campo oculto para enviar el rol anterior -->
-                                <input type="hidden" name="old_role"
-                                    value="{{ $row->roles->first() ? $row->roles->first()->id : '' }}">
-                            </div>
-                        </div>
                         <!-- Botones alineados a la derecha -->
                         <div class="w-full flex justify-end gap-3 mt-4">
                             <a href="{{ route('permissions.index') }}"

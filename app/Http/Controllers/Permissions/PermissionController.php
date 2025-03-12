@@ -25,14 +25,12 @@ class PermissionController extends Controller
     public function edit(string $id)
     {
         $row = Permission::findById($id,'web');
-        $roles = Role::all();
-        return view('permissions.edit', ['row' => $row,'lista'=>$roles]);
+        return view('permissions.edit', ['row' => $row]);
     }
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
             'name' => ['required', 'max:30'],
-            'role' => ['required', 'exists:roles,id'] // Validamos que el rol exista
         ]);
 
         DB::beginTransaction();
@@ -47,33 +45,8 @@ class PermissionController extends Controller
             // Actualizar nombre del permiso
             $permission->name = Str::of($request->input('name'))->trim();
             $permission->save();
-
-            // Obtener el rol actualmente asignado seleccionado por el usuario (si existe)
-            $rol_old = $permission->roles->firstWhere('id', $request->input('old_role'));
-
-            // Obtener el nuevo rol seleccionado por el usuario
-            $rol_new = Role::findById($request->input('role'), 'web');
-
-            if (!$rol_new) {
-                return back()->with('msg_warning', 'El nuevo rol no existe');
-            }
-
-            // Si el permiso está asignado a otro rol, no hacer nada, solo actualizar el nombre
-            if ($rol_new->hasPermissionTo($permission->name)) {
-                DB::commit();
-                return back()->with('msg', 'Permiso actualizado correctamente, sin cambios en los roles');
-            }
-
-            // Revocar solo del rol anterior seleccionado si existe
-            if ($rol_old && $rol_old->id !== $rol_new->id) {
-                $rol_old->revokePermissionTo($permission);
-            }
-
-            // Asignar el permiso al nuevo rol
-            $rol_new->givePermissionTo($permission);
-
             DB::commit();
-            return back()->with('msg', 'Permiso actualizado y asignado al nuevo rol correctamente');
+            return back()->with('msg', 'Permiso actualizado.');
         } catch (Exception $e) {
             DB::rollBack();
             return back()->with('msg_warning', 'Error: ' . $e->getMessage());

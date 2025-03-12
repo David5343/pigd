@@ -43,4 +43,5 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified',],
     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
     Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+    Route::get('/roles/manage_roles/',[RoleController::class,'manage_roles'])->name('manage.roles');
 });

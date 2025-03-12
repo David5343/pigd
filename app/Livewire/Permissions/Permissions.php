@@ -24,8 +24,7 @@ class Permissions extends Component
         $permisos = Permission::where(function($query) {
             $query->Where('name', 'like', '%'.$this->search.'%');
         })
-        ->latest() // Equivalente a orderBy('created_at', 'desc')
-        ->take(50) // Tomar solo los últimos 50 registros
+        ->orderBy('name', 'asc')
         ->paginate($this->numberRows);
         return view('livewire.permissions.permissions',['lista'=>$permisos]);
     }
