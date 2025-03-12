@@ -108,6 +108,9 @@
                             <div class="px-4 py-2 text-sm text-gray-500">
                                 {{ __('Tecnologías') }}
                             </div>
+                            <x-dropdown-link href="{{ route('roles.manage') }}">
+                                {{ __('Administración de Roles') }}
+                            </x-dropdown-link>
                             <x-dropdown-link href="{{ route('roles.index') }}">
                                 {{ __('Roles') }}
                             </x-dropdown-link>

@@ -12,56 +12,60 @@ class ManageRoles extends Component
     public $permissionsGrouped = [];
     public $selectedRole;
     public array $selectedPermissions = [];
-    public $message;
 
     public function mount()
     {
         $this->roles = Role::all();
-        // $this->permissionsGrouped = Permission::all()->groupBy('category'); 
         $this->permissionsGrouped = Permission::all()->groupBy('category')->map(fn($permissions) => $permissions->toArray())->toArray();
-    }
-    public function updatedSelectedRole($roleId)
-    {
-        $role = Role::find($roleId);
     
-        if ($role) {
-            // Cargar los permisos asignados al rol seleccionado
-            $this->selectedPermissions = $role->permissions->pluck('id')->toArray();
-        } else {
-            $this->selectedPermissions = [];
+        // Seleccionar automáticamente el primer rol si existe
+        if ($this->roles->isNotEmpty()) {
+            $this->selectedRole = $this->roles->first()->id;
+            $this->loadPermissions();
         }
     }
 
+    public function updatedSelectedRole()
+    {
+        $this->loadPermissions();
+    }
+    private function loadPermissions()
+    {
+        $role = Role::find($this->selectedRole);
+        $this->selectedPermissions = $role ? $role->permissions->pluck('id')->toArray() : [];
+    }
     public function togglePermission($permissionId)
     {
         if (!$this->selectedRole) {
-            $this->message = "Selecciona un rol primero.";
+            $this->dispatch('notify', 'Selecciona un rol primero.');
             return;
         }
-    
+
         $role = Role::find($this->selectedRole);
-    
-        if (!$role) {
-            $this->message = "El rol seleccionado no existe.";
+        $permission = Permission::find($permissionId);
+
+        if (!$role || !$permission) {
+            $this->dispatch('notify', 'Error: Rol o permiso no encontrado.');
             return;
         }
-    
-        // Si ya tiene el permiso, lo quitamos; si no, lo agregamos
-        if ($role->hasPermissionTo($permissionId)) {
-            $role->revokePermissionTo($permissionId);
+
+        // Alternar permiso
+        if ($role->hasPermissionTo($permission->name)) {
+            $role->revokePermissionTo($permission->name);
         } else {
-            $role->givePermissionTo($permissionId);
+            $role->givePermissionTo($permission->name);
         }
-    
-        // Actualizamos la lista de permisos seleccionados
-        $this->selectedPermissions = $role->permissions->pluck('id')->toArray();
-    
-        // Mensaje de confirmación
-        $this->message = "Permisos actualizados correctamente.";
+
+        // Recargar permisos para reflejar cambios
+        $this->loadPermissions();
+
+        // Emitir notificación
+        $this->dispatch('notify', 'Permisos actualizados correctamente.');
     }
-    
+
     public function render()
     {
         return view('livewire.roles.manage-roles');
     }
 }
+

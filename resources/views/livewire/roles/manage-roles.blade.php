@@ -1,25 +1,31 @@
 <div class="p-6">
     <h2 class="text-xl font-semibold mb-4">Gestionar Permisos por Rol</h2>
+
     <!-- Notificación -->
-    @if ($message)
-        <div class="p-2 mb-4 text-green-700 bg-green-100 border border-green-400 rounded-md">
-            {{ $message }}
-        </div>
-    @endif
+    <div x-data="{ message: '' }" @notify.window="message = $event.detail; setTimeout(() => message = '', 3000)">
+        <template x-if="message">
+            <div class="p-2 mb-4 text-green-700 bg-green-100 border border-green-400 rounded-md">
+                <span x-text="message"></span>
+            </div>
+        </template>
+    </div>
+
     <!-- Select de Roles -->
     <div class="mb-4">
         <label class="block text-gray-700 font-bold mb-2">Selecciona un Rol:</label>
-        <select wire:model="selectedRole" class="w-1/3 p-2 border rounded-md shadow-sm">
+        <select wire:model.live="selectedRole" class="w-1/3 p-2 border rounded-md shadow-sm">
             <option value="">-- Selecciona un Rol --</option>
             @foreach ($roles as $role)
                 <option value="{{ $role->id }}">{{ $role->name }}</option>
             @endforeach
         </select>
     </div>
+
     <!-- Grupo de Checkboxes de Permisos -->
     <div class="mt-4">
-        <div class="max-h-80 overflow-y-auto p-4 border rounded-lg">
-            <h3 class="text-lg font-semibold mb-2">Permisos</h3>
+        <h3 class="text-lg font-semibold mb-2">Permisos</h3>
+        <div class="max-h-90 overflow-y-auto p-4 border rounded-lg">
+
             @foreach ($permissionsGrouped as $category => $permissions)
                 <div class="mb-4">
                     <h4 class="text-md font-semibold text-gray-700">{{ 'Grupo de Permisos de: ' . ucfirst($category) }}
@@ -28,7 +34,8 @@
                         @foreach ($permissions as $permission)
                             <label class="flex items-center cursor-pointer">
                                 <input type="checkbox" wire:click="togglePermission({{ $permission['id'] }})"
-                                    @if (in_array($permission['id'], $selectedPermissions)) checked @endif class="sr-only peer">
+                                    wire:model="selectedPermissions" value="{{ $permission['id'] }}"
+                                    class="sr-only peer">
                                 <div
                                     class="w-10 h-5 bg-gray-300 rounded-full peer-checked:bg-blue-600 relative transition duration-300">
                                     <div
