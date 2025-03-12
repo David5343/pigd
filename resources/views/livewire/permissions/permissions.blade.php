@@ -28,6 +28,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4">#</th>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
+                                    <th scope="col" class="px-6 py-4">Categoria</th>
                                     <th scope="col" class="px-6 py-4">Rol</th>
                                     <th scope="col" class="px-6 py-4">Editar</th>
                                 </tr>
@@ -39,6 +40,9 @@
                                             <td class="whitespace-nowrap px-6 py-4 font-medium">{{ $item->id }}</td>
                                             <td class="whitespace-nowrap px-6 py-4">
                                                 {{ $item->name }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-6 py-4">
+                                                {{ $item->category }}
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4">
                                                 @forelse ($item->roles as $role)

@@ -28,17 +28,20 @@ class PermissionsCreate extends Component
             $permiso = new Permission();
             $permiso->name = $this->name;
             $permiso->category = $this->category;
+            $permiso->guard_name ='web';
             $permiso->save();
 
             DB::commit();
             $this->limpiar();
+            session()->flash('msg', 'Permiso : '.$permiso->name.' creado con éxito!');
+            $this->js("alert('Permiso :".$permiso->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            session()->flash('msg', 'Permiso creado con éxito!');
-
+            
             // Enviar el mensaje a la vista sin necesidad de recargar
          } catch (Exception $e) {
              DB::rollBack();
-            session()->flash('msg_warning', 'Error inesperado. Contacte al administrador.');
+             session()->flash('msg_warning', 'Error : '.$e.' Contacte a su Administrador.');
+             $this->js("alert('Error :".$e." Contacte a su Administrador.')");
         }
 
     }

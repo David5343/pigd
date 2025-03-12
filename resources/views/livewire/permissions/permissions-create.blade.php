@@ -1,13 +1,13 @@
 <div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg">
     @if (session()->has('msg'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 7000)" x-show="show"
-            class="w-full bg-green-100 text-green-700 p-4 rounded-lg mb-4" role="alert">
+        <div x-data="{ show: true }" x-show="show" class="w-full bg-green-100 text-green-700 p-4 rounded-lg mb-4"
+            role="alert">
             {{ session('msg') }}
         </div>
     @endif
 
     @if (session()->has('msg_warning'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show"
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
             class="w-full bg-red-100 text-red-700 p-4 rounded-lg mb-4" role="alert">
             {{ session('msg') }}
         </div>

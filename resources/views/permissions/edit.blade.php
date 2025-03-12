@@ -88,6 +88,50 @@
                                     value="{{ old('name', $row->name) }}" required>
                             </div>
                         </div>
+                        <div class="flex flex-col w-full">
+                            <div class="flex flex-col w-full md:w-1/3">
+                                <label for="category" class="text-sm font-medium text-gray-700">Grupo al que
+                                    pertenece:</label>
+                                <select id="category" name="category"
+                                    class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
+                                    <option value=""
+                                        {{ old('category', $row->category) == '' ? 'selected' : '' }}>Elije...</option>
+                                    <option value="CoordinacionGeneral"
+                                        {{ old('category', $row->category) == 'CoordinacionGeneral' ? 'selected' : '' }}>
+                                        CoordinacionGeneral</option>
+                                    <option value="AdministracionGeneral"
+                                        {{ old('category', $row->category) == 'AdministracionGeneral' ? 'selected' : '' }}>
+                                        AdministracionGeneral</option>
+                                    <option value="AreaJuridica"
+                                        {{ old('category', $row->category) == 'AreaJuridica' ? 'selected' : '' }}>
+                                        AreaJuridica</option>
+                                    <option value="CoordinacionMedica"
+                                        {{ old('category', $row->category) == 'CoordinacionMedica' ? 'selected' : '' }}>
+                                        CoordinacionMedica</option>
+                                    <option value="RecursosHumanos"
+                                        {{ old('category', $row->category) == 'RecursosHumanos' ? 'selected' : '' }}>
+                                        RecursosHumanos</option>
+                                    <option value="RecursosFinancieros"
+                                        {{ old('category', $row->category) == 'RecursosFinancieros' ? 'selected' : '' }}>
+                                        RecursosFinancieros</option>
+                                    <option value="RecursosMateriales"
+                                        {{ old('category', $row->category) == 'RecursosMateriales' ? 'selected' : '' }}>
+                                        RecursosMateriales</option>
+                                    <option value="PrestacionesSocioEconomicas"
+                                        {{ old('category', $row->category) == 'PrestacionesSocioEconomicas' ? 'selected' : '' }}>
+                                        PrestacionesSocioEconomicas</option>
+                                    <option value="Tecnologias"
+                                        {{ old('category', $row->category) == 'Tecnologias' ? 'selected' : '' }}>
+                                        Tecnologias</option>
+                                </select>
+                            </div>
+                        </div>
+                        @error('category')
+                            <div class="w-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-4 rounded-lg"
+                                role="alert">
+                                {{ $message }}
+                            </div>
+                        @enderror
                         <!-- Botones alineados a la derecha -->
                         <div class="w-full flex justify-end gap-3 mt-4">
                             <a href="{{ route('permissions.index') }}"

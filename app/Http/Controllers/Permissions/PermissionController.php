@@ -31,11 +31,11 @@ class PermissionController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'max:30'],
+            'category' =>['required','min:3']
         ]);
 
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
             $permission = Permission::findById($id, 'web');
 
             if (!$permission) {
@@ -44,6 +44,7 @@ class PermissionController extends Controller
 
             // Actualizar nombre del permiso
             $permission->name = Str::of($request->input('name'))->trim();
+            $permission->category = Str::of($request->input('category'))->trim();
             $permission->save();
             DB::commit();
             return back()->with('msg', 'Permiso actualizado.');
