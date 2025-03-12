@@ -31,23 +31,24 @@ class RoleController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'max:30'],
         ]);
-        DB::beginTransaction();
 
         try {
+            DB::beginTransaction();
 
             $row = Role::findById($id,'web');
+            if (!$row) {
+                return back()->with('msg_warning', 'Role no encontrado');
+            }
             $row->name = Str::of($request->input('name'))->trim();
             $row->save();
             DB::commit();
-            session()->flash('msg', 'Registro de Rol actualizado con éxito!');
-            return back();
+            return back()->with('msg', 'Permiso actualizado.');
         } catch (Exception $e) {
             DB::rollBack();
-            session()->flash('msg_warning', $e->getMessage());
-            return back();
+            return back()->with('msg_warning', 'Error: ' . $e->getMessage());
         }
     }
-    public function manage_roles()
+    public function manage()
     {
         return view('roles.manage-roles');
     }
