@@ -47,4 +47,8 @@ class RoleController extends Controller
             return back();
         }
     }
+    public function manage_roles()
+    {
+        return view('roles.manage-roles');
+    }
 }

@@ -25,7 +25,8 @@ class Roles extends Component
         $roles = Role::where(function($query) {
             $query->Where('name', 'like', '%'.$this->search.'%');
         })
-        ->latest() // Equivalente a orderBy('created_at', 'desc')
+        //->latest() // Equivalente a orderBy('created_at', 'desc')
+        ->orderBy('name','asc')
         //->take(50) // Tomar solo los últimos 50 registros
         ->paginate($this->numberRows);
         return view('livewire.roles.roles',['lista'=>$roles]);
