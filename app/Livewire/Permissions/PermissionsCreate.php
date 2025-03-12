@@ -11,11 +11,12 @@ use Spatie\Permission\Models\Permission;
 class PermissionsCreate extends Component
 {
 
-    #[Validate('required|string|max:30|unique:permissions,name')] 
+    protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
+    #[Validate('required|string|max:30|unique:permissions,name')]
     public $name = '';
-    #[Validate('required|min:3')] 
+    #[Validate('required|min:3')]
     public $category = '';
-    
+
     public function guardar()
     {
 
@@ -23,7 +24,7 @@ class PermissionsCreate extends Component
 
         try {
             DB::beginTransaction();
-            
+
             $permiso = new Permission();
             $permiso->name = $this->name;
             $permiso->category = $this->category;
@@ -31,14 +32,15 @@ class PermissionsCreate extends Component
 
             DB::commit();
             $this->limpiar();
-             //session()->flash('msg', 'Permiso creado con éxito!');
-             $this->dispatch('show-modal', message: 'Permiso creado con éxito!', type: 'success')->to($this);
+            $this->dispatch('refreshComponent');
+            session()->flash('msg', 'Permiso creado con éxito!');
+
+            // Enviar el mensaje a la vista sin necesidad de recargar
          } catch (Exception $e) {
              DB::rollBack();
-            //session()->flash('msg_warning', 'Error inesperado. Contacte al administrador.');
-            $this->dispatch('show-modal', message: 'Error inesperado. Contacte al administrador.', type: 'warning')->to($this);
+            session()->flash('msg_warning', 'Error inesperado. Contacte al administrador.');
         }
-        $this->dispatch('show-modal');
+
     }
 
     public function limpiar()
