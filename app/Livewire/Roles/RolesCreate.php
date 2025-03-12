@@ -36,8 +36,8 @@ class RolesCreate extends Component
             // Enviar el mensaje a la vista sin necesidad de recargar
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e.' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e." Contacte a su Administrador.')");
+             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
+             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
         }
 
     }
