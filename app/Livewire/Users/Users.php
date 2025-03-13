@@ -37,7 +37,22 @@ class Users extends Component
             $user->modified_by = Auth::user()->email;
             $user->save();
         }
-
+    }
+    #[On('enabled_disabled')]
+    public function enabledDisabled($id)
+    {
+        $user = User::withTrashed()->find($id); // Buscar también los eliminados
+    
+        if ($user) {
+            if ($user->trashed()) {
+                $user->restore(); // Si está eliminado, restaurarlo
+            } else {
+                $user->delete(); // Si está activo, deshabilitarlo
+            }
+    
+            // Emitir un evento para actualizar la vista en Livewire
+            $this->dispatch('userUpdated');
+        }
     }
     public function updatingSearch()
     {
@@ -47,9 +62,11 @@ class Users extends Component
     {
         $this->resetPage();
     }
+    #[On('userUpdated')]
     public function render()
     {
         $users = User::with('roles') // Cargar los roles de cada usuario
+                        ->withTrashed()
         ->where(function($query) {
             $query->Where('name', 'like', '%'.$this->search.'%')
                   ->orWhere('email', 'like', '%'.$this->search.'%');
