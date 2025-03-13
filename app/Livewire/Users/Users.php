@@ -21,12 +21,12 @@ class Users extends Component
     }
     public function render()
     {
-        $users = User::where(function($query) {
+        $users = User::with('roles') // Cargar los roles de cada usuario
+        ->where(function($query) {
             $query->Where('name', 'like', '%'.$this->search.'%')
                   ->orWhere('email', 'like', '%'.$this->search.'%');
         })
-        ->latest() // Equivalente a orderBy('created_at', 'desc')
-        ->take(50) // Tomar solo los últimos 50 registros
+        ->orderBy('name', 'asc')
         ->paginate($this->numberRows);
         return view('livewire.users.users',['users'=>$users]);
     }

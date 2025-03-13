@@ -30,6 +30,7 @@
                                     <th scope="col" class="px-6 py-4">#</th>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
                                     <th scope="col" class="px-6 py-4">Usuario</th>
+                                    <th scope="col" class="px-6 py-4">Rol</th>
                                     <th scope="col" class="px-6 py-4">Api Token</th>
                                 </tr>
                             </thead>
@@ -40,6 +41,9 @@
                                             <td class="whitespace-nowrap px-6 py-4 font-medium">{{ $item->id }}</td>
                                             <td class="whitespace-nowrap px-6 py-4">{{ $item->name }}</td>
                                             <td class="whitespace-nowrap px-6 py-4">{{ $item->email }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4">
+                                                {{ $item->roles->pluck('name')->implode(', ') }}
+                                            </td>
                                             <td class="whitespace-nowrap px-6 py-4">
                                                 <button type="button" data-twe-toggle="modal"
                                                     data-twe-target="#staticBackdrop" data-twe-ripple-init
