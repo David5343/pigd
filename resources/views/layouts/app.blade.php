@@ -27,15 +27,15 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center space-x-4">
                     <x-application-logo class="block h-12 w-auto" />
-                    <div>
+                    <div class="text-center">
                         <p class="text-gray-500">
-                            Fideicomiso de Prestaciones de Seguridad Social
+                        <h1> Fideicomiso de Prestaciones de Seguridad Social</h1>
                         </p>
                         <p class="text-gray-500">
-                            Para los Trabajadores del Sector Policial Operativo
+                        <h1> Para los Trabajadores del Sector Policial Operativo </h1>
                         </p>
                         <p class="text-gray-500">
-                            Al Servicio del Poder Ejecutivo del Estado de Chiapas
+                        <h1> Al Servicio del Poder Ejecutivo del Estado de Chiapas</h1>
                         </p>
                     </div>
                 </div>
