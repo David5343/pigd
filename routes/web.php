@@ -24,7 +24,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::group(['middleware' => ['role:PrestacionesSocioEconomicas|SuperAdmin']], function () {
+    Route::group(['middleware' => ['role:PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
     //Rutas para titulares
     Route::get('/socioeconomic_benefits/membership', [MembershipController::class, 'index'])->name('membership.index');
     Route::get('/socioeconomic_benefits/membership/create', [MembershipController::class, 'create'])->name('membership.create');
