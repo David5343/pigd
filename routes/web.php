@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Catalogs\DependencyController;
+use App\Http\Controllers\Catalogs\SubdependencyController;
 use App\Http\Controllers\Permissions\PermissionController;
 use App\Http\Controllers\Roles\RoleController;
 use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
@@ -42,6 +43,11 @@ Route::middleware([
     Route::get('/socioeconomic_benefits/dependencies/create', [DependencyController::class, 'create'])->name('dependencies.create');
     Route::get('/socioeconomic_benefits/dependencies/{id}/edit', [DependencyController::class, 'edit'])->name('dependencies.edit');
     Route::put('/socioeconomic_benefits/dependencies/{id}', [DependencyController::class, 'update'])->name('dependencies.update');
+        //Rutas para Subdependencias
+    Route::get('/socioeconomic_benefits/subdependencies', [SubdependencyController::class, 'index'])->name('subdependencies.index');
+    Route::get('/socioeconomic_benefits/subdependencies/create', [SubdependencyController::class, 'create'])->name('subdependencies.create');
+    Route::get('/socioeconomic_benefits/subdependencies/{id}/edit', [SubdependencyController::class, 'edit'])->name('subdependencies.edit');
+    Route::put('/socioeconomic_benefits/subdependencies/{id}', [SubdependencyController::class, 'update'])->name('subdependencies.update');
 });
 
         Route::group(['middleware' => ['role:Tecnologías|SuperAdmin']], function () {
