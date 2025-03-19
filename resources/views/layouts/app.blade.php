@@ -21,28 +21,12 @@
 </head>
 
 <body class="font-sans antialiased">
-    <x-banner />
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center space-x-4">
-                    <x-application-logo class="block h-12 w-auto" />
-                    <div class="text-center">
-                        <p class="text-gray-500">
-                        <h1> Fideicomiso de Prestaciones de Seguridad Social</h1>
-                        </p>
-                        <p class="text-gray-500">
-                        <h1> Para los Trabajadores del Sector Policial Operativo </h1>
-                        </p>
-                        <p class="text-gray-500">
-                        <h1> Al Servicio del Poder Ejecutivo del Estado de Chiapas</h1>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <img src="{{ asset('images/banner-50.jpg') }}" alt="Banner" class="w-full object-cover">
     </div>
-    <div class="min-h-screen bg-gray-100">
+    <x-banner />
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- <div class="min-h-screen bg-gray-100"> --}}
         @livewire('navigation-menu')
 
         <!-- Page Heading -->

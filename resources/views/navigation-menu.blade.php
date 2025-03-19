@@ -1,10 +1,10 @@
-<nav x-data="{ open: false }" class="bg-[#009887] border-b-4 border-rose-500">
+<nav x-data="{ open: false }" class="bg-[#009887] border-b-4 border-[#AE1922]">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-17">
             <div class="flex">
-                {{-- <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <!-- Logo -->
+                {{-- <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
@@ -484,7 +484,7 @@
                             <x-dropdown-link href="{{ route('dependencies.index') }}">
                                 {{ __('Dependencias') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('subdependencies.index') }}">
                                 {{ __('Subdependecias') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
