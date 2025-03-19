@@ -484,7 +484,7 @@
                             <x-dropdown-link href="{{ route('dependencies.index') }}">
                                 {{ __('Dependencias') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('subdependencies.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Subdependecias') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
