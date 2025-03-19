@@ -15,9 +15,9 @@ class UsersCreate extends Component
 {
     public $roles = [];
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
-    #[Validate('required|string|max:255')]
+    #[Validate('required|string|max:50')]
     public $name = '';
-    #[Validate('required|string|email|max:255|unique:users')]
+    #[Validate('required|string|email|max:50|unique:users')]
     public $email = '';
     #[Validate('required|string|min:8|max:9')]
     public $password = '';

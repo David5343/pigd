@@ -35,8 +35,8 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:30'],
-            'email' => ['required', 'string', 'email', 'max:255'],
+            'name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'email', 'max:50'],
             'password' => ['nullable', 'string', 'min:8', 'max:9'], // Contraseña opcional
             'role' => ['required', 'string'], // El rol es obligatorio
         ]);
