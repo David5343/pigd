@@ -44,7 +44,7 @@ Route::middleware([
     Route::put('/socioeconomic_benefits/dependencies/{id}', [DependencyController::class, 'update'])->name('dependencies.update');
 });
 
-        Route::group(['middleware' => ['role:Tecnologías|SuperAdmin']], function () {
+       // Route::group(['middleware' => ['role:Tecnologías|SuperAdmin']], function () {
         //Rutas de Usuarios
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -62,5 +62,5 @@ Route::middleware([
         Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
         Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
         Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
-        });
+        //});
 });
