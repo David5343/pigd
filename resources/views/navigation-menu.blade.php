@@ -481,7 +481,7 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('dependencies.index') }}">
                                 {{ __('Dependencias') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
