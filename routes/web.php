@@ -7,17 +7,24 @@ use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
 use App\Http\Controllers\SocioeconomicBenefits\MembershipController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Middleware\CheckIfActive;
-use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     // return view('welcome');
     return view('auth.login');
 });
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    CheckIfActive::class,
+])->group(function () {
 
-Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','role:SuperAdmin'],[CheckIfActive::class])->group(function () {
-    Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
-    Route::middleware(['role:PrestacionesSocioEconomicas','role:SuperAdmin'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::group(['middleware' => ['role:PrestacionesSocioEconomicas|SuperAdmin']], function () {
     //Rutas para titulares
     Route::get('/socioeconomic_benefits/membership', [MembershipController::class, 'index'])->name('membership.index');
     Route::get('/socioeconomic_benefits/membership/create', [MembershipController::class, 'create'])->name('membership.create');
@@ -35,8 +42,9 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','r
     Route::get('/socioeconomic_benefits/dependencies/create', [DependencyController::class, 'create'])->name('dependencies.create');
     Route::get('/socioeconomic_benefits/dependencies/{id}/edit', [DependencyController::class, 'edit'])->name('dependencies.edit');
     Route::put('/socioeconomic_benefits/dependencies/{id}', [DependencyController::class, 'update'])->name('dependencies.update');
-    });
-    Route::middleware([SuperAdminMiddleware::class])->group(function () {
+});
+
+        Route::group(['middleware' => ['role:Tecnologías|SuperAdmin']], function () {
         //Rutas de Usuarios
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -54,6 +62,5 @@ Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','r
         Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
         Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
         Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
-    });
-
+        });
 });
