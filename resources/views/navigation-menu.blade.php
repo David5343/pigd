@@ -31,7 +31,7 @@
                             </button>
                         </x-slot>
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-black">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -47,7 +47,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Archivo') }}
                             </div>
                             <x-dropdown-link href="{{ route('dashboard') }}">
@@ -61,7 +61,7 @@
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Transparencia') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -89,7 +89,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -105,7 +105,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Tecnologías') }}
                             </div>
                             <x-dropdown-link href="{{ route('permissions.index') }}">
@@ -150,7 +150,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -193,7 +193,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -209,7 +209,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -255,7 +255,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -271,7 +271,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -337,7 +337,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -353,7 +353,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Reportes') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -398,7 +398,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -414,7 +414,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -461,7 +461,7 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Documentos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -477,7 +477,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -493,7 +493,7 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-gray-500">
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Afiliación') }}
                             </div>
                             <!-- Opciones del Dropdown -->
@@ -608,10 +608,11 @@
                                 {{ __('Administrar cuenta') }}
                             </div>
 
-                            {{-- <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Perfil') }}
+                            {{-- <x-dropdown-link href="{{ route('profile.show') }}"> --}}
+                            <x-dropdown-link>
+                                {{ Auth::user()->name }}
                             </x-dropdown-link>
-
+                            {{-- 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
