@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Catalogs\AreaController;
 use App\Http\Controllers\Catalogs\DependencyController;
 use App\Http\Controllers\Catalogs\SubdependencyController;
 use App\Http\Controllers\Permissions\PermissionController;
@@ -48,7 +49,7 @@ Route::middleware([
     Route::get('/socioeconomic_benefits/subdependencies/create', [SubdependencyController::class, 'create'])->name('subdependencies.create');
     Route::get('/socioeconomic_benefits/subdependencies/{id}/edit', [SubdependencyController::class, 'edit'])->name('subdependencies.edit');
     Route::put('/socioeconomic_benefits/subdependencies/{id}', [SubdependencyController::class, 'update'])->name('subdependencies.update');
-});
+        });
 
         Route::group(['middleware' => ['role:Tecnologías|SuperAdmin']], function () {
         //Rutas de Usuarios
@@ -69,4 +70,10 @@ Route::middleware([
         Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
         Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
         });
+
+    //Rutas para areas
+    Route::get('/human_resources/catalogs/areas', [AreaController::class, 'index'])->name('areas.index');
+    Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
+    Route::get('/human_resources/catalogs/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
+    Route::put('/human_resources/catalogs/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
 });
