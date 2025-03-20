@@ -70,10 +70,11 @@ Route::middleware([
         Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
         Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
         });
-
+        Route::group(['middleware' => ['role:RecursosHumanos|SuperAdmin']], function () {
     //Rutas para areas
     Route::get('/human_resources/catalogs/areas', [AreaController::class, 'index'])->name('areas.index');
     Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
     Route::get('/human_resources/catalogs/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
     Route::put('/human_resources/catalogs/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
+});
 });
