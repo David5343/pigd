@@ -71,7 +71,7 @@ class MembershipController extends Controller
             'birthplace' => ['nullable', 'min:3', 'max:85'],
             'sex' => ['nullable'],
             'marital_status' => ['nullable'],
-            'rfc' => ['required ', 'min:13', 'max:13 ', ' alpha_num:ascii', 'unique:insureds,rfc,'.$id],
+            'rfc' => ['required ', 'min:10', 'max:10 ', ' alpha_num:ascii', 'unique:insureds,rfc,'.$id],
             'curp' => ['nullable', 'min:18', ' max:18 ', 'alpha_num:ascii', 'unique:insureds,curp,'.$id],
             'phone' => ['nullable', 'numeric', 'digits:10'],
             'email' => ['nullable', 'email', 'min:5', 'max:50', 'unique:insureds,email,'.$id],
