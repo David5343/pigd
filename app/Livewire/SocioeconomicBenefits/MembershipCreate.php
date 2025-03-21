@@ -70,7 +70,7 @@ class MembershipCreate extends Component
     #[Validate('nullable')]
     public $marital_status;
 
-    #[Validate('required|max:13|alpha_num:ascii')]
+    #[Validate('required|max:10|alpha_num:ascii')]
     public $rfc;
 
     #[Validate('nullable|max:18|alpha_num:ascii')]
