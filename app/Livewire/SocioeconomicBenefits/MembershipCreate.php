@@ -73,7 +73,7 @@ class MembershipCreate extends Component
     #[Validate('required|min:10|max:13|alpha_num:ascii')]
     public $rfc;
 
-    #[Validate('nullable|max:18|alpha_num:ascii')]
+    #[Validate('nullable|min:10|max:18|alpha_num:ascii')]
     public $curp;
 
     #[Validate('nullable|numeric|digits:10')]
