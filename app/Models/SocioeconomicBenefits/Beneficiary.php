@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Beneficiary extends Model
 {
+    protected $fillable = [
+        'inactive_date','inactive_motive','affiliate_status','inactive_reference','modified_by'
+    ];
     public function insured(): BelongsTo
     {
         return $this->belongsTo(Insured::class);
