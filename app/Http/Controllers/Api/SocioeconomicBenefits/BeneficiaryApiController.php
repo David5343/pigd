@@ -328,94 +328,94 @@ class BeneficiaryApiController extends Controller
 
     public function baja(Request $request, $id)
     {
-        $todo = $request->all();
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['history'] = '';
-        $response['debug'] = '';
-
+        $response = [
+            'Status' => 'fail',
+            'Message' => '',
+            'Errors' => '',
+            'Beneficiary' => '',
+            'Debug' => '',
+        ];
+    
         $rules = [
             'File_number' => 'required|max:8',
             'Inactive_date' => 'required|date',
             'Inactive_motive' => 'required',
             'Inactive_reference' => 'nullable|max:250',
         ];
-
+    
         $validator = Validator::make($request->all(), $rules);
-
+    
         if ($validator->fails()) {
-            $response['errors'] = $validator->errors()->toArray();
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
+            $response['Status'] = 'fail';
+            $response['Errors'] = $validator->errors()->toArray();
+            return response()->json($response, 200);
         }
-
+    
         DB::beginTransaction();
         try {
+            $familiar = Beneficiary::find($id);
+    
+            if (!$familiar) {
+                $response['Status'] = 'success';
+                $response['Message'] = 'El beneficiario no fue encontrado.';
+                return response()->json($response, 200);
+            }
+    
             $fecha_baja = $request->input('Inactive_date');
             $motivo_baja = Str::of($request->input('Inactive_motive'))->trim();
-            $familiar = Beneficiary::find($id);
-            $msg = '';
-
-            if ($motivo_baja == 'Acta Administrativa del Titular') {
-                $familiar->inactive_date = $fecha_baja;
-                $familiar->inactive_motive = $motivo_baja;
-                $familiar->affiliate_status = 'Baja';
-                $familiar->inactive_reference = Str::of($request->input('Inactive_reference'))->trim();
-                $familiar->modified_by = Auth::user()->email;
-                $familiar->save();
-                $msg = 'El registro '.$familiar->file_number.' fue dado de baja con éxito.';
-            } elseif ($motivo_baja == 'Defunsión del Titular') {
-                $familiar->inactive_date = $fecha_baja;
-                $familiar->inactive_motive = $motivo_baja;
-                $familiar->affiliate_status = 'Baja por Aplicar';
-                $familiar->inactive_reference = Str::of($request->input('Inactive_reference'))->trim();
-                $familiar->modified_by = Auth::user()->email;
-                $familiar->save();
-                $msg = 'El registro '.$familiar->file_number.' fue dado de baja con éxito.';
-            } elseif ($motivo_baja == 'Pensión del Titular' || $motivo_baja == 'Renuncia del Titular') {
-                $familiar->inactive_date = $fecha_baja;
-                $familiar->inactive_motive = $motivo_baja;
-                $familiar->affiliate_status = 'Baja por Aplicar';
-                $familiar->inactive_reference = Str::of($request->input('Inactive_reference'))->trim();
-                $familiar->modified_by = Auth::user()->email;
-                $familiar->save();
-                $msg = 'El registro '.$familiar->file_number.' fue dado de baja con éxito.';
-            } elseif ($motivo_baja == 'Defunsión') {
-                $familiar->inactive_date = $fecha_baja;
-                $familiar->inactive_motive = $motivo_baja;
-                $familiar->affiliate_status = 'Baja';
-                $familiar->inactive_reference = Str::of($request->input('Inactive_reference'))->trim();
-                $familiar->modified_by = Auth::user()->email;
-                $familiar->save();
-                $msg = 'El registro '.$familiar->file_number.' fue dado de baja con éxito.';
-            } elseif ($motivo_baja == 'Solicitud del Titular') {
-                $familiar->inactive_date = $fecha_baja;
-                $familiar->inactive_motive = $motivo_baja;
-                $familiar->affiliate_status = 'Baja';
-                $familiar->inactive_reference = Str::of($request->input('Inactive_reference'))->trim();
-                $familiar->modified_by = Auth::user()->email;
-                $familiar->save();
-                $msg = 'El registro '.$familiar->file_number.' fue dado de baja con éxito.';
+            $referencia = Str::of($request->input('Inactive_reference'))->trim();
+            $usuario = Auth::user()->email;
+    
+            // Lista de motivos válidos
+            $motivosValidos = [
+                'Acta de divorcio',
+                'Defunsión',
+                'Solicitud del titular',
+                'Terminación de concubinato'
+            ];
+    
+            if (!in_array($motivo_baja, $motivosValidos)) {
+                $response['Status'] = 'success';
+                $response['Message'] = 'Motivo de baja no válido.';
+                return response()->json($response, 200);
             }
-
+    
+            // Validaciones adicionales por tipo de motivo
+            if ($motivo_baja == 'Acta de divorcio' && $familiar->relationship !== 'Esposa') {
+                $response['Status'] = 'success';
+                $response['Message'] = 'El motivo "Acta de divorcio" solo aplica para la relación "Esposa".';
+                return response()->json($response, 200);
+            }
+    
+            if ($motivo_baja == 'Terminación de concubinato' && $familiar->relationship !== 'Concubina') {
+                $response['Status'] = 'success';
+                $response['Message'] = 'El motivo "Terminación de concubinato" solo aplica para la relación "Concubina".';
+                return response()->json($response, 200);
+            }
+    
+            // Aplicar baja
+            $familiar->update([
+                'inactive_date' => $fecha_baja,
+                'inactive_motive' => $motivo_baja,
+                'affiliate_status' => 'Baja',
+                'inactive_reference' => $referencia,
+                'modified_by' => $usuario,
+            ]);
+    
             DB::commit();
-            $response['status'] = 'success';
-            $response['message'] = $msg;
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
+    
+            $response['Status'] = 'success';
+            $response['Message'] = 'El registro '.$familiar->file_number.' fue dado de baja con éxito.';
+            return response()->json($response, 200);
+    
         } catch (Exception $e) {
             DB::rollBack();
-            $response['debug'] = $e->getMessage();
-
-            return response()->json($response, status: 500);
+            $response['Debug'] = $e->getMessage();
+            return response()->json($response, 200);
         }
     }
+    
+    
 
     public function update(Request $request, $id)
     {
