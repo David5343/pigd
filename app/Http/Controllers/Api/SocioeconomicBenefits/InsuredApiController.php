@@ -483,83 +483,115 @@ class InsuredApiController extends Controller
     }
 
     public function baja(Request $request, $id)
-    {
-        $todo = $request->all();
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['history'] = '';
-        $response['debug'] = '';
-
-        $rules = [
-            'File_number' => 'required|max:8',
-            'Inactive_date' => 'required|date',
-            'Inactive_date_dependency' => 'required|date',
-            'Inactive_motive' => 'required',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            $response['errors'] = $validator->errors()->toArray();
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
-        }
-
-        DB::beginTransaction();
-        try {
-            $fecha_baja = $request->input('Inactive_date');
-            $baja_dependencia = $request->input('Inactive_date_dependency');
-            $motivo_baja = Str::of($request->input('Inactive_motive'))->trim();
-            $titular = Insured::find($id);
-            $msg = '';
-
-            if ($motivo_baja == 'Acta Administrativa') {
-                $titular->inactive_date = $fecha_baja;
-                $titular->inactive_date_dependency = $baja_dependencia;
-                $titular->inactive_motive = $motivo_baja;
-                $titular->affiliate_status = 'Baja';
-                // $titular->status = "inactive";
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-                $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
-            } elseif ($motivo_baja == 'Defunsión') {
-                $titular->inactive_date = $fecha_baja;
-                $titular->inactive_date_dependency = $baja_dependencia;
-                $titular->inactive_motive = $motivo_baja;
-                $titular->affiliate_status = 'Baja';
-                //$titular->status = "inactive";
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-                $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
-            } elseif ($motivo_baja == 'Pensión' || $motivo_baja == 'Renuncia') {
-                $titular->inactive_date = $fecha_baja;
-                $titular->inactive_date_dependency = $baja_dependencia;
-                $titular->inactive_motive = $motivo_baja;
-                $titular->affiliate_status = 'Baja por Aplicar';
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-
-                $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
-            }
-
-            DB::commit();
-            $response['status'] = 'success';
-            $response['message'] = $msg;
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
-        } catch (Exception $e) {
-            DB::rollBack();
-            $response['debug'] = $e->getMessage();
-
-            return response()->json($response, status: 500);
-        }
-    }
+     {
+         $todo = $request->all();
+         $codigo = 0;
+         $response['status'] = 'fail';
+         $response['message'] = '';
+         $response['errors'] = '';
+         $response['insured'] = '';
+         $response['beneficiary'] = '';
+         $response['history'] = '';
+         $response['debug'] = '';
+ 
+         $rules = [
+             'File_number' => 'required|max:8',
+             'Inactive_date' => 'required|date',
+             'Inactive_date_dependency' => 'required|date',
+             'Inactive_motive' => 'required',
+             'Inactive_reference' => 'nullable|max:250',
+         ];
+ 
+         $validator = Validator::make($request->all(), $rules);
+ 
+         if ($validator->fails()) {
+             $response['errors'] = $validator->errors()->toArray();
+             $codigo = 200;
+ 
+             return response()->json($response, status: $codigo);
+         }
+ 
+         DB::beginTransaction();
+         try {
+             $fecha_baja = $request->input('Inactive_date');
+             $baja_dependencia = $request->input('Inactive_date_dependency');
+             $motivo_baja = Str::of($request->input('Inactive_motive'))->trim();
+             $referencia = Str::of($request->input('Inactive_reference'))->trim();
+             $titular = Insured::find($id);
+             $msg = '';
+ 
+             if ($motivo_baja == 'Acta Administrativa') {
+                 $titular->inactive_date = $fecha_baja;
+                 $titular->inactive_date_dependency = $baja_dependencia;
+                 $titular->inactive_motive = $motivo_baja;
+                 $titular->inactive_reference = $referencia;
+                 $titular->affiliate_status = 'Baja por aplicar';
+                 $titular->modified_by = Auth::user()->email;
+                 $titular->save();
+                 $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
+                     'inactive_date' => $fecha_baja,
+                     'inactive_motive' => $motivo_baja.' del titular',
+                     'affiliate_status' => 'Baja por aplicar',
+                     'modified_by' => Auth::user()->email,
+                 ]);
+ 
+                 $msg = ($affectedRows === 0) ?
+                     'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
+                     'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
+                 $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
+             } elseif ($motivo_baja == 'Defunsión') {
+                 $titular->inactive_date = $fecha_baja;
+                 $titular->inactive_date_dependency = $baja_dependencia;
+                 $titular->inactive_motive = $motivo_baja;
+                 $titular->inactive_reference = $referencia;
+                 $titular->modified_by = Auth::user()->email;
+                 $titular->save();
+ 
+                 $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
+                     'inactive_date' => $fecha_baja,
+                     'inactive_motive' => $motivo_baja.' del titular',
+                     'affiliate_status' => 'Baja por Aplicar',
+                     'modified_by' => Auth::user()->email,
+                 ]);
+ 
+                 $msg = ($affectedRows === 0) ?
+                     'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
+                     'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
+                 $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
+             } elseif ($motivo_baja == 'Pensión' || $motivo_baja == 'Renuncia voluntaria') {
+                 $titular->inactive_date = $fecha_baja;
+                 $titular->inactive_date_dependency = $baja_dependencia;
+                 $titular->inactive_motive = $motivo_baja;
+                 $titular->inactive_reference = $referencia;
+                 $titular->modified_by = Auth::user()->email;
+                 $titular->save();
+ 
+                 $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
+                     'inactive_date' => $fecha_baja,
+                     'inactive_motive' => $motivo_baja.' del titular',
+                     'affiliate_status' => 'Baja',
+                     'modified_by' => Auth::user()->email,
+                 ]);
+ 
+                 $msg = ($affectedRows === 0) ?
+                     'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
+                     'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
+                 $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
+             }
+ 
+             DB::commit();
+             $response['status'] = 'success';
+             $response['message'] = $msg;
+             $codigo = 200;
+ 
+             return response()->json($response, status: $codigo);
+         } catch (Exception $e) {
+             DB::rollBack();
+             $response['debug'] = $e->getMessage();
+ 
+             return response()->json($response, status: 500);
+         }
+     }
 
     // public function guardarfoto(Request $request, $id)
     // {
