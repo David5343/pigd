@@ -76,6 +76,7 @@
                     <option>RecursosMateriales</option>
                     <option>PrestacionesSocioEconomicas</option>
                     <option>Tecnologias</option>
+                    <option>JefaturaAdministracion</option>
                 </select>
             </div>
         </div>
