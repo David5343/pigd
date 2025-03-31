@@ -219,8 +219,8 @@
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Afiliados') }}
+                            <x-dropdown-link href="{{ route('membership_medical.index') }}">
+                                {{ __('Titulares') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
