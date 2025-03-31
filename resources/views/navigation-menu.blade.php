@@ -222,6 +222,9 @@
                             <x-dropdown-link href="{{ route('membership_medical.index') }}">
                                 {{ __('Titulares') }}
                             </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('beneficiaries_medical.index') }}">
+                                {{ __('Familiares') }}
+                            </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <x-dropdown-link href="{{ route('dashboard') }}">
