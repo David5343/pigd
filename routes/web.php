@@ -3,6 +3,7 @@
 use App\Http\Controllers\Catalogs\AreaController;
 use App\Http\Controllers\Catalogs\DependencyController;
 use App\Http\Controllers\Catalogs\SubdependencyController;
+use App\Http\Controllers\MedicalCoordination\BeneficiaryMedicalController;
 use App\Http\Controllers\MedicalCoordination\InsuredMedicalController;
 use App\Http\Controllers\Permissions\PermissionController;
 use App\Http\Controllers\Roles\RoleController;
@@ -79,9 +80,12 @@ Route::middleware([
         Route::get('/human_resources/catalogs/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
         Route::put('/human_resources/catalogs/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
     });
-    Route::group(['middleware' => ['role:CoordinacionMedica|SuperAdmin']], function () {
+        Route::group(['middleware' => ['role:CoordinacionMedica|JefaturaAdministracion|SuperAdmin']], function () {
         //Rutas para Titulares en Coordinacin Médica
         Route::get('/medical_coordination/membership', [InsuredMedicalController::class, 'index'])->name('membership_medical.index');
         Route::get('/medical_coordination/membership/{id}', [InsuredMedicalController::class, 'show'])->name('membership_medical.show');
+        //Rutas para Titulares en Coordinacin Médica
+        Route::get('/medical_coordination/beneficiaries', [BeneficiaryMedicalController::class, 'index'])->name('beneficiaries_medical.index');
+        Route::get('/medical_coordination/beneficiaries/{id}', [BeneficiaryMedicalController::class, 'show'])->name('beneficiaries_medical.show');
     });
 });
