@@ -52,29 +52,30 @@ Route::middleware([
         });
 
         Route::group(['middleware' => ['role:Tecnologías|SuperAdmin']], function () {
-        //Rutas de Usuarios
-        Route::get('/users', [UserController::class, 'index'])->name('users.index');
-        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-        Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
-        // Rutas de Permisos
-        Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
-        Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
-        Route::get('/permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
-        Route::put('/permissions/{id}', [PermissionController::class, 'update'])->name('permissions.update');
+            //Rutas de Usuarios
+            Route::get('/users', [UserController::class, 'index'])->name('users.index');
+            Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+            Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+            Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+            // Rutas de Permisos
+            Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+            Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+            Route::get('/permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+            Route::put('/permissions/{id}', [PermissionController::class, 'update'])->name('permissions.update');
 
-        // Rutas de Roles
-        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
-        Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
-        Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
-        Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
-        Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
-        });
+            // Rutas de Roles
+            Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+            Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+            Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+            Route::put('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+            Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
+            });
+        
         Route::group(['middleware' => ['role:RecursosHumanos|SuperAdmin']], function () {
-    //Rutas para areas
-    Route::get('/human_resources/catalogs/areas', [AreaController::class, 'index'])->name('areas.index');
-    Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
-    Route::get('/human_resources/catalogs/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
-    Route::put('/human_resources/catalogs/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
-});
+        //Rutas para areas
+        Route::get('/human_resources/catalogs/areas', [AreaController::class, 'index'])->name('areas.index');
+        Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
+        Route::get('/human_resources/catalogs/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
+        Route::put('/human_resources/catalogs/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
+    });
 });

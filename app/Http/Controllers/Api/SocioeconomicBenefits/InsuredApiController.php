@@ -484,15 +484,13 @@ class InsuredApiController extends Controller
 
     public function baja(Request $request, $id)
      {
-         $todo = $request->all();
-         $codigo = 0;
-         $response['status'] = 'fail';
-         $response['message'] = '';
-         $response['errors'] = '';
-         $response['insured'] = '';
-         $response['beneficiary'] = '';
-         $response['history'] = '';
-         $response['debug'] = '';
+        $response = [
+            'Status' => 'fail',
+            'Message' => '',
+            'Errors' => '',
+            'Insured' => '',
+            'Debug' => '',
+        ];
  
          $rules = [
              'File_number' => 'required|max:8',
@@ -505,10 +503,9 @@ class InsuredApiController extends Controller
          $validator = Validator::make($request->all(), $rules);
  
          if ($validator->fails()) {
-             $response['errors'] = $validator->errors()->toArray();
-             $codigo = 200;
- 
-             return response()->json($response, status: $codigo);
+            $response['Status'] = 'fail';
+            $response['Errors'] = $validator->errors()->toArray();
+            return response()->json($response, 200);
          }
  
          DB::beginTransaction();
@@ -538,7 +535,6 @@ class InsuredApiController extends Controller
                  $msg = ($affectedRows === 0) ?
                      'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                      'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
-                 $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
              } elseif ($motivo_baja == 'Defunsión') {
                  $titular->inactive_date = $fecha_baja;
                  $titular->inactive_date_dependency = $baja_dependencia;
@@ -546,7 +542,6 @@ class InsuredApiController extends Controller
                  $titular->inactive_reference = $referencia;
                  $titular->modified_by = Auth::user()->email;
                  $titular->save();
- 
                  $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
                      'inactive_date' => $fecha_baja,
                      'inactive_motive' => $motivo_baja.' del titular',
@@ -557,15 +552,13 @@ class InsuredApiController extends Controller
                  $msg = ($affectedRows === 0) ?
                      'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                      'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
-                 $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
              } elseif ($motivo_baja == 'Pensión' || $motivo_baja == 'Renuncia voluntaria') {
                  $titular->inactive_date = $fecha_baja;
                  $titular->inactive_date_dependency = $baja_dependencia;
                  $titular->inactive_motive = $motivo_baja;
                  $titular->inactive_reference = $referencia;
                  $titular->modified_by = Auth::user()->email;
-                 $titular->save();
- 
+                 $titular->save(); 
                  $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
                      'inactive_date' => $fecha_baja,
                      'inactive_motive' => $motivo_baja.' del titular',
@@ -576,74 +569,19 @@ class InsuredApiController extends Controller
                  $msg = ($affectedRows === 0) ?
                      'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                      'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
-                 $msg ='El registro '.$titular->file_number.' fue dado de baja con éxito.';
              }
  
              DB::commit();
-             $response['status'] = 'success';
-             $response['message'] = $msg;
-             $codigo = 200;
- 
-             return response()->json($response, status: $codigo);
+             $response['Status'] = 'success';
+             $response['Message'] = $msg;
+             return response()->json($response, 200);
          } catch (Exception $e) {
              DB::rollBack();
              $response['debug'] = $e->getMessage();
- 
              return response()->json($response, status: 500);
          }
      }
 
-    // public function guardarfoto(Request $request, $id)
-    // {
-    //     $todo = $request->all();
-    //     $codigo = 0;
-    //     $response['Status'] = 'fail';
-    //     $response['Message'] = '';
-    //     $response['Errors'] = '';
-    //     $response['Insured'] = '';
-    //     $response['debug'] = '';
-    //     $rules = [
-
-    //         'File_number' => 'required', 'max:8',
-    //         'Photo' => 'required',
-    //     ];
-    //     $validator = Validator::make($request->all(), $rules);
-    //     Comprobar si la validación falla
-    //     if ($validator->fails()) {
-    //         Retornar errores de validación
-    //         $response['errors'] = $validator->errors()->toArray();
-    //         $response['debug'] = [$request->all()];
-    //         $codigo = 200;
-
-    //         return response()->json($response, status: $codigo);
-    //     }
-
-    //     Si la validación pasa, continua con el resto de tu lógica aquí
-    //     DB::beginTransaction();
-    //     try {
-    //         $titular = Insured::find($id);
-    //         if ($titular == null) {
-    //             $response['message'] = 'Registro no encontrado';
-    //             $codigo = 200;
-
-    //             return response()->json($response, status: $codigo);
-    //         } else {
-    //             $titular->photo = Str::of($request->input('Photo'))->trim();
-    //             $titular->modified_by = Auth::user()->email;
-    //             $titular->save();
-    //             DB::commit();
-    //             $response['status'] = 'success';
-    //             $response['message'] = $titular->file_number;
-    //             $codigo = 200;
-
-    //             return response()->json($response, status: $codigo);
-    //         }
-    //     } catch (Exception $e) {
-    //         DB::rollBack();
-    //         $response['debug'] = $e->getMessage();
-
-    //     }
-    // }
     public function guardarfoto(Request $request)
     {
         $response['Status'] = 'fail';
