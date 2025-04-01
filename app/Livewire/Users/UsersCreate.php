@@ -25,7 +25,7 @@ class UsersCreate extends Component
     public $role = '';
     public function mount()
     {
-        $this->roles = Role::all();
+        $this->roles = Role::pluck('name')->toArray(); // Obtener solo los nombres de roles
     }
     public function guardar()
     {
@@ -40,7 +40,12 @@ class UsersCreate extends Component
             $pass = Str::of($this->password)->trim();
             $user->password = Hash::make($pass);
             $user->save();
-            $user->assignRole($this->role);
+            // Validar que el rol exista antes de asignarlo
+            if (Role::where('name', $this->role)->exists()) {
+                $user->assignRole($this->role);
+            } else {
+                throw new Exception("El rol seleccionado no existe.");
+            }
             DB::commit();
             $this->limpiar();
             session()->flash('msg', 'El usuario : '.$user->email.' creado con éxito!');

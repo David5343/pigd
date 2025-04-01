@@ -67,16 +67,9 @@
                 <select wire:model="role" id="role" name="role"
                     class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
                     <option selected value="">Elije...</option>
-                    <option>CoordinacionGeneral</option>
-                    <option>AdministracionGeneral</option>
-                    <option>AreaJuridica</option>
-                    <option>CoordinacionMedica</option>
-                    <option>RecursosHumanos</option>
-                    <option>RecursosFinancieros</option>
-                    <option>RecursosMateriales</option>
-                    <option>PrestacionesSocioEconomicas</option>
-                    <option>Tecnologias</option>
-                    <option>JefaturaAdministracion</option>
+                    @foreach ($roles as $roleOption)
+                        <option value="{{ $roleOption }}">{{ $roleOption }}</option>
+                    @endforeach
                 </select>
             </div>
         </div>
