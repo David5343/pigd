@@ -28,7 +28,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::group(['middleware' => ['role:PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
+    Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
     //Rutas para titulares
     Route::get('/socioeconomic_benefits/membership', [MembershipController::class, 'index'])->name('membership.index');
     Route::get('/socioeconomic_benefits/membership/create', [MembershipController::class, 'create'])->name('membership.create');
@@ -73,7 +73,7 @@ Route::middleware([
             Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
             });
         
-        Route::group(['middleware' => ['role:RecursosHumanos|SuperAdmin']], function () {
+        Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperAdmin']], function () {
         //Rutas para areas
         Route::get('/human_resources/catalogs/areas', [AreaController::class, 'index'])->name('areas.index');
         Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
