@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Catalogs\AreaController;
+use App\Http\Controllers\Catalogs\BankController;
 use App\Http\Controllers\Catalogs\DependencyController;
 use App\Http\Controllers\Catalogs\SubdependencyController;
 use App\Http\Controllers\MedicalCoordination\BeneficiaryMedicalController;
@@ -79,6 +80,11 @@ Route::middleware([
         Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
         Route::get('/human_resources/catalogs/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
         Route::put('/human_resources/catalogs/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
+        //Rutas para bancos
+        Route::get('/human_resources/catalogs/banks', [BankController::class, 'index'])->name('banks.index');
+        Route::get('/human_resources/catalogs/banks/create', [BankController::class, 'create'])->name('banks.create');
+        Route::get('/human_resources/catalogs/banks/{id}/edit', [BankController::class, 'edit'])->name('banks.edit');
+        Route::put('/human_resources/catalogs/banks/{id}', [BankController::class, 'update'])->name('banks.update');
     });
         Route::group(['middleware' => ['role:Enlace|JefaturaCoordinacion|CoordinacionMedica|JefaturaAdministracion|SuperAdmin']], function () {
         //Rutas para Titulares en Coordinacin Médica
