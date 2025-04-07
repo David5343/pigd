@@ -540,6 +540,7 @@ class InsuredApiController extends Controller
                  $titular->inactive_date_dependency = $baja_dependencia;
                  $titular->inactive_motive = $motivo_baja;
                  $titular->inactive_reference = $referencia;
+                 $titular->affiliate_status = 'Baja';
                  $titular->modified_by = Auth::user()->email;
                  $titular->save();
                  $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
@@ -557,6 +558,7 @@ class InsuredApiController extends Controller
                  $titular->inactive_date_dependency = $baja_dependencia;
                  $titular->inactive_motive = $motivo_baja;
                  $titular->inactive_reference = $referencia;
+                 $titular->affiliate_status = 'Baja';
                  $titular->modified_by = Auth::user()->email;
                  $titular->save(); 
                  $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
