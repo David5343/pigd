@@ -89,7 +89,7 @@ class BeneficiaryApiController extends Controller
             'Disabled_person' => 'nullable | string',
             'Relationship' => 'nullable | string',
             'Address' => 'nullable | string|max:200',
-            'Observations' => 'nullable|min:5|max:180',
+            'Observations' => 'nullable|min:5|max:250',
             'Account_number' => 'nullable|digits:10|unique:insureds,account_number',
             'Clabe' => 'nullable', 'digits:18', 'unique:insureds,clabe',
             'Bank_id' => 'nullable',
