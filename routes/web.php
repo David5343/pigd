@@ -1,15 +1,8 @@
 <?php
 
-use App\Http\Controllers\Catalogs\AreaController;
-use App\Http\Controllers\Catalogs\BankController;
-use App\Http\Controllers\Catalogs\DependencyController;
-use App\Http\Controllers\Catalogs\SubdependencyController;
-use App\Http\Controllers\MedicalCoordination\BeneficiaryMedicalController;
-use App\Http\Controllers\MedicalCoordination\InsuredMedicalController;
+
 use App\Http\Controllers\Permissions\PermissionController;
 use App\Http\Controllers\Roles\RoleController;
-use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
-use App\Http\Controllers\SocioeconomicBenefits\MembershipController;
 use App\Http\Controllers\Users\UserController;
 use App\Http\Middleware\CheckIfActive;
 use Illuminate\Support\Facades\Route;
@@ -28,31 +21,6 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-    Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
-    //Rutas para titulares
-    Route::get('/socioeconomic_benefits/membership', [MembershipController::class, 'index'])->name('membership.index');
-    Route::get('/socioeconomic_benefits/membership/create', [MembershipController::class, 'create'])->name('membership.create');
-    Route::get('/socioeconomic_benefits/membership/{id}', [MembershipController::class, 'show'])->name('membership.show');
-    Route::get('/socioeconomic_benefits/membership/{id}/edit', [MembershipController::class, 'edit'])->name('membership.edit');
-    Route::put('/socioeconomic_benefits/membership/{id}', [MembershipController::class, 'update'])->name('membership.update');
-    //Rutas para familiares
-    Route::get('/socioeconomic_benefits/beneficiaries', [BeneficiaryController::class, 'index'])->name('beneficiaries.index');
-    Route::get('/socioeconomic_benefits/beneficiaries/create', [BeneficiaryController::class, 'create'])->name('beneficiaries.create');
-    Route::get('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiaryController::class, 'show'])->name('beneficiaries.show');
-    Route::get('/socioeconomic_benefits/beneficiaries/{id}/edit', [BeneficiaryController::class, 'edit'])->name('beneficiaries.edit');
-    Route::put('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
-    //Rutas para Dependencias
-    Route::get('/socioeconomic_benefits/dependencies', [DependencyController::class, 'index'])->name('dependencies.index');
-    Route::get('/socioeconomic_benefits/dependencies/create', [DependencyController::class, 'create'])->name('dependencies.create');
-    Route::get('/socioeconomic_benefits/dependencies/{id}/edit', [DependencyController::class, 'edit'])->name('dependencies.edit');
-    Route::put('/socioeconomic_benefits/dependencies/{id}', [DependencyController::class, 'update'])->name('dependencies.update');
-        //Rutas para Subdependencias
-    Route::get('/socioeconomic_benefits/subdependencies', [SubdependencyController::class, 'index'])->name('subdependencies.index');
-    Route::get('/socioeconomic_benefits/subdependencies/create', [SubdependencyController::class, 'create'])->name('subdependencies.create');
-    Route::get('/socioeconomic_benefits/subdependencies/{id}/edit', [SubdependencyController::class, 'edit'])->name('subdependencies.edit');
-    Route::put('/socioeconomic_benefits/subdependencies/{id}', [SubdependencyController::class, 'update'])->name('subdependencies.update');
-        });
 
         Route::group(['middleware' => ['role:Tecnologías|SuperAdmin']], function () {
             //Rutas de Usuarios
@@ -74,24 +42,8 @@ Route::middleware([
             Route::get('/roles/manage', [RoleController::class, 'manage'])->name('roles.manage');
             });
         
-        Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperAdmin']], function () {
-        //Rutas para areas
-        Route::get('/human_resources/catalogs/areas', [AreaController::class, 'index'])->name('areas.index');
-        Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
-        Route::get('/human_resources/catalogs/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit');
-        Route::put('/human_resources/catalogs/areas/{id}', [AreaController::class, 'update'])->name('areas.update');
-        //Rutas para bancos
-        Route::get('/human_resources/catalogs/banks', [BankController::class, 'index'])->name('banks.index');
-        Route::get('/human_resources/catalogs/banks/create', [BankController::class, 'create'])->name('banks.create');
-        Route::get('/human_resources/catalogs/banks/{id}/edit', [BankController::class, 'edit'])->name('banks.edit');
-        Route::put('/human_resources/catalogs/banks/{id}', [BankController::class, 'update'])->name('banks.update');
-    });
-        Route::group(['middleware' => ['role:Enlace|JefaturaCoordinacion|CoordinacionMedica|JefaturaAdministracion|SuperAdmin']], function () {
-        //Rutas para Titulares en Coordinacin Médica
-        Route::get('/medical_coordination/membership', [InsuredMedicalController::class, 'index'])->name('membership_medical.index');
-        Route::get('/medical_coordination/membership/{id}', [InsuredMedicalController::class, 'show'])->name('membership_medical.show');
-        //Rutas para Titulares en Coordinacin Médica
-        Route::get('/medical_coordination/beneficiaries', [BeneficiaryMedicalController::class, 'index'])->name('beneficiaries_medical.index');
-        Route::get('/medical_coordination/beneficiaries/{id}', [BeneficiaryMedicalController::class, 'show'])->name('beneficiaries_medical.show');
-    });
+            require __DIR__.'/human.php';
+            require __DIR__.'/medical.php';
+            require __DIR__.'/socioeconomic.php';
+
 });
