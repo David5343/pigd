@@ -288,7 +288,7 @@
                                 {{ __('Categorias') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Plazas') }}
+                                {{ __('Puestos') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Estados') }}
