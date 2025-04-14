@@ -287,7 +287,7 @@
                             <x-dropdown-link href="{{ route('categories.index') }}">
                                 {{ __('Categorias') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('positions.index') }}">
                                 {{ __('Puestos') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
