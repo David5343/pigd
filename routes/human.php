@@ -3,6 +3,7 @@
 use App\Http\Controllers\Catalogs\AreaController;
 use App\Http\Controllers\Catalogs\BankController;
 use App\Http\Controllers\Catalogs\CategoryController;
+use App\Http\Controllers\Catalogs\PositionController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperAdmin']], function () {
@@ -21,4 +22,9 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     Route::get('/human_resources/catalogs/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::get('/human_resources/catalogs/categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     Route::put('/human_resources/catalogs/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    //Rutas para puestos
+    Route::get('/human_resources/catalogs/positions', [PositionController::class, 'index'])->name('positions.index');
+    Route::get('/human_resources/catalogs/positions/create', [PositionController::class, 'create'])->name('positions.create');
+    Route::get('/human_resources/catalogs/positions/{id}/edit', [PositionController::class, 'edit'])->name('positions.edit');
+    Route::put('/human_resources/catalogs/positions/{id}', [PositionController::class, 'update'])->name('positions.update');
 });
