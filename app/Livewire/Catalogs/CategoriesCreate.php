@@ -55,7 +55,6 @@ class CategoriesCreate extends Component
             $category->isr = Str::of($this->isr)->trim();
             $category->authorized_position = Str::of($this->authorized_position)->trim();
             $category->covered_position = 0;
-            $category->status = 'active';
             $category->modified_by = Auth::user()->email;
             $category->save();
 

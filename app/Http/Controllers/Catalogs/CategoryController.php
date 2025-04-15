@@ -63,7 +63,6 @@ class CategoryController extends Controller
             $category->isr = Str::of($isr)->trim();
             $category->authorized_position = Str::of($request->input('authorized_position'))->trim();
             $category->covered_position = 0;
-            $category->status = 'active';
             $category->modified_by = Auth::user()->email;
             $category->save();
             DB::commit();
