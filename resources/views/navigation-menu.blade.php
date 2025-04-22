@@ -296,10 +296,11 @@
                             <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Municipios') }}
                             </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
+                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
+                                {{ __('Mas...') }}
+                            </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('employees.index') }}">
                                 {{ __('Empleados') }}
                             </x-dropdown-link>
                             <!-- Separador -->
