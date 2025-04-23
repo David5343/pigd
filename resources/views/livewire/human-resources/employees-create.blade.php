@@ -27,7 +27,7 @@
         <div class="flex flex-col w-full md:w-1/3">
             <label for="mov_type" class="text-sm font-medium text-gray-700">* Movimiento Nominal</label>
             <select wire:model="mov_type" id="mov_type" name="mov_type"
-                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
+                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
                 <option selected value="">Elije...</option>
                 <option>Cambio de Adscripción</option>
                 <option>Cambio de Puesto</option>
@@ -49,7 +49,7 @@
         <div class="flex flex-col w-full md:w-1/5">
             <label for="contract_type" class="text-sm font-medium text-gray-700">* Tipo de relacion laboral</label>
             <select wire:model="contract_type" id="contract_type" name="contract_type"
-                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
+                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
                 <option selected value="">Elije...</option>
                 <option>Estructura</option>
                 <option>Eventual</option>
