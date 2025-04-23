@@ -44,6 +44,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'nas' => [
+            'driver' => 'local',
+            'root' => '/mnt/nas/development',
+            'url' => env('APP_URL').'/storage/nas',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',
