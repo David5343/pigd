@@ -1,17 +1,6 @@
-<div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-    @if (session()->has('msg'))
-        <div x-data="{ show: true }" x-show="show" class="w-full bg-green-100 text-green-700 p-4 rounded-lg mb-4"
-            role="alert">
-            {{ session('msg') }}
-        </div>
-    @endif
-    @if (session()->has('msg_warning'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
-            class="w-full bg-red-100 text-red-700 p-4 rounded-lg mb-4" role="alert">
-            {{ session('msg') }}
-        </div>
-    @endif
-    <form wire:submit ="guardar" class="flex flex-wrap gap-2">
+<div>
+    <livewire:messages />
+    <form wire:submit.prevent="guardar" class="flex flex-wrap gap-2">
         @if ($errors->any())
             <div class="w-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-4 rounded-lg" role="alert">
                 <ul class="list-disc pl-5 space-y-2">
@@ -142,7 +131,7 @@
             @enderror
         </div>
         <fieldset class="flex flex-col w-full md:w-32">
-            <legend class="text-sm font-medium text-gray-700">Sexo</legend>
+            <legend class="text-sm font-medium text-gray-700">* Sexo</legend>
             <div class="flex items-center gap-2">
                 <input wire:model="sex" type="radio" name="sex" id="male" value="Hombre"
                     class="focus:ring focus:ring-blue-200">
@@ -327,8 +316,8 @@
             @enderror
         </div>
         <div class="flex flex-col w-full md:w-1/6">
-            <label for="interior_number" class="text-sm font-medium text-gray-700">* No. de Interior</label>
-            <input wire:model="interior_number" type="text" id="interior_number" name="interior_number" required
+            <label for="interior_number" class="text-sm font-medium text-gray-700">No. de Interior</label>
+            <input wire:model="interior_number" type="text" id="interior_number" name="interior_number"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
             @error('interior_number')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
@@ -347,8 +336,8 @@
             @enderror
         </div>
         <div class="flex flex-col w-full md:w-1/3">
-            <label for="locality" class="text-sm font-medium text-gray-700">* Localidad</label>
-            <input wire:model="locality" type="text" id="locality" name="locality" required
+            <label for="locality" class="text-sm font-medium text-gray-700">Localidad</label>
+            <input wire:model="locality" type="text" id="locality" name="locality"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
             @error('locality')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
@@ -360,8 +349,8 @@
             <h2 class="text-xl font-bold text-gray-700 mb-4">Datos Bancarios</h2>
         </div>
         <div class="flex flex-col w-full md:w-1/3">
-            <label for="account_number" class="text-sm font-medium text-gray-700">* No. de Cuenta</label>
-            <input wire:model="account_number" type="text" id="account_number" name="account_number" required
+            <label for="account_number" class="text-sm font-medium text-gray-700">No. de Cuenta</label>
+            <input wire:model="account_number" type="text" id="account_number" name="account_number"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
             @error('account_number')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
@@ -370,8 +359,8 @@
             @enderror
         </div>
         <div class="flex flex-col w-full md:w-1/3">
-            <label for="clabe" class="text-sm font-medium text-gray-700">* CLABE</label>
-            <input wire:model="clabe" type="text" id="clabe" name="clabe" required
+            <label for="clabe" class="text-sm font-medium text-gray-700">CLABE</label>
+            <input wire:model="clabe" type="text" id="clabe" name="clabe"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
             @error('clabe')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
@@ -380,9 +369,9 @@
             @enderror
         </div>
         <div class="flex flex-col w-full md:w-1/4">
-            <label for="bank_id" class="text-sm font-medium text-gray-700">* Banco</label>
+            <label for="bank_id" class="text-sm font-medium text-gray-700">Banco</label>
             <select wire:model="bank_id" id="bank_id" name="bank_id"
-                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
+                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
                 <option selected value="">Elije...</option>
                 @foreach ($banks as $item)
                     <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -394,13 +383,15 @@
                 </div>
             @enderror
         </div>
-        <div class="flex flex-col w-full">
+        {{-- <div class="flex flex-col w-full">
             <h2 class="text-xl font-bold text-gray-700 mb-4">Archivos</h2>
         </div>
-        <div class="flex flex-col w-full md:w-1/3">
-            <label for="photo" class="text-sm font-medium text-gray-700">* Fotografía</label>
-            <input wire:model="photo" type="file" id="photo" name="photo" required
-                accept="image/jpeg,image/jpg"
+        <div class="flex flex-col w-full md:w-1/2">
+            <label for="photo" class="text-sm font-medium text-gray-700">Fotografía</label>
+            @if ($photo)
+                <img src="{{ $photo->temporaryUrl() }}">
+            @endif
+            <input type="file" wire:model ="photo" id="photo" name="photo"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
             @error('photo')
                 <div class="w-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-4 rounded-lg mt-2"
@@ -409,9 +400,9 @@
                 </div>
             @enderror
         </div>
-        <div class="flex flex-col w-full md:w-1/3">
-            <label for="signature" class="text-sm font-medium text-gray-700">* Firma</label>
-            <input wire:model="signature" type="file" id="signature" name="signature" required
+        <div class="flex flex-col w-full md:w-1/2">
+            <label for="signature" class="text-sm font-medium text-gray-700">Firma</label>
+            <input wire:model="signature" type="file" id="signature" name="signature"
                 accept="image/jpeg,image/jpg"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
             @error('signature')
@@ -420,8 +411,8 @@
                     {{ $message }}
                 </div>
             @enderror
-        </div>
-        <div class="w-full flex justify-end gap-3 mt-4">
+        </div> --}}
+        <div class="w-full flex justify-end gap-3 m-4">
             <a href="{{ route('employees.index') }}"
                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
                 Cancelar

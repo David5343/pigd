@@ -23,8 +23,9 @@ class EmployeesCreate extends Component
     public $areas = [];
     public $positions = [];
     public $banks= [];
-    public $states;
+    public $states = [];
     public $counties = [];
+    public $msg = '';
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
     #[Validate('required')]
     public $mov_type = '';
@@ -74,21 +75,21 @@ class EmployeesCreate extends Component
     public $street;
     #[Validate('required|max:7')]
     public $outdoor_number;
-    #[Validate('required|max:7')]
+    #[Validate('nullable|max:7')]
     public $interior_number;
     #[Validate('required|numeric|digits:5')]
     public $cp;
-    #[Validate('required|min:5|max:85')]
+    #[Validate('nullable|min:5|max:85')]
     public $locality;
-    #[Validate('required|numeric|digits:10')]
+    #[Validate('nullable|numeric|digits:10')]
     public $account_number;
-    #[Validate('required|numeric|digits:18')]
+    #[Validate('nullable|numeric|digits:18')]
     public $clabe;
-    #[Validate('required')]
+    #[Validate('nullable')]
     public $bank_id;
-    #[Validate('required|image|mimes:jpeg,jpg|max:1024')]
+   // #[Validate('image|max:512')]
     public $photo;
-    #[Validate('required|image|mimes:jpeg,jpg|max:1024')]
+    //#[Validate('image|max:1024')]
     public $signature;
 
     public function mount()
@@ -111,20 +112,54 @@ class EmployeesCreate extends Component
 
         try {
             DB::beginTransaction();
+            // Guarda las imágenes en "storage/app/public/public"
+            // $photoPath = $this->photo->store('uploads/employees/photo', 'public');
+            // $signaturePath = $this->signature->store('uploads/employees/signature', 'public');
+            // $photoPath =$this->photo->storeAs('uploads/employees/photos',$this->last_name_1.'_'.$this->name,'public');
+            // $signaturePath =$this->signature->storeAs('uploads/employees/signatures',$this->last_name_1.'_'.$this->name,'public');
             $employee = new Employee();
+            $employee->mov_type = Str::of($this->mov_type)->trim();
+            $employee->contract_type = Str::of($this->contract_type)->trim();
+            $employee->start_date = Str::of($this->start_date)->trim();
+            $employee->area_id = Str::of($this->area_id)->trim();
+            $employee->position_id = Str::of($this->position_id)->trim();
+            $employee->last_name_1 = Str::of($this->last_name_1)->trim();
+            $employee->last_name_2 = Str::of($this->last_name_2)->trim();
+            $employee->name = Str::of($this->name)->trim();
+            $employee->birthday = Str::of($this->birthday)->trim();
+            $employee->sex = Str::of($this->sex)->trim();
+            $employee->marital_status = Str::of($this->marital_status)->trim();
+            $employee->rfc = Str::of($this->rfc)->trim();
+            $employee->curp = Str::of($this->curp)->trim();
+            $employee->phone = Str::of($this->phone)->trim();
+            $employee->email = Str::of($this->email)->trim();
+            $employee->emergency_name = Str::of($this->emergency_name)->trim();
+            $employee->emergency_number = Str::of($this->emergency_number)->trim();
+            $employee->emergency_address = Str::of($this->emergency_address)->trim();
+            $employee->state_id = Str::of($this->state_id)->trim();
+            $employee->county_id = Str::of($this->county_id)->trim();
+            $employee->neighborhood = Str::of($this->neighborhood)->trim();
+            $employee->roadway_type = Str::of($this->roadway_type)->trim();
+            $employee->street = Str::of($this->street)->trim();
+            $employee->outdoor_number = Str::of($this->outdoor_number)->trim();
+            $employee->interior_number = Str::of($this->interior_number)->trim();
+            $employee->cp = Str::of($this->cp)->trim();
+            $employee->locality = Str::of($this->locality)->trim();
+            $employee->account_number = Str::of($this->account_number)->trim();
+            $employee->clabe = Str::of($this->clabe)->trim();
+            $employee->bank_id = Str::of($this->bank_id)->trim();
+            // $employee->photo = $photoPath;
+            // $employee->signature = $signaturePath;
             $employee->modified_by = Auth::user()->email;
             $employee->save();
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'Empleado : '.$employee->name.' creado con éxito!');
-            $this->js("alert('Empleado :".$employee->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            
+            $this->dispatch('showMessage', 'Empleado : '.$employee->last_name_1.' '.$employee->last_name_2.' '.$employee->name.' fué creado con éxito!','success');   
             // Enviar el mensaje a la vista sin necesidad de recargar
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
+             $this->dispatch('showMessage', 'Error : '.$e->getMessage().' Contacte a su Administrador.','error');
         }
 
     }
