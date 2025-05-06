@@ -6,6 +6,7 @@ use App\Models\Catalogs\Area;
 use App\Models\Catalogs\Position;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Employee extends Model
 {
@@ -17,4 +18,8 @@ class Employee extends Model
     {
         return $this->belongsTo(Area::class);
     }
+    public function procedures():HasMany
+{
+    return $this->hasMany(EmployeeProcedure::class);
+}
 }
