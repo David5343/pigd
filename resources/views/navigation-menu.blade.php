@@ -258,44 +258,88 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Documentos') }}
+                            <div class="relative group">
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
+                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
+                                    {{ __('Documentos') }}
+                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+
+                                <!-- Submenú -->
+                                <div
+                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
+                                    <a href="{{ route('categories.index') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        {{ __('Oficios') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        {{ __('Memorandums') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        {{ __('Circulares') }}
+                                    </a>
+                                </div>
                             </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Circulares') }}
-                            </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Catalogos') }}
+                            <div class="relative group">
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
+                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
+                                    {{ __('Catalogos') }}
+                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+
+                                <!-- Submenú -->
+                                <div
+                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
+                                    <a href="{{ route('areas.index') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Áreas') }}
+                                    </a>
+                                    <a href="{{ route('banks.index') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Bancos') }}
+                                    </a>
+                                    <a href="{{ route('categories.index') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Categorias') }}
+                                    </a>
+                                    <a href="{{ route('positions.index') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Puestos') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Estados') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Municipios') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Tipos de movimiento') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Tipos de contrato') }}
+                                    </a>
+                                </div>
                             </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('areas.index') }}">
-                                {{ __('Areas') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('banks.index') }}">
-                                {{ __('Bancos') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('categories.index') }}">
-                                {{ __('Categorias') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('positions.index') }}">
-                                {{ __('Puestos') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Estados') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Municipios') }}
-                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
                             <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Mas...') }}
                             </div>
