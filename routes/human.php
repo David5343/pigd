@@ -4,6 +4,7 @@ use App\Http\Controllers\Catalogs\AreaController;
 use App\Http\Controllers\Catalogs\BankController;
 use App\Http\Controllers\Catalogs\CategoryController;
 use App\Http\Controllers\Catalogs\PositionController;
+use App\Http\Controllers\Catalogs\ProcedureTypeController;
 use App\Http\Controllers\HumanResources\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,11 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     Route::get('/human_resources/catalogs/positions/create', [PositionController::class, 'create'])->name('positions.create');
     Route::get('/human_resources/catalogs/positions/{id}/edit', [PositionController::class, 'edit'])->name('positions.edit');
     Route::put('/human_resources/catalogs/positions/{id}', [PositionController::class, 'update'])->name('positions.update');
+    //Rutas para Tipo de movimiento nominal
+    Route::get('/human_resources/catalogs/procedure-type', [ProcedureTypeController::class, 'index'])->name('procedure-type.index');
+    Route::get('/human_resources/catalogs/procedure-type/create', [ProcedureTypeController::class, 'create'])->name('procedure-type.create');
+    Route::get('/human_resources/catalogs/procedure-type/{id}/edit', [ProcedureTypeController::class, 'edit'])->name('procedure-type.edit');
+    Route::put('/human_resources/catalogs/procedure-type/{id}', [ProcedureTypeController::class, 'update'])->name('procedure-type.update');
     //Rutas para empleados
     Route::get('/human_resources/employees', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/human_resources/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
