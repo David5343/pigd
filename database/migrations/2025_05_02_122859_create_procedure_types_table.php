@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('procedure_types', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre'); // Ej: 'Alta', 'Baja'
-            $table->text('descripcion')->nullable();
+            $table->string('name'); // Ej: 'Alta', 'Baja'
+            $table->text('description')->nullable();
             $table->string('modified_by', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
