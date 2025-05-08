@@ -15,7 +15,7 @@ class ProcedureTypeCreate extends Component
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
     #[Validate('required|min:2|max:30')]
     public $name;
-    #[Validate('required|min:2|max:200')]
+    #[Validate('nullable|min:2|max:200')]
     public $description;
     public $msg = '';
     public function guardar()
