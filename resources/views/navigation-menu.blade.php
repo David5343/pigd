@@ -332,7 +332,7 @@
                                         class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
                                         {{ __('Tipos de movimiento') }}
                                     </a>
-                                    <a href="{{ route('dashboard') }}"
+                                    <a href="{{ route('contract-type.index') }}"
                                         class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
                                         {{ __('Tipos de contrato') }}
                                     </a>
