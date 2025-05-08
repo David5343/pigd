@@ -3,6 +3,7 @@
 use App\Http\Controllers\Catalogs\AreaController;
 use App\Http\Controllers\Catalogs\BankController;
 use App\Http\Controllers\Catalogs\CategoryController;
+use App\Http\Controllers\Catalogs\ContractTypeController;
 use App\Http\Controllers\Catalogs\PositionController;
 use App\Http\Controllers\Catalogs\ProcedureTypeController;
 use App\Http\Controllers\HumanResources\EmployeeController;
@@ -34,6 +35,11 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     Route::get('/human_resources/catalogs/procedure-type/create', [ProcedureTypeController::class, 'create'])->name('procedure-type.create');
     Route::get('/human_resources/catalogs/procedure-type/{id}/edit', [ProcedureTypeController::class, 'edit'])->name('procedure-type.edit');
     Route::put('/human_resources/catalogs/procedure-type/{id}', [ProcedureTypeController::class, 'update'])->name('procedure-type.update');
+    //Rutas para Tipo de contrato laboral
+    Route::get('/human_resources/catalogs/contract-type', [ContractTypeController::class, 'index'])->name('contract-type.index');
+    Route::get('/human_resources/catalogs/contract-type/create', [ContractTypeController::class, 'create'])->name('contract-type.create');
+    Route::get('/human_resources/catalogs/contract-type/{id}/edit', [ContractTypeController::class, 'edit'])->name('contract-type.edit');
+    Route::put('/human_resources/catalogs/contract-type/{id}', [ContractTypeController::class, 'update'])->name('contract-type.update');
     //Rutas para empleados
     Route::get('/human_resources/employees', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/human_resources/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
