@@ -31,46 +31,106 @@
                             </button>
                         </x-slot>
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Documentos') }}
+                            <div class="relative group">
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
+                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
+                                    {{ __('Documentos') }}
+                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+
+                                <!-- Submenú -->
+                                <div
+                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Oficios') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Memorandums') }}
+                                    </a>
+                                </div>
                             </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Circulares') }}
-                            </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Archivo') }}
+                            <div class="relative group">
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
+                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
+                                    {{ __('Transparencia') }}
+                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+
+                                <!-- Submenú -->
+                                <div
+                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Ubicación') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Oficios') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Memorandums') }}
+                                    </a>
+                                </div>
                             </div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Ubicación') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Transparencia') }}
+                            <div class="relative group">
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
+                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
+                                    {{ __('Tecnologías') }}
+                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+
+                                <!-- Submenú -->
+                                <div
+                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
+                                    <a href="{{ route('permissions.index') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Permisos') }}
+                                    </a>
+                                    <a href="{{ route('roles.index') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Roles') }}
+                                    </a>
+                                    <a href="{{ route('roles.manage') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Roles vs Permisos') }}
+                                    </a>
+                                    <a href="{{ route('users.index') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Usuarios') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Tickets') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Diagnosticos') }}
+                                    </a>
+                                </div>
                             </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -87,51 +147,39 @@
                                 </svg>
                             </button>
                         </x-slot>
-
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Documentos') }}
+                            <div class="relative group">
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
+                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
+                                    {{ __('Documentos') }}
+                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+
+                                <!-- Submenú -->
+                                <div
+                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Oficios') }}
+                                    </a>
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Memorandums') }}
+                                    </a>
+                                </div>
                             </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Circulares') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Tecnologías') }}
-                            </div>
-                            <x-dropdown-link href="{{ route('permissions.index') }}">
-                                {{ __('Permisos') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('roles.index') }}">
-                                {{ __('Roles') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('roles.manage') }}">
-                                {{ __('Roles vs Permisos') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('users.index') }}">
-                                {{ __('Usuarios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Tickets') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Diagnostico') }}
-                            </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Opciones del Dropdown -->
                             <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Fondo Revolvente') }}
                             </x-dropdown-link>
+                            <!-- Opciones del Dropdown -->
                         </x-slot>
                     </x-dropdown>
                 </div>
@@ -340,9 +388,14 @@
                             </div>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
+                            <x-dropdown-link href="{{ route('employee-procedure.index') }}">
+                                {{ __('Movimiento Nominal') }}
+                            </x-dropdown-link>
+                            <!-- Separador -->
+                            <div class="border-t border-gray-200"></div>
+                            {{-- <div class="px-4 py-2 text-sm text-white bg-[#009887]">
                                 {{ __('Mas...') }}
-                            </div>
+                            </div> --}}
                             <!-- Opciones del Dropdown -->
                             <x-dropdown-link href="{{ route('employees.index') }}">
                                 {{ __('Empleados') }}
