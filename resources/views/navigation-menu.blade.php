@@ -388,7 +388,7 @@
                             </div>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('employee-procedure.index') }}">
+                            <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Movimiento Nominal') }}
                             </x-dropdown-link>
                             <!-- Separador -->
