@@ -4,14 +4,18 @@ namespace App\Livewire\HumanResources;
 
 use App\Models\Catalogs\Area;
 use App\Models\Catalogs\Bank;
+use App\Models\Catalogs\Category;
+use App\Models\Catalogs\ContractType;
 use App\Models\Catalogs\County;
 use App\Models\Catalogs\Position;
 use App\Models\Catalogs\State;
 use App\Models\HumanResources\Employee;
+use App\Models\HumanResources\EmployeeProcedure;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -25,10 +29,10 @@ class EmployeesCreate extends Component
     public $banks= [];
     public $states = [];
     public $counties = [];
+    public $contract_types = [];
     public $msg = '';
+    public $procedureType= null;
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
-    #[Validate('required')]
-    public $mov_type = '';
     #[Validate('required')]
     public $contract_type = '';
     #[Validate('required|unique:employees,position_id')]
@@ -36,7 +40,7 @@ class EmployeesCreate extends Component
     #[Validate('required')]
     public $area_id = '';
     #[Validate('required|date')]
-    public $start_date = '';
+    public $effective_date = '';
     #[Validate('required|min:2|max:20')]
     public $last_name_1;
     #[Validate('nullable|min:2|max:20')]
@@ -92,12 +96,17 @@ class EmployeesCreate extends Component
     //#[Validate('image|max:1024')]
     public $signature;
 
-    public function mount()
+    public function mount(int $procedureType)
     {
         $this->banks = Bank::all();
         $this->states = State::all();
         $this->areas = Area::all();
-        $this->positions = Position::all();
+        //permite filtrar solo los puestos disponibles
+        $this->positions = Position::whereHas('category', function ($query) {
+        $query->whereColumn('covered_position', '<', 'authorized_position');
+            })->get();
+        $this->contract_types = ContractType::all();
+        $this->procedureType = $procedureType;
 
     }
     public function updatedStateId($value)
@@ -105,6 +114,7 @@ class EmployeesCreate extends Component
         $this->counties = County::where('state_id',(int) $value)->get();
         $this->county_id = ''; // Limpiar municipio seleccionado
     }
+    #[On('procedureType')]
     public function guardar()
     {
 
@@ -118,11 +128,11 @@ class EmployeesCreate extends Component
             // $photoPath =$this->photo->storeAs('uploads/employees/photos',$this->last_name_1.'_'.$this->name,'public');
             // $signaturePath =$this->signature->storeAs('uploads/employees/signatures',$this->last_name_1.'_'.$this->name,'public');
             $employee = new Employee();
-            $employee->mov_type = Str::of($this->mov_type)->trim();
-            $employee->contract_type = Str::of($this->contract_type)->trim();
-            $employee->start_date = Str::of($this->start_date)->trim();
+            $employee->procedure_type_id = Str::of($this->procedureType)->trim();
+            $employee->contract_type_id = Str::of($this->contract_type)->trim();
             $employee->area_id = Str::of($this->area_id)->trim();
             $employee->position_id = Str::of($this->position_id)->trim();
+            $employee->start_date = Str::of($this->effective_date)->trim(); 
             $employee->last_name_1 = Str::of($this->last_name_1)->trim();
             $employee->last_name_2 = Str::of($this->last_name_2)->trim();
             $employee->name = Str::of($this->name)->trim();
@@ -152,6 +162,19 @@ class EmployeesCreate extends Component
             // $employee->signature = $signaturePath;
             $employee->modified_by = Auth::user()->email;
             $employee->save();
+            // Trabajando en tabla de movimientos nominales
+            $employeProcedures = new EmployeeProcedure();
+            $employeProcedures->employee_id = $employee->id;
+            $employeProcedures->procedure_type_id = $this->procedureType;
+            $employeProcedures->contract_type_id = $this->contract_type;
+            $employeProcedures->area_id = $this->area_id;
+            $employeProcedures->position_id = $this->position_id;
+            $employeProcedures->effective_date = $this->effective_date;
+            $employeProcedures->modified_by = Auth::user()->email;
+            $employeProcedures->save();
+            //Trabajando en la tabla de categorias
+            $position = Position::find($employee->position_id);
+            $category = Category::find($position->category_id)->increment('covered_position');
             DB::commit();
             $this->limpiar();
             $this->dispatch('refreshComponent');
