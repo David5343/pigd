@@ -23,7 +23,9 @@ class Employees extends Component
     public function render()
     {
         $employees = Employee::where(function($query) {
-            $query->Where('name', 'like', '%'.$this->search.'%');
+            $query->Where('last_name_1', 'like', '%'.$this->search.'%')
+            ->orWhere('last_name_2', 'like', '%' . $this->search . '%')
+            ->orWhere('name', 'like', '%' . $this->search . '%');
         })
         ->orderBy('name', 'asc')
         ->paginate($this->numberRows);
