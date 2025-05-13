@@ -13,36 +13,15 @@
         <div class="flex flex-col w-full">
             <h2 class="text-xl font-bold text-gray-700 mb-4">Información Laboral</h2>
         </div>
-        <div class="flex flex-col w-full md:w-1/3">
-            <label for="mov_type" class="text-sm font-medium text-gray-700">* Movimiento Nominal</label>
-            <select wire:model="mov_type" id="mov_type" name="mov_type"
-                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
-                <option selected value="">Elije...</option>
-                <option>Cambio de Adscripción</option>
-                <option>Cambio de Puesto</option>
-                <option>Deceso</option>
-                <option>Incremento Anual Salarial</option>
-                <option>Licencia con goce de sueldo</option>
-                <option>Licencia sin goce de sueldo</option>
-                <option>Nuevo ingreso</option>
-                <option>Reingreso</option>
-                <option>Renuncia</option>
-                <option>Recategorización</option>
-            </select>
-            @error('mov_type')
-                <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
         <div class="flex flex-col w-full md:w-1/5">
             <label for="contract_type" class="text-sm font-medium text-gray-700">* Tipo de relacion laboral</label>
             <select wire:model="contract_type" id="contract_type" name="contract_type"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
-                <option selected value="">Elije...</option>
-                <option>Estructura</option>
-                <option>Eventual</option>
-                <option>Permanente</option>
+                <option value="">Elije...</option>
+                @foreach ($contract_types as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}
+                    </option>
+                @endforeach
             </select>
             @error('contract_type')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
@@ -78,10 +57,10 @@
             @enderror
         </div>
         <div class="flex flex-col w-full md:w-1/5">
-            <label for="start_date" class="text-sm font-medium text-gray-700">* Fecha de ingreso</label>
-            <input wire:model="start_date" type="date" id="start_date" name="start_date" required
+            <label for="effective_date" class="text-sm font-medium text-gray-700">* Fecha de aplicación</label>
+            <input wire:model="effective_date" type="date" id="effective_date" name="effective_date" required
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
-            @error('start_date')
+            @error('effective_date')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
                     {{ $message }}
                 </div>
@@ -413,10 +392,6 @@
             @enderror
         </div> --}}
         <div class="w-full flex justify-end gap-3 m-4">
-            <a href="{{ route('employees.index') }}"
-                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
-                Cancelar
-            </a>
             <button type="submit"
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Enviar</button>
         </div>
