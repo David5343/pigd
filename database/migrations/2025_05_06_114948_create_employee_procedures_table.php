@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->nullable()->constrained('employees');
             $table->foreignId('procedure_type_id')->nullable()->constrained('procedure_types');
-            $table->foreignId('contract_types_id')->nullable()->constrained('contract_types');
+            $table->foreignId('contract_type_id')->nullable()->constrained('contract_types');
             $table->foreignId('area_id')->nullable()->constrained('areas');
             $table->foreignId('position_id')->nullable()->constrained('positions');
-            $table->date('start_date')->nullable();
+            $table->date('effective_date')->nullable();
             $table->string('modified_by', 255)->nullable();
             $table->timestamps();
             $table->softDeletes();
