@@ -16,7 +16,7 @@ return new class extends Migration
 
             // 📄 Información laboral
             $table->foreignId('procedure_type_id')->nullable()->constrained('procedure_types');
-            $table->foreignId('contract_types_id')->nullable()->constrained('contract_types');
+            $table->foreignId('contract_type_id')->nullable()->constrained('contract_types');
             $table->foreignId('area_id')->nullable()->constrained('areas');
             $table->foreignId('position_id')->nullable()->constrained('positions');
             $table->date('start_date')->nullable();
