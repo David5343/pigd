@@ -7,6 +7,7 @@ use App\Http\Controllers\Catalogs\ContractTypeController;
 use App\Http\Controllers\Catalogs\PositionController;
 use App\Http\Controllers\Catalogs\ProcedureTypeController;
 use App\Http\Controllers\HumanResources\EmployeeController;
+use App\Http\Controllers\HumanResources\EmployeeProcedureController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperAdmin']], function () {
@@ -40,9 +41,13 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     Route::get('/human_resources/catalogs/contract-type/create', [ContractTypeController::class, 'create'])->name('contract-type.create');
     Route::get('/human_resources/catalogs/contract-type/{id}/edit', [ContractTypeController::class, 'edit'])->name('contract-type.edit');
     Route::put('/human_resources/catalogs/contract-type/{id}', [ContractTypeController::class, 'update'])->name('contract-type.update');
+    //Rutas para Movimiento Nominal
+    Route::get('/human_resources/employee-procedure', [EmployeeProcedureController::class, 'index'])->name('employee-procedure.index');
+    Route::get('/human_resources/employee-procedure/create', [EmployeeProcedureController::class, 'create'])->name('employee-procedure.create');
     //Rutas para empleados
     Route::get('/human_resources/employees', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/human_resources/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
     Route::get('/human_resources/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::get('/human_resources/employees/{id}', [EmployeeController::class, 'show'])->name('employees.show');
     Route::put('/human_resources/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
 });
