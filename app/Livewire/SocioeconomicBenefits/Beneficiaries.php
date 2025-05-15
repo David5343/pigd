@@ -19,6 +19,18 @@ class Beneficiaries extends Component
     {
         $this->resetPage();
     }
+    public function getBeneficiaryActivosProperty()
+    {
+        return Beneficiary::where('affiliate_status','Activo')->count();
+    }
+    public function getBeneficiaryBajasProperty()
+    {
+        return Beneficiary::where('affiliate_status','Baja')->count();
+    }
+    public function getBeneficiaryBajasPendientesProperty()
+    {
+        return Beneficiary::where('affiliate_status','Baja por Aplicar')->count();
+    }
     public function render()
     {
         $lista = Beneficiary::where('status', 'active')
