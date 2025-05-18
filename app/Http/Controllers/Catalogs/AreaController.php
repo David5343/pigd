@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Catalogs\Area;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -29,22 +30,17 @@ class AreaController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => ['required', 'max:50'],
+            'name' => ['required', 'min:5', 'max:50', 'areas,name,'.$id],
         ]);
 
         try {
             DB::beginTransaction();
             $area = Area::find($id);
-
-            if (!$area) {
-                return back()->with('msg_warning', 'Area no encontrado');
-            }
-
-
             $area->name = Str::of($request->input('name'))->trim();
+            $area->modified_by = Auth::user()->email;
             $area->save();
             DB::commit();
-            return back()->with('msg', 'Area actualizada.');
+            return back()->with('msg', 'Área actualizada.');
         } catch (Exception $e) {
             DB::rollBack();
             return back()->with('msg_warning', 'Error: ' . $e->getMessage());

@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class AreasCreate extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
-    #[Validate('required|string|max:30|unique:areas,name')]
+    #[Validate('required|string|min:5|max:50|unique:areas,name')]
     public $name = '';
     public $msg = '';
     public function guardar()
