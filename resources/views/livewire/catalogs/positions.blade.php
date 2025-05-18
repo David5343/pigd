@@ -68,6 +68,20 @@
                 {{ $lista->links() }}
             </div>
         </div>
+        <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+            role="alert">
+            <span class="font-medium">Información importante!</span>
+            <p><span>Glosario de puestos directivos, para la seccion de firmas en los formatos del sistema.</span></p>
+            <p>--Coordinador General</p>
+            <p>--Administrador General</p>
+            <p>--Coordinador Médico</p>
+            <p>--Jefatura de Área Jurídica</p>
+            <p>--Jefatura de Recursos Humanos</p>
+            <p>--Jefatura de Recursos Financieros</p>
+            <p>--Jefatura de Recursos Materiales</p>
+            <p>--Jefatura de Prestaciones Socioeconomicas</p>
+            <p>--Encargado de Tecnologías de la Información</p>
+        </div>
     </div>
     <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8"></div>
 </div>
