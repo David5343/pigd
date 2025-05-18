@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class ContractTypeCreate extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
-    #[Validate('required|min:2|max:30')]
+    #[Validate('required|unique:contract_types,name|min:2|max:30')]
     public $name;
     #[Validate('nullable|min:2|max:200')]
     public $description;
