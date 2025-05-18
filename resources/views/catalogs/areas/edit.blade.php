@@ -78,13 +78,17 @@
                                 </ul>
                             </div>
                         @endif
-                        <div class="flex flex-col w-full">
-                            <div class="flex flex-col w-full md:w-1/3">
-                                <label for="nombre" class="text-sm font-medium text-gray-700">* Nombre</label>
-                                <input type="text" id="name" name="name"
-                                    class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200"
-                                    value="{{ old('name', $row->name) }}" required>
-                            </div>
+
+                        <div class="flex flex-col w-full md:w-1/2">
+                            <label for="name" class="text-sm font-medium text-gray-700">* Nombre</label>
+                            <input type="text" value="{{ old('name', $row->name) }}" id="name" name="name"
+                                required class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
+                            @error('name')
+                                <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2"
+                                    role="alert">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <!-- Botones alineados a la derecha -->
                         <div class="w-full flex justify-end gap-3 mt-4">
@@ -97,6 +101,7 @@
                         </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
