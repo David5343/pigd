@@ -7,13 +7,14 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Illuminate\Support\Str;
 
 class AreasCreate extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
     #[Validate('required|string|max:30|unique:areas,name')]
     public $name = '';
-
+    public $msg = '';
     public function guardar()
     {
 
@@ -21,22 +22,16 @@ class AreasCreate extends Component
 
         try {
             DB::beginTransaction();
-
             $area = new Area();
-            $area->name = $this->name;
+            $area->name = Str::of($this->name)->trim();
             $area->save();
-
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'Área : '.$area->name.' creado con éxito!');
-            $this->js("alert('Área :".$area->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            
-            // Enviar el mensaje a la vista sin necesidad de recargar
+            $this->dispatch('showMessage', 'Área  : '.$area->name.' fué creado con éxito!','success');   
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
+             $this->dispatch('showMessage', 'Error : '.$e->getMessage().' Contacte a su Administrador.','error');
         }
 
     }
