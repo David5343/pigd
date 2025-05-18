@@ -95,9 +95,9 @@
             <span class="text-sm text-gray-700">Listar por</span>
             <select wire:model.live="numberRows"
                 class="border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200 md:w-1/12">
-                <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
+                <option value="30">30</option>
                 <option value="50">50</option>
             </select>
             <span class="text-sm text-gray-700">filas</span>
