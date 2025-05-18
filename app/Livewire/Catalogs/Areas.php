@@ -5,6 +5,7 @@ namespace App\Livewire\Catalogs;
 use App\Models\Catalogs\Area;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Str;
 
 class Areas extends Component
 {
@@ -16,17 +17,27 @@ class Areas extends Component
     {
         $this->resetPage();
     }
-    public function updatingnumberRows()
+
+    public function updatingNumberRows()
     {
         $this->resetPage();
     }
+
+    public function updatedSearch($value)
+    {
+        $this->search = trim($value);
+    }
+
     public function render()
     {
-        $areas = Area::where(function($query) {
-            $query->Where('name', 'like', '%'.$this->search.'%');
+        $search = trim($this->search);
+
+        $areas = Area::where(function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
         })
         ->orderBy('name', 'asc')
         ->paginate($this->numberRows);
-        return view('livewire.catalogs.areas',['lista'=>$areas]);
+
+        return view('livewire.catalogs.areas', ['lista' => $areas]);
     }
 }

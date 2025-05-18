@@ -1,6 +1,6 @@
 <div>
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-        <h1 class="mt-8 text-2xl font-medium text-gray-900">
+        <h1 class="mt-2 text-2xl font-medium text-gray-900">
             PIGD
         </h1>
         <div class="text-right">
@@ -9,7 +9,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                        d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
                 NUEVA ÁREA
             </a>
@@ -55,10 +55,52 @@
                                 @endif
                             </tbody>
                         </table>
+                        <div class="flex justify-between items-center mt-4">
+                            {{-- Texto del resumen --}}
+                            <p class="text-sm text-gray-600">
+                                Mostrando de {{ $lista->firstItem() }} a {{ $lista->lastItem() }} de
+                                {{ $lista->total() }} resultados
+                            </p>
+
+                            {{-- Botones de paginación --}}
+                            <div class="flex space-x-2">
+                                {{-- Botón anterior --}}
+                                @if ($lista->onFirstPage())
+                                    <span
+                                        class="px-4 py-2 text-sm text-gray-400 bg-gray-100 rounded cursor-not-allowed">Anterior</span>
+                                @else
+                                    <button wire:click="previousPage"
+                                        class="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">
+                                        Anterior
+                                    </button>
+                                @endif
+
+                                {{-- Botón siguiente --}}
+                                @if ($lista->hasMorePages())
+                                    <button wire:click="nextPage"
+                                        class="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">
+                                        Siguiente
+                                    </button>
+                                @else
+                                    <span
+                                        class="px-4 py-2 text-sm text-gray-400 bg-gray-100 rounded cursor-not-allowed">Siguiente</span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {{ $lista->links() }}
             </div>
+        </div>
+        <div class="flex items-center space-x-2 w-full md:w-auto">
+            <span class="text-sm text-gray-700">Listar por</span>
+            <select wire:model.live="numberRows"
+                class="border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200 md:w-1/12">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+            <span class="text-sm text-gray-700">filas</span>
         </div>
     </div>
     <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8"></div>
