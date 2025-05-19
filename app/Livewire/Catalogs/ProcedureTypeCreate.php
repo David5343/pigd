@@ -13,7 +13,7 @@ use Livewire\Component;
 class ProcedureTypeCreate extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
-    #[Validate('required|min:2|max:30')]
+    #[Validate('required|min:2|max:30 |unique:procedure_types,name')]
     public $name;
     #[Validate('nullable|min:2|max:200')]
     public $description;
