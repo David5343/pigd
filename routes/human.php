@@ -4,6 +4,7 @@ use App\Http\Controllers\Catalogs\AreaController;
 use App\Http\Controllers\Catalogs\BankController;
 use App\Http\Controllers\Catalogs\CategoryController;
 use App\Http\Controllers\Catalogs\ContractTypeController;
+use App\Http\Controllers\Catalogs\CountyController;
 use App\Http\Controllers\Catalogs\PositionController;
 use App\Http\Controllers\Catalogs\ProcedureTypeController;
 use App\Http\Controllers\Catalogs\StateController;
@@ -37,6 +38,11 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     Route::get('/human_resources/catalogs/states/create', [StateController::class, 'create'])->name('states.create');
     Route::get('/human_resources/catalogs/states/{id}/edit', [StateController::class, 'edit'])->name('states.edit');
     Route::put('/human_resources/catalogs/states/{id}', [StateController::class, 'update'])->name('states.update');
+    //Rutas para municipios
+    Route::get('/human_resources/catalogs/counties', [CountyController::class, 'index'])->name('counties.index');
+    Route::get('/human_resources/catalogs/counties/create', [CountyController::class, 'create'])->name('counties.create');
+    Route::get('/human_resources/catalogs/counties/{id}/edit', [CountyController::class, 'edit'])->name('counties.edit');
+    Route::put('/human_resources/catalogs/counties/{id}', [CountyController::class, 'update'])->name('counties.update');
     //Rutas para Tipo de movimiento nominal
     Route::get('/human_resources/catalogs/procedure-type', [ProcedureTypeController::class, 'index'])->name('procedure-type.index');
     Route::get('/human_resources/catalogs/procedure-type/create', [ProcedureTypeController::class, 'create'])->name('procedure-type.create');
