@@ -6,6 +6,7 @@ use App\Http\Controllers\Catalogs\CategoryController;
 use App\Http\Controllers\Catalogs\ContractTypeController;
 use App\Http\Controllers\Catalogs\PositionController;
 use App\Http\Controllers\Catalogs\ProcedureTypeController;
+use App\Http\Controllers\Catalogs\StateController;
 use App\Http\Controllers\HumanResources\EmployeeController;
 use App\Http\Controllers\HumanResources\EmployeeProcedureController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,11 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     Route::get('/human_resources/catalogs/positions/create', [PositionController::class, 'create'])->name('positions.create');
     Route::get('/human_resources/catalogs/positions/{id}/edit', [PositionController::class, 'edit'])->name('positions.edit');
     Route::put('/human_resources/catalogs/positions/{id}', [PositionController::class, 'update'])->name('positions.update');
+    //Rutas para estados
+    Route::get('/human_resources/catalogs/states', [StateController::class, 'index'])->name('states.index');
+    Route::get('/human_resources/catalogs/states/create', [StateController::class, 'create'])->name('states.create');
+    Route::get('/human_resources/catalogs/states/{id}/edit', [StateController::class, 'edit'])->name('states.edit');
+    Route::put('/human_resources/catalogs/states/{id}', [StateController::class, 'update'])->name('states.update');
     //Rutas para Tipo de movimiento nominal
     Route::get('/human_resources/catalogs/procedure-type', [ProcedureTypeController::class, 'index'])->name('procedure-type.index');
     Route::get('/human_resources/catalogs/procedure-type/create', [ProcedureTypeController::class, 'create'])->name('procedure-type.create');
@@ -44,6 +50,7 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     //Rutas para Movimiento Nominal
     Route::get('/human_resources/employee-procedure', [EmployeeProcedureController::class, 'index'])->name('employee-procedure.index');
     Route::get('/human_resources/employee-procedure/create', [EmployeeProcedureController::class, 'create'])->name('employee-procedure.create');
+    Route::get('/human_resources/employee-procedure/pdf/{id}', [EmployeeProcedureController::class, 'pdf'])->name('employee-procedure.pdf');
     //Rutas para empleados
     Route::get('/human_resources/employees', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/human_resources/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
