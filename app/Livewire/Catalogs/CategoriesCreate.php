@@ -57,18 +57,13 @@ class CategoriesCreate extends Component
             $category->covered_position = 0;
             $category->modified_by = Auth::user()->email;
             $category->save();
-
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'Categoría : '.$category->name.' creado con éxito!');
-            $this->js("alert('Categoría :".$category->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            
-            // Enviar el mensaje a la vista sin necesidad de recargar
+            $this->dispatch('showMessage', 'Categoría  : '.$category->name.' fué creado con éxito!','success');   
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
+             $this->dispatch('showMessage', 'Error : '.$e->getMessage().' Contacte a su Administrador.','error');
         }
 
     }
