@@ -122,14 +122,13 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @error('category_id')
+                                <div class="w-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-4 rounded-lg"
+                                    role="alert">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                        @error('category_id')
-                            <div class="w-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-4 rounded-lg"
-                                role="alert">
-                                {{ $message }}
-                            </div>
-                        @enderror
-
                         <!-- Botones alineados a la derecha -->
                         <div class="w-full flex justify-end gap-3 mt-4">
                             <a href="{{ route('positions.index') }}"
