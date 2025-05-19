@@ -26,7 +26,6 @@ class BanksCreate extends Component
 
         try {
             DB::beginTransaction();
-
             $bank = new Bank();
             $bank->key = Str::of($this->key)->trim();
             $bank->name = Str::of($this->name)->trim();
@@ -34,18 +33,13 @@ class BanksCreate extends Component
             $bank->status = 'active';
             $bank->modified_by = Auth::user()->email;
             $bank->save();
-
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'Banco : '.$bank->name.' creado con éxito!');
-            $this->js("alert('Banco :".$bank->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            
-            // Enviar el mensaje a la vista sin necesidad de recargar
+            $this->dispatch('showMessage', 'Banco  : '.$bank->name.' fué creado con éxito!','success');  
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
+             $this->dispatch('showMessage', 'Error : '.$e->getMessage().' Contacte a su Administrador.','error');
         }
 
     }

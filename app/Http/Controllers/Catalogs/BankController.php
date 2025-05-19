@@ -38,11 +38,6 @@ class BankController extends Controller
         try {
             DB::beginTransaction();
             $bank = Bank::find($id);
-
-            if (!$bank) {
-                return back()->with('msg_warning', 'Banco no encontrado');
-            }
-
             $bank->key = Str::of($request->input('key'))->trim();
             $bank->name = Str::of($request->input('name'))->trim();
             $bank->legal_name = Str::of($request->input('legal_name'))->trim();

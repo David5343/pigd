@@ -78,7 +78,6 @@
                                 </ul>
                             </div>
                         @endif
-
                         <div class="flex flex-col w-full md:w-1/2">
                             <label for="name" class="text-sm font-medium text-gray-700">* Nombre</label>
                             <input type="text" value="{{ old('name', $row->name) }}" id="name" name="name"
@@ -101,7 +100,6 @@
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
