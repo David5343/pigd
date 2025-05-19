@@ -18,7 +18,7 @@ class PositionsCreate extends Component
 
     #[Validate('required | min:3 | max:3 | unique:positions,position_number')]
     public $position_number = '';
-    #[Validate('required|string|min:5|max:45')]
+    #[Validate('required|string|min:3|max:50| unique:positions,position_name')]
     public $position_name = '';
     #[Validate('required')]
     public $category_id = '';
@@ -26,7 +26,8 @@ class PositionsCreate extends Component
 
     public function mount()
     {
-        $this->categories = Category::all();
+        //permite filtrar solo los puestos disponibles
+        $this->categories = Category::whereColumn('covered_position', '<', 'authorized_position')->get();
     }
     public function guardar()
     {
@@ -43,15 +44,11 @@ class PositionsCreate extends Component
             $position->save();
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'Puesto : '.$position->name.' creado con éxito!');
-            $this->js("alert('Puesto :".$position->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            
-            // Enviar el mensaje a la vista sin necesidad de recargar
+            $this->dispatch('showMessage', 'Puesto  : '.$position->position_name.' fué creado con éxito!','success');  
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
+            $this->dispatch('showMessage', 'Error : '.$e->getMessage().' Contacte a su Administrador.','error');
         }
 
     }
