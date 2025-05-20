@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Catalogs;
 
 use App\Http\Controllers\Controller;
-use App\Livewire\Catalogs\ContractType as CatalogsContractType;
 use App\Models\Catalogs\ContractType;
 use Exception;
 use Illuminate\Http\Request;
@@ -38,7 +37,7 @@ class ContractTypeController extends Controller
 
         try {
             DB::beginTransaction();
-            $contract = CatalogsContractType::find($id);
+            $contract = ContractType::find($id);
             $contract->name = Str::of($request->input('name'))->trim();
             $contract->description = Str::of($request->input('description'))->trim();
             $contract->modified_by = Auth::user()->email;

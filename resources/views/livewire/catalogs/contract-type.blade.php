@@ -1,6 +1,6 @@
 <div>
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-        <h1 class="mt-8 text-2xl font-medium text-gray-900">
+        <h1 class="mt-2 text-2xl font-medium text-gray-900">
             PIGD
         </h1>
         <div class="text-right">
@@ -11,8 +11,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                 </svg>
-
-
                 NUEVO TIPO DE CONTRATO
             </a>
         </div>
@@ -59,7 +57,7 @@
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4">
                                                 <a
-                                                    href="{{ url('human_resources/catalogs/procedure-type/' . $item->id . '/edit') }}">
+                                                    href="{{ url('human_resources/catalogs/contract-type/' . $item->id . '/edit') }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
@@ -73,10 +71,52 @@
                                 @endif
                             </tbody>
                         </table>
+                        <div class="flex justify-between items-center mt-4">
+                            {{-- Texto del resumen --}}
+                            <p class="text-sm text-gray-600">
+                                Mostrando de {{ $lista->firstItem() }} a {{ $lista->lastItem() }} de
+                                {{ $lista->total() }} resultados
+                            </p>
+
+                            {{-- Botones de paginación --}}
+                            <div class="flex space-x-2">
+                                {{-- Botón anterior --}}
+                                @if ($lista->onFirstPage())
+                                    <span
+                                        class="px-4 py-2 text-sm text-gray-400 bg-gray-100 rounded cursor-not-allowed">Anterior</span>
+                                @else
+                                    <button wire:click="previousPage"
+                                        class="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">
+                                        Anterior
+                                    </button>
+                                @endif
+
+                                {{-- Botón siguiente --}}
+                                @if ($lista->hasMorePages())
+                                    <button wire:click="nextPage"
+                                        class="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded">
+                                        Siguiente
+                                    </button>
+                                @else
+                                    <span
+                                        class="px-4 py-2 text-sm text-gray-400 bg-gray-100 rounded cursor-not-allowed">Siguiente</span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {{ $lista->links() }}
             </div>
+        </div>
+        <div class="flex items-center space-x-2 w-full md:w-auto">
+            <span class="text-sm text-gray-700">Listar por</span>
+            <select wire:model.live="numberRows"
+                class="border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200 md:w-1/12">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+            </select>
+            <span class="text-sm text-gray-700">filas</span>
         </div>
     </div>
     <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8"></div>

@@ -1,6 +1,6 @@
 <div>
     <livewire:messages />
-    <form wire:submit.prevent="guardar" class="flex flex-wrap gap-2">
+    <form wire:submit.prevent="guardar" class="flex flex-wrap gap-2 m-4">
         @if ($errors->any())
             <div class="w-full bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-4 rounded-lg" role="alert">
                 <ul class="list-disc pl-5 space-y-2">
@@ -10,7 +10,6 @@
                 </ul>
             </div>
         @endif
-
         <div class="flex flex-col w-full md:w-1/3">
             <label for="name" class="text-sm font-medium text-gray-700">* Nombre</label>
             <input wire:model="name" type="text" id="name" name="name" placeholder="Eventual" required
