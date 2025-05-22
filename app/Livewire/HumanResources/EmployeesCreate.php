@@ -65,7 +65,7 @@ class EmployeesCreate extends Component
     public $email;
     #[Validate('required|string|min:18|max:18|unique:employees,ine')]
     public $ine;
-    #[Validate('required|string|min:18|max:18')]
+    #[Validate('required')]
     public $academic_level;
     #[Validate('required|min:3|max:30')]
     public $emergency_name;
@@ -91,7 +91,7 @@ class EmployeesCreate extends Component
     public $cp;
     #[Validate('nullable|min:5|max:85')]
     public $locality;
-    #[Validate('nullable|numeric|digits:10')]
+    #[Validate('nullable|string|max:50')]
     public $account_number;
     #[Validate('nullable|numeric|digits:18')]
     public $clabe;
