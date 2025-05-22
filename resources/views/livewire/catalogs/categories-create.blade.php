@@ -127,7 +127,7 @@
             @enderror
         </div>
         <!-- Botones alineados a la derecha -->
-        <div class="w-full flex justify-end gap-3 mt-4">
+        <div class="w-full flex justify-end gap-3 m-4">
             <a href="{{ route('categories.index') }}"
                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
                 Cancelar
