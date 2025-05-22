@@ -384,6 +384,10 @@
                                         class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
                                         {{ __('Tipos de contrato') }}
                                     </a>
+                                    <a href="{{ route('degrees.index') }}"
+                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
+                                        {{ __('Grados de estudio') }}
+                                    </a>
                                 </div>
                             </div>
                             <!-- Separador -->
