@@ -3,15 +3,18 @@
 namespace App\Models\HumanResources;
 
 use App\Models\Catalogs\Area;
+use App\Models\Catalogs\Degree;
 use App\Models\Catalogs\Position;
 use App\Models\Catalogs\ProcedureType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
+    use SoftDeletes;
     protected $casts = [
         'start_date' => 'date', // Asegura que sea Carbon en lugar de string
     ];
@@ -33,5 +36,9 @@ class Employee extends Model
     public function procedureType():BelongsTo
     {
         return$this->belongsTo(ProcedureType::class);
+    }
+    public function degree():BelongsTo
+    {
+        return $this->belongsTo(Degree::class);
     }
 }
