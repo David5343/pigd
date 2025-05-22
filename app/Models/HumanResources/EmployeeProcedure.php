@@ -9,9 +9,12 @@ use App\Models\Catalogs\ProcedureType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EmployeeProcedure extends Model
 {
+    use SoftDeletes;
 
     protected $casts = [
         'effective_date' => 'date',
@@ -49,5 +52,9 @@ class EmployeeProcedure extends Model
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
+    }
+        public function details():HasMany
+    {
+        return $this->hasMany(EmployeeProcedureDetail::class);
     }
 }
