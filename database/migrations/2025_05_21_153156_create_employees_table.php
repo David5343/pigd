@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            // 📄 Información laboral
             $table->foreignId('procedure_type_id')->nullable()->constrained('procedure_types');
             $table->foreignId('contract_type_id')->nullable()->constrained('contract_types');
             $table->foreignId('area_id')->nullable()->constrained('areas');
             $table->foreignId('position_id')->nullable()->constrained('positions');
             $table->foreignId('degree_id')->nullable()->constrained('degrees');
+            $table->foreignId('state_id')->nullable()->constrained('states');
+            $table->foreignId('county_id')->nullable()->constrained('counties');
+            $table->foreignId('bank_id')->nullable()->constrained('banks');
             $table->date('start_date')->nullable();
-        
-            // 🧍 Información personal
             $table->string('last_name_1', 255)->nullable();
             $table->string('last_name_2', 255)->nullable();
             $table->string('name', 255)->nullable();
@@ -33,15 +33,9 @@ return new class extends Migration
             $table->string('ine', 255)->nullable();
             $table->string('phone', 255)->nullable();
             $table->string('email', 255)->nullable();
-        
-            // 📞 Contacto
             $table->string('emergency_name', 255)->nullable();
             $table->string('emergency_number', 255)->nullable();
             $table->string('emergency_address', 255)->nullable();
-        
-            // 📍 Dirección
-            $table->foreignId('state_id')->nullable()->constrained('states');
-            $table->foreignId('county_id')->nullable()->constrained('counties');
             $table->string('neighborhood', 255)->nullable();
             $table->string('roadway_type', 255)->nullable();
             $table->string('street', 255)->nullable();
@@ -49,23 +43,13 @@ return new class extends Migration
             $table->string('interior_number', 255)->nullable();
             $table->string('cp', 255)->nullable();
             $table->string('locality', 255)->nullable();
-        
-            // 🏦 Bancarios
             $table->string('account_number', 255)->nullable();
             $table->string('clabe', 255)->nullable();
-            $table->foreignId('bank_id')->nullable()->constrained('banks');
-        
-            // 🖼️ Archivos
             $table->string('photo', 255)->nullable();
             $table->string('signature', 255)->nullable();
-        
-            // ⚰️ Baja
             $table->date('inactive_date')->nullable();
             $table->string('inactive_motive', 255)->nullable();
-        
             $table->string('modified_by', 255)->nullable();
-        
-            // ⌛ Tiempos
             $table->timestamps();
             $table->softDeletes();
         });
