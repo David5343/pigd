@@ -31,7 +31,6 @@ return new class extends Migration
             $table->string('rfc', 255)->nullable();
             $table->string('curp', 255)->nullable();
             $table->string('ine', 255)->nullable();
-            $table->string('academic_level', 255)->nullable();
             $table->string('phone', 255)->nullable();
             $table->string('email', 255)->nullable();
         
