@@ -5,6 +5,7 @@ use App\Http\Controllers\Catalogs\BankController;
 use App\Http\Controllers\Catalogs\CategoryController;
 use App\Http\Controllers\Catalogs\ContractTypeController;
 use App\Http\Controllers\Catalogs\CountyController;
+use App\Http\Controllers\Catalogs\DegreeController;
 use App\Http\Controllers\Catalogs\PositionController;
 use App\Http\Controllers\Catalogs\ProcedureTypeController;
 use App\Http\Controllers\Catalogs\StateController;
@@ -53,6 +54,11 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperA
     Route::get('/human_resources/catalogs/contract-type/create', [ContractTypeController::class, 'create'])->name('contract-type.create');
     Route::get('/human_resources/catalogs/contract-type/{id}/edit', [ContractTypeController::class, 'edit'])->name('contract-type.edit');
     Route::put('/human_resources/catalogs/contract-type/{id}', [ContractTypeController::class, 'update'])->name('contract-type.update');
+    //Rutas para grados de estudio
+    Route::get('/human_resources/catalogs/degrees', [DegreeController::class, 'index'])->name('degrees.index');
+    Route::get('/human_resources/catalogs/degrees/create', [DegreeController::class, 'create'])->name('degrees.create');
+    Route::get('/human_resources/catalogs/degrees/{id}/edit', [DegreeController::class, 'edit'])->name('degrees.edit');
+    Route::put('/human_resources/catalogs/degrees/{id}', [DegreeController::class, 'update'])->name('degrees.update');
     //Rutas para Movimiento Nominal
     Route::get('/human_resources/employee-procedure', [EmployeeProcedureController::class, 'index'])->name('employee-procedure.index');
     Route::get('/human_resources/employee-procedure/create', [EmployeeProcedureController::class, 'create'])->name('employee-procedure.create');
