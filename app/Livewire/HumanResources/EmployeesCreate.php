@@ -7,6 +7,7 @@ use App\Models\Catalogs\Bank;
 use App\Models\Catalogs\Category;
 use App\Models\Catalogs\ContractType;
 use App\Models\Catalogs\County;
+use App\Models\Catalogs\Degree;
 use App\Models\Catalogs\Position;
 use App\Models\Catalogs\State;
 use App\Models\HumanResources\Employee;
@@ -30,6 +31,7 @@ class EmployeesCreate extends Component
     public $states = [];
     public $counties = [];
     public $contract_types = [];
+    public $academic_levels=[];
     public $msg = '';
     public $procedureType= null;
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
@@ -61,6 +63,10 @@ class EmployeesCreate extends Component
     public $phone;
     #[Validate('required|email|min:5|max:50|unique:employees,email')]
     public $email;
+    #[Validate('required|string|min:18|max:18|unique:employees,ine')]
+    public $ine;
+    #[Validate('required|string|min:18|max:18')]
+    public $academic_level;
     #[Validate('required|min:3|max:30')]
     public $emergency_name;
     #[Validate('required|numeric|digits:10')]
@@ -101,6 +107,7 @@ class EmployeesCreate extends Component
         $this->banks = Bank::all();
         $this->states = State::all();
         $this->areas = Area::all();
+        $this->academic_levels = Degree::all();
         //permite filtrar solo los puestos disponibles
         $this->positions = Position::whereHas('category', function ($query) {
         $query->whereColumn('covered_position', '<', 'authorized_position');
@@ -143,6 +150,8 @@ class EmployeesCreate extends Component
             $employee->curp = Str::of($this->curp)->trim();
             $employee->phone = Str::of($this->phone)->trim();
             $employee->email = Str::of($this->email)->trim();
+            $employee->ine = Str::of($this->ine)->trim();
+            $employee->academic_level = Str::of($this->academic_level)->trim();
             $employee->emergency_name = Str::of($this->emergency_name)->trim();
             $employee->emergency_number = Str::of($this->emergency_number)->trim();
             $employee->emergency_address = Str::of($this->emergency_address)->trim();

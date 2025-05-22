@@ -180,12 +180,38 @@
                 </div>
             @enderror
         </div>
-        <div class="flex flex-col w-full md:w-1/3">
+        <div class="flex flex-col w-full md:w-1/2">
             <label for="email" class="text-sm font-medium text-gray-700">* Correo electrónico</label>
             <input wire:model="email" type="email" id="email" name="email"
                 placeholder="example@pigd.gob.mx" required
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
             @error('email')
+                <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+        <div class="flex flex-col w-full md:w-1/3">
+            <label for="ine" class="text-sm font-medium text-gray-700">* Indentificación oficial (INE)</label>
+            <input wire:model="ine" type="text" id="ine" name="ine" placeholder="ASDFGH12345678H001"
+                required class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200">
+            @error('ine')
+                <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+        <div class="flex flex-col w-full md:w-1/2">
+            <label for="academic_level" class="text-sm font-medium text-gray-700">* Nivel máximo de estudios</label>
+            <select wire:model="academic_level" id="academic_level" name="academic_level"
+                class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
+                <option value="">Elije...</option>
+                @foreach ($academic_levels as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('contract_type')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
                     {{ $message }}
                 </div>
