@@ -1,6 +1,6 @@
 <div>
     <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-        <h1 class="mt-8 text-2xl font-medium text-gray-900">
+        <h1 class="mt-2 text-2xl font-medium text-gray-900">
             PIGD
         </h1>
         <div class="text-right">
@@ -67,7 +67,8 @@
                                                 {{ $item->createdAtFormatted }}
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4">
-                                                <a href="{{ url('human_resources/employees/' . $item->id) }}">
+                                                <a target="_blank"
+                                                    href="{{ url('human_resources/employee-procedure/pdf/' . $item->id) }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
