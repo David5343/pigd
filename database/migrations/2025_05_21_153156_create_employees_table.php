@@ -40,10 +40,8 @@ return new class extends Migration
             $table->string('emergency_address', 255)->nullable();
         
             // 📍 Dirección
-            $table->unsignedBigInteger('state_id')->nullable();
-            $table->foreign('state_id')->references('id')->on('states');
-            $table->unsignedBigInteger('county_id')->nullable();
-            $table->foreign('county_id')->references('id')->on('counties');
+            $table->foreignId('state_id')->nullable()->constrained('states');
+            $table->foreignId('county_id')->nullable()->constrained('counties');
             $table->string('neighborhood', 255)->nullable();
             $table->string('roadway_type', 255)->nullable();
             $table->string('street', 255)->nullable();
@@ -55,8 +53,7 @@ return new class extends Migration
             // 🏦 Bancarios
             $table->string('account_number', 255)->nullable();
             $table->string('clabe', 255)->nullable();
-            $table->unsignedBigInteger('bank_id')->nullable();
-            $table->foreign('bank_id')->references('id')->on('banks');
+            $table->foreignId('bank_id')->nullable()->constrained('banks');
         
             // 🖼️ Archivos
             $table->string('photo', 255)->nullable();
