@@ -66,7 +66,7 @@ class EmployeesCreate extends Component
     #[Validate('required|string|min:18|max:18|unique:employees,ine')]
     public $ine;
     #[Validate('required')]
-    public $academic_level;
+    public $degree_id;
     #[Validate('required|min:3|max:30')]
     public $emergency_name;
     #[Validate('required|numeric|digits:10')]
@@ -151,7 +151,7 @@ class EmployeesCreate extends Component
             $employee->phone = Str::of($this->phone)->trim();
             $employee->email = Str::of($this->email)->trim();
             $employee->ine = Str::of($this->ine)->trim();
-            $employee->academic_level = Str::of($this->academic_level)->trim();
+            $employee->degree_id = Str::of($this->degree_id)->trim();
             $employee->emergency_name = Str::of($this->emergency_name)->trim();
             $employee->emergency_number = Str::of($this->emergency_number)->trim();
             $employee->emergency_address = Str::of($this->emergency_address)->trim();
@@ -166,7 +166,7 @@ class EmployeesCreate extends Component
             $employee->locality = Str::of($this->locality)->trim();
             $employee->account_number = Str::of($this->account_number)->trim();
             $employee->clabe = Str::of($this->clabe)->trim();
-            $employee->bank_id = Str::of($this->bank_id)->trim();
+            $employee->bank_id = $this->bank_id ?: null;
             // $employee->photo = $photoPath;
             // $employee->signature = $signaturePath;
             $employee->modified_by = Auth::user()->email;

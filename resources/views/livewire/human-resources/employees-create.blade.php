@@ -202,8 +202,8 @@
             @enderror
         </div>
         <div class="flex flex-col w-full md:w-1/2">
-            <label for="academic_level" class="text-sm font-medium text-gray-700">* Nivel máximo de estudios</label>
-            <select wire:model="academic_level" id="academic_level" name="academic_level"
+            <label for="degree_id" class="text-sm font-medium text-gray-700">* Nivel máximo de estudios</label>
+            <select wire:model="degree_id" id="degree_id" name="degree_id"
                 class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
                 <option value="">Elije...</option>
                 @foreach ($academic_levels as $item)
@@ -211,7 +211,7 @@
                     </option>
                 @endforeach
             </select>
-            @error('contract_type')
+            @error('degree_id')
                 <div class="bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400 p-2 rounded-lg mt-2" role="alert">
                     {{ $message }}
                 </div>
