@@ -35,6 +35,18 @@ class Membership extends Component
     {
         return Insured::where('affiliate_status','Baja por Aplicar')->count();
     }
+    public function getInsuredTotalProperty()
+    {
+        return Insured::all()->count();
+    }
+    public function getInsuredTotalHombresProperty()
+    {
+        return Insured::where('sex','Hombre')->count();
+    }
+    public function getInsuredTotalMujeresProperty()
+    {
+        return Insured::where('sex','Mujer')->count();
+    }
     public function render()
     {
         // $lista = Insured::where('status', 'active')
@@ -46,8 +58,7 @@ class Membership extends Component
                   ->orWhere('rfc', 'like', '%'.$this->search.'%')
                   ->orWhere('curp', 'like', '%'.$this->search.'%');
         })
-        ->latest() // Equivalente a orderBy('created_at', 'desc')
-        ->take(50) // Tomar solo los últimos 50 registros
+        ->orderBy('file_number', 'asc')
         ->paginate($this->numberRows);
         return view('livewire.socioeconomic-benefits.membership',['lista'=>$lista]);
     }
