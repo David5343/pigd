@@ -34,17 +34,11 @@
         @if ($procedureType === '1')
             @livewire('form1')
         @elseif ($procedureType === '2')
-            @livewire('form2')
+            <livewire:human-resources.employees-create :procedure-type="$procedureType" />
         @elseif ($procedureType === '3')
             @livewire('form2')
         @elseif ($procedureType === '4')
             @livewire('form2')
-        @elseif ($procedureType === '5')
-            @livewire('form2')
-        @elseif ($procedureType === '6')
-            @livewire('form2')
-        @elseif ($procedureType === '7')
-            <livewire:human-resources.employees-create :procedure-type="$procedureType" />
         @endif
         <div class="w-full flex justify-end gap-3 m-4">
             <a href="{{ route('employee-procedure.index') }}"
