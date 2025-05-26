@@ -31,18 +31,20 @@ class Beneficiaries extends Component
     {
         return Beneficiary::where('affiliate_status','Baja por Aplicar')->count();
     }
+    public function getBeneficiaryTotalProperty()
+    {
+        return Beneficiary::all()->count();
+    }
     public function render()
     {
-        $lista = Beneficiary::where('status', 'active')
-        ->where(function($query) {
+        $lista = Beneficiary::where(function($query) {
             $query->where('file_number', 'like', '%'.$this->search.'%')
                   ->orWhere('name', 'like', '%'.$this->search.'%')
                   ->orWhere('last_name_1', 'like', '%'.$this->search.'%')
                   ->orWhere('last_name_2', 'like', '%'.$this->search.'%')
                   ->orWhere('curp', 'like', '%'.$this->search.'%');
         })
-        ->latest() // Equivalente a orderBy('created_at', 'desc')
-        ->take(50) // Tomar solo los últimos 50 registros
+        ->orderBy('file_number', 'asc')
         ->paginate($this->numberRows);
         return view('livewire.socioeconomic-benefits.beneficiaries',['lista'=>$lista]);
     }
