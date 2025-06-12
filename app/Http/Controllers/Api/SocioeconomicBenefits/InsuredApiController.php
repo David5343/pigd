@@ -482,7 +482,8 @@ class InsuredApiController extends Controller
         }
     }
 
-    public function baja(Request $request, $id)
+    // public function baja(Request $request, $id)
+    public function baja(Request $request)
      {
         $response = [
             'Status' => 'fail',
@@ -514,11 +515,17 @@ class InsuredApiController extends Controller
              $baja_dependencia = $request->input('Inactive_date_dependency');
              $motivo_baja = Str::of($request->input('Inactive_motive'))->trim();
              $referencia = Str::of($request->input('Inactive_reference'))->trim();
+             $id = $request->input('Id');
              $titular = Insured::find($id);
-             $msg = '';
+             if (!$titular) {
+                $response['Status'] = 'success';
+                $response['Message'] = "Titular no encontrado";
+                $response['Debug'] = $id;
+                return response()->json($response, 200);
+            }
  
-             if ($motivo_baja == 'Acta Administrativa') {
-                 $titular->inactive_date = $fecha_baja;
+             if ($motivo_baja == 'Acta administrativa') {
+                 $titular->inactive_date = $request->input('Inactive_date');
                  $titular->inactive_date_dependency = $baja_dependencia;
                  $titular->inactive_motive = $motivo_baja;
                  $titular->inactive_reference = $referencia;
@@ -532,7 +539,7 @@ class InsuredApiController extends Controller
                      'modified_by' => Auth::user()->email,
                  ]);
  
-                 $msg = ($affectedRows === 0) ?
+                 $response['Message'] = ($affectedRows === 0) ?
                      'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                      'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
              } elseif ($motivo_baja == 'Defunsión') {
@@ -550,7 +557,7 @@ class InsuredApiController extends Controller
                      'modified_by' => Auth::user()->email,
                  ]);
  
-                 $msg = ($affectedRows === 0) ?
+                $response['Message'] = ($affectedRows === 0) ?
                      'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                      'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
              } elseif ($motivo_baja == 'Pensión' || $motivo_baja == 'Renuncia voluntaria') {
@@ -568,14 +575,15 @@ class InsuredApiController extends Controller
                      'modified_by' => Auth::user()->email,
                  ]);
  
-                 $msg = ($affectedRows === 0) ?
+                 $response['Message'] = ($affectedRows === 0) ?
                      'El registro '.$titular->file_number.' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                      'El registro '.$titular->file_number.' y sus familiares fueron dados de baja con éxito!';
              }
- 
+             else {
+                throw new \Exception("Motivo de baja no reconocido: $motivo_baja");
+            }
              DB::commit();
              $response['Status'] = 'success';
-             $response['Message'] = $msg;
              return response()->json($response, 200);
          } catch (Exception $e) {
              DB::rollBack();
