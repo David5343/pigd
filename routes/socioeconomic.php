@@ -19,13 +19,13 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/beneficiaries/{id}/edit', [BeneficiaryController::class, 'edit'])->name('beneficiaries.edit');
     Route::put('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
     //Rutas para Dependencias
-    Route::get('/socioeconomic_benefits/dependencies', [DependencyController::class, 'index'])->name('dependencies.index');
-    Route::get('/socioeconomic_benefits/dependencies/create', [DependencyController::class, 'create'])->name('dependencies.create');
-    Route::get('/socioeconomic_benefits/dependencies/{id}/edit', [DependencyController::class, 'edit'])->name('dependencies.edit');
-    Route::put('/socioeconomic_benefits/dependencies/{id}', [DependencyController::class, 'update'])->name('dependencies.update');
+    Route::get('/socioeconomic_benefits/catalogs/dependencies', [DependencyController::class, 'index'])->name('dependencies.index');
+    Route::get('/socioeconomic_benefits/catalogs/dependencies/create', [DependencyController::class, 'create'])->name('dependencies.create');
+    Route::get('/socioeconomic_benefits/catalogs/dependencies/{id}/edit', [DependencyController::class, 'edit'])->name('dependencies.edit');
+    Route::put('/socioeconomic_benefits/catalogs/dependencies/{id}', [DependencyController::class, 'update'])->name('dependencies.update');
         //Rutas para Subdependencias
-    Route::get('/socioeconomic_benefits/subdependencies', [SubdependencyController::class, 'index'])->name('subdependencies.index');
-    Route::get('/socioeconomic_benefits/subdependencies/create', [SubdependencyController::class, 'create'])->name('subdependencies.create');
-    Route::get('/socioeconomic_benefits/subdependencies/{id}/edit', [SubdependencyController::class, 'edit'])->name('subdependencies.edit');
-    Route::put('/socioeconomic_benefits/subdependencies/{id}', [SubdependencyController::class, 'update'])->name('subdependencies.update');
+    Route::get('/socioeconomic_benefits/catalogs/subdependencies', [SubdependencyController::class, 'index'])->name('subdependencies.index');
+    Route::get('/socioeconomic_benefits/catalogs/subdependencies/create', [SubdependencyController::class, 'create'])->name('subdependencies.create');
+    Route::get('/socioeconomic_benefits/catalogs/subdependencies/{id}/edit', [SubdependencyController::class, 'edit'])->name('subdependencies.edit');
+    Route::put('/socioeconomic_benefits/catalogs/subdependencies/{id}', [SubdependencyController::class, 'update'])->name('subdependencies.update');
         });
