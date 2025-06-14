@@ -13,18 +13,18 @@ class DependencyController extends Controller
 {
     public function index()
     {
-        return view('dependencies.index');
+        return view('catalogs.dependencies.index');
 
     }
     public function create()
     {
-        return view('dependencies.create');
+        return view('catalogs.dependencies.create');
 
     }
     public function edit(string $id)
     {
         $row = Dependency::find($id);
-        return view('dependencies.edit', ['row' => $row]);
+        return view('catalogs.dependencies.edit', ['row' => $row]);
     }
     public function update(Request $request, string $id)
     {

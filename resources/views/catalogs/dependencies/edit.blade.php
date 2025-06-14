@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Prestaciones/Dependencias/Editar') }}
+            {{ __('Prestaciones/Catalogos/Dependencias/Editar') }}
         </h2>
     </x-slot>
     <div class="py-12">
@@ -65,7 +65,7 @@
                         </div>
                     @endsession
                     <form method="POST" class="flex flex-wrap gap-2"
-                        action="{{ url('socioeconomic_benefits/dependencies/' . $row->id) }}">
+                        action="{{ url('socioeconomic_benefits/catalogs/dependencies/' . $row->id) }}">
                         @method('PUT')
                         @csrf
                         @if ($errors->any())

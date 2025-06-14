@@ -41,7 +41,7 @@
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4">
                                                 <a
-                                                    href="{{ url('socioeconomic_benefits/dependencies/' . $item->id . '/edit') }}">
+                                                    href="{{ url('socioeconomic_benefits/catalogs/dependencies/' . $item->id . '/edit') }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                         class="size-6">
