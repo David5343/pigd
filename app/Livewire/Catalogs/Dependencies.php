@@ -15,14 +15,22 @@ class Dependencies extends Component
     {
         $this->resetPage();
     }
-    public function updatingnumberRows()
+
+    public function updatingNumberRows()
     {
         $this->resetPage();
     }
+
+    public function updatedSearch($value)
+    {
+        $this->search = trim($value);
+    }
     public function render()
     {
-        $dependencies = Dependency::where(function($query) {
-            $query->Where('name', 'like', '%'.$this->search.'%');
+        $search = trim($this->search);
+
+        $dependencies = Dependency::where(function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
         })
         ->orderBy('name', 'asc')
         ->paginate($this->numberRows);

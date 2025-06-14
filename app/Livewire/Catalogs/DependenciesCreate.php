@@ -7,12 +7,14 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Illuminate\Support\Str;
 
 class DependenciesCreate extends Component
 {
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
-    #[Validate('required|string|max:30|unique:dependencies,name')]
+    #[Validate('required|string|min:5|max:50|unique:dependencies,name')]
     public $name = '';
+    public $msg = '';
     public function guardar()
     {
 
@@ -22,20 +24,15 @@ class DependenciesCreate extends Component
             DB::beginTransaction();
 
             $dependency = new Dependency();
-            $dependency->name = $this->name;
+            $dependency->name = Str::of($this->name)->trim();
             $dependency->save();
-
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'Dependencia : '.$dependency->name.' creado con éxito!');
-            $this->js("alert('Dependencia :".$dependency->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            
-            // Enviar el mensaje a la vista sin necesidad de recargar
+            $this->dispatch('showMessage', 'Dependencia  : '.$dependency->name.' fué creado con éxito!','success'); 
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
+             $this->dispatch('showMessage', 'Error : '.$e->getMessage().' Contacte a su Administrador.','error');
         }
 
     }
