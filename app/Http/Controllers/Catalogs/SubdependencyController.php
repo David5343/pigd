@@ -15,19 +15,19 @@ class SubdependencyController extends Controller
 {
     public function index()
     {
-        return view('subdependencies.index');
+        return view('catalogs.subdependencies.index');
 
     }
     public function create()
     {
-        return view('subdependencies.create');
+        return view('catalogs.subdependencies.create');
 
     }
     public function edit(string $id)
     {
         $row = Subdependency::find($id);
         $dependencias = Dependency::where('status','active')->get();
-        return view('subdependencies.edit', ['row' => $row,'dependencias'=>$dependencias]);
+        return view('catalogs.subdependencies.edit', ['row' => $row,'dependencias'=>$dependencias]);
     }
     public function update(Request $request, string $id)
     {
