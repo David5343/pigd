@@ -15,7 +15,7 @@ class SubdependenciesCreate extends Component
 {
     public $dependencias = [];
     protected $listeners = ['refreshComponent' => '$refresh']; // Escucha el evento refreshComponent
-    #[Validate('required|string|max:70')]
+    #[Validate('required|string|min:5|max:70|unique:subdependencies,name')]
     public $name = '';
     #[Validate('required')]
     public $dependency_id = '';
@@ -39,15 +39,11 @@ class SubdependenciesCreate extends Component
             $subdependency->save();
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'La Subdependencia : '.$subdependency->name.' creado con éxito!');
-            $this->js("alert('La Subdependencia :".$subdependency->name." creado con éxito!')");
             $this->dispatch('refreshComponent');
-            
-            // Enviar el mensaje a la vista sin necesidad de recargar
+            $this->dispatch('showMessage', 'La Subdependencia  : '.$subdependency->name.' fué creado con éxito!','success');  
          } catch (Exception $e) {
              DB::rollBack();
-             session()->flash('msg_warning', 'Error : '.$e->getMessage().' Contacte a su Administrador.');
-             $this->js("alert('Error :".$e->getMessage()." Contacte a su Administrador.')");
+             $this->dispatch('showMessage', 'Error : '.$e->getMessage().' Contacte a su Administrador.','error');
         }
 
     }

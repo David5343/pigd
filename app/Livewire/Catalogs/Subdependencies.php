@@ -15,14 +15,21 @@ class Subdependencies extends Component
     {
         $this->resetPage();
     }
-    public function updatingnumberRows()
+
+    public function updatingNumberRows()
     {
         $this->resetPage();
     }
+
+    public function updatedSearch($value)
+    {
+        $this->search = trim($value);
+    }
     public function render()
     {
-        $subdependencies = Subdependency::where(function($query) {
-            $query->Where('name', 'like', '%'.$this->search.'%');
+        $search = trim($this->search);
+        $subdependencies = Subdependency::where(function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
         })
         ->orderBy('name', 'asc')
         ->paginate($this->numberRows);
