@@ -3,6 +3,7 @@ use App\Http\Controllers\SocioeconomicBenefits\MembershipController;
 use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
 use App\Http\Controllers\Catalogs\DependencyController;
 use App\Http\Controllers\Catalogs\SubdependencyController;
+use App\Http\Controllers\Catalogs\PensionTypeController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
@@ -28,4 +29,9 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/catalogs/subdependencies/create', [SubdependencyController::class, 'create'])->name('subdependencies.create');
     Route::get('/socioeconomic_benefits/catalogs/subdependencies/{id}/edit', [SubdependencyController::class, 'edit'])->name('subdependencies.edit');
     Route::put('/socioeconomic_benefits/catalogs/subdependencies/{id}', [SubdependencyController::class, 'update'])->name('subdependencies.update');
+            //Rutas para Tipo de pensiones
+    Route::get('/socioeconomic_benefits/catalogs/pension_types', [PensionTypeController::class, 'index'])->name('pension_types.index');
+    Route::get('/socioeconomic_benefits/catalogs/pension_types/create', [PensionTypeController::class, 'create'])->name('pension_types.create');
+    Route::get('/socioeconomic_benefits/catalogs/pension_types/{id}/edit', [PensionTypeController::class, 'edit'])->name('pension_types.edit');
+    Route::put('/socioeconomic_benefits/catalogs/pension_types/{id}', [PensionTypeController::class, 'update'])->name('pension_types.update');
         });
