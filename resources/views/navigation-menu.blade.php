@@ -592,7 +592,7 @@
                             <x-dropdown-link href="{{ route('subdependencies.index') }}">
                                 {{ __('Subdependecias') }}
                             </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('pension_types.index') }}">
                                 {{ __('Tipos de Pensión') }}
                             </x-dropdown-link>
                             <!-- Separador -->
@@ -717,7 +717,7 @@
                             <x-dropdown-link>
                                 {{ Auth::user()->name }}
                             </x-dropdown-link>
-                            {{-- 
+                            {{--
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
