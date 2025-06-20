@@ -595,6 +595,9 @@
                             <x-dropdown-link href="{{ route('pension_types.index') }}">
                                 {{ __('Tipos de Pensión') }}
                             </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('work_risks.index') }}">
+                                {{ __('Tipos de riesgo de trabajo') }}
+                            </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
                             <!-- Título de la segunda sección -->
