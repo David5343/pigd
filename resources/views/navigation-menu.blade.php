@@ -586,6 +586,9 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
+                            <x-dropdown-link href="{{ route('ranks.index') }}">
+                                {{ __('Categorías') }}
+                            </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dependencies.index') }}">
                                 {{ __('Dependencias') }}
                             </x-dropdown-link>
