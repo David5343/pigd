@@ -4,6 +4,7 @@ use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryController;
 use App\Http\Controllers\Catalogs\DependencyController;
 use App\Http\Controllers\Catalogs\SubdependencyController;
 use App\Http\Controllers\Catalogs\PensionTypeController;
+use App\Http\Controllers\Catalogs\RankController;
 use App\Http\Controllers\Catalogs\WorkRisksController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,4 +41,9 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/catalogs/work_risks/create', [WorkRisksController::class, 'create'])->name('work_risks.create');
     Route::get('/socioeconomic_benefits/catalogs/work_risks/{id}/edit', [WorkRisksController::class, 'edit'])->name('work_risks.edit');
     Route::put('/socioeconomic_benefits/catalogs/work_risks/{id}', [WorkRisksController::class, 'update'])->name('work_risks.update');
+        //Rutas para Categorias
+    Route::get('/socioeconomic_benefits/catalogs/ranks', [RankController::class, 'index'])->name('ranks.index');
+    Route::get('/socioeconomic_benefits/catalogs/ranks/create', [RankController::class, 'create'])->name('ranks.create');
+    Route::get('/socioeconomic_benefits/catalogs/ranks/{id}/edit', [RankController::class, 'edit'])->name('ranks.edit');
+    Route::put('/socioeconomic_benefits/catalogs/ranks/{id}', [RankController::class, 'update'])->name('ranks.update');
         });
