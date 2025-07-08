@@ -1,4 +1,4 @@
-<div>
+<div class="m-3">
     <livewire:messages />
     <form wire:submit.prevent="guardar" class="flex flex-wrap gap-2">
         @if ($errors->any())

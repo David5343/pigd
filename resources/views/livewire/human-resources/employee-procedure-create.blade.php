@@ -1,4 +1,4 @@
-<div>
+<div class="m-3">
     <livewire:messages />
     {{-- <form class="flex flex-wrap gap-2"> --}}
     <div class="flex flex-wrap gap-2">
