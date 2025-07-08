@@ -13,7 +13,7 @@ use App\Http\Controllers\HumanResources\EmployeeController;
 use App\Http\Controllers\HumanResources\EmployeeProcedureController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['role:JefaturaCoordinacion|RecursosHumanos|SuperAdmin']], function () {
+Route::group(['middleware' => ['role:JefaturaCoordinacion|JefaturaHumanos|RecursosHumanos|SuperAdmin']], function () {
     //Rutas para areas
     Route::get('/human_resources/catalogs/areas', [AreaController::class, 'index'])->name('areas.index');
     Route::get('/human_resources/catalogs/areas/create', [AreaController::class, 'create'])->name('areas.create');
