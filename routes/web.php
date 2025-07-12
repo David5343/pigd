@@ -45,5 +45,6 @@ Route::middleware([
             require __DIR__.'/human.php';
             require __DIR__.'/medical.php';
             require __DIR__.'/socioeconomic.php';
+            require __DIR__.'/material.php';
 
 });
