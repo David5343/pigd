@@ -523,14 +523,14 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('supplier-category.index') }}">
+                                {{ __('Categoría de proveedores') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('supplier.index') }}">
                                 {{ __('Proveedores') }}
                             </x-dropdown-link>
                             <x-dropdown-link href="{{ route('dashboard') }}">
                                 {{ __('Productos') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Servicios') }}
                             </x-dropdown-link>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
