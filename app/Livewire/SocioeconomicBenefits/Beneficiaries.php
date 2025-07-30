@@ -35,6 +35,14 @@ class Beneficiaries extends Component
     {
         return Beneficiary::all()->count();
     }
+    public function getBeneficiaryTotalFathersProperty()
+    {
+        return Beneficiary::where('relationship','Padre')->count();
+    }
+        public function getBeneficiaryTotalMothersProperty()
+    {
+        return Beneficiary::where('relationship','Madre')->count();
+    }
     public function render()
     {
         $lista = Beneficiary::where(function($query) {
