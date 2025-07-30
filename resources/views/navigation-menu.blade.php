@@ -261,7 +261,13 @@
                                 {{ __('Catalogos') }}
                             </div>
                             <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
+                            <x-dropdown-link href="{{ route('medication_unit.index') }}">
+                                {{ __('Unidades de Medida') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('catalog_year.index') }}">
+                                {{ __('Años de Catálogo') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link href="{{ route('medication.index') }}">
                                 {{ __('Medicamentos') }}
                             </x-dropdown-link>
                             <!-- Separador -->
