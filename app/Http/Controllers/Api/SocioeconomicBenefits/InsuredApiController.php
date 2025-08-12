@@ -19,11 +19,27 @@ class InsuredApiController extends Controller
 {
     public function index()
     {
-        $titulares = Insured::with('rank')
-            ->with('subdependency')
-            ->latest()
-            ->limit(25)
-            ->get();
+$titulares = Insured::select([
+        'id',
+        'subdependency_id',
+        'rank_id',
+        'workplace_county_id',
+        'birthplace_county_id',
+        'county_id',
+        'file_number',
+        'employee_number',
+        'name',
+        'last_name_1',
+        'last_name_2',
+        'rfc',
+        'curp',
+        'start_date',
+        'affiliate_status'
+    ])
+    ->with('rank', 'subdependency')
+    ->latest()
+    ->limit(25)
+    ->get();
 
         return response()->json($titulares);
     }
@@ -79,6 +95,11 @@ class InsuredApiController extends Controller
         $response['insured'] = '';
         $response['debug'] = '';
         $rules = [
+            'Subdependency_id' => 'required',
+            'Rank_id' => 'required',
+            'Workplace_county_id' => 'required',
+            'Birthplace_county_id' => 'required',
+            'County_id' => 'required',
             //'File_number' => 'required|max:8|unique:insureds,file_number',
             //'File_number' => ['required',Rule::unique('insureds')->where(fn (Builder $query) => $query->where('affiliate_status','Activo'))],
             //Valida si ya hay un registro en la tabla insureds con el mismo numero de afiliacion con un estatus de activo
@@ -86,10 +107,9 @@ class InsuredApiController extends Controller
                 'required', 'max:8',
                 Rule::unique('insureds')->where(fn (Builder $query) => $query->where('affiliate_status', 'Activo')),
             ],
-            'Subdependency_id' => 'required|numeric|min:1',
-            'Rank_id' => 'required|numeric|min:0',
+            'Employee_number' => 'nullable|max:15|unique:insureds,employee_number',
             'Start_date' => 'required|date|max:10',
-            'Work_place' => 'nullable|min:3|max:85',
+            // 'Work_place' => 'nullable|min:3|max:85',
             'Register_motive' => 'nullable|min:3|max:250',
             'Affiliate_status' => 'required|not_in:Elije...',
             'Observations' => 'nullable|min:5|max:250',
@@ -98,7 +118,7 @@ class InsuredApiController extends Controller
             'Name' => 'required|min:2|max:30',
             'Blood_type'=>'required',
             'Birthday' => 'nullable|max:10|date',
-            'Birthplace' => 'nullable|min:3|max:85',
+            // 'Birthplace' => 'nullable|min:3|max:85',
             'Sex' => 'required',
             'Marital_status' => 'nullable',
             //'Rfc' => 'required|max:13|alpha_num:ascii|unique:insureds,rfc',
@@ -113,8 +133,8 @@ class InsuredApiController extends Controller
             'Curp' => 'nullable | string | min:18 | max: 18',
             'Phone' => 'nullable|numeric|digits:10',
             'Email' => 'nullable|email|min:5|max:50|unique:insureds,email',
-            'State' => 'nullable|min:5|max:85',
-            'County' => 'nullable|min:3|max:85',
+            // 'State' => 'nullable|min:5|max:85',
+            // 'County' => 'nullable|min:3|max:85',
             'Neighborhood' => 'nullable|min:5|max:50',
             'Roadway_type' => 'nullable|min:5|max:50',
             'Street' => 'nullable|min:5|max:50',
@@ -122,13 +142,6 @@ class InsuredApiController extends Controller
             'Interior_number' => 'nullable|max:7',
             'Cp' => 'nullable|numeric|digits:5',
             'locality' => 'nullable|min:5|max:85',
-            'account_number' => 'nullable|digits:10|unique:insureds,account_number',
-            'Clabe' => 'nullable', 'digits:18', 'unique:insureds,clabe',
-            'Bank_id' => 'nullable',
-            'Representative_name' => 'nullable|max:40',
-            'Representative_rfc' => 'nullable | max:13|alpha_num:ascii',
-            'Representative_curp' => 'nullable | max:18|alpha_num:ascii',
-            'Representative_relationship' => 'nullable',
         ];
         // $messages = [
         //     'File_number.required' => 'El número de expediente es obligatorio.',
@@ -163,31 +176,30 @@ class InsuredApiController extends Controller
         try {
 
             $titular = new Insured();
-            $titular->file_number = Str::of($request->input('File_number'))->trim();
             $titular->subdependency_id = $request->input('Subdependency_id');
             $titular->rank_id = $request->input('Rank_id');
-            $titular->start_date = $request->input('Start_date');
-            $titular->work_place = Str::of($request->input('Work_place'))->trim();
-            $titular->register_motive = Str::of($request->input('Register_motive'))->trim();
-            $titular->affiliate_status = $request->input('Affiliate_status');
-            $titular->observations = Str::of($request->input('Observations'))->trim();
+            $titular->workplace_county_id = $request->input('Workplace_county_id');
+            $titular->birthplace_county_id = $request->input('Birthplace_county_id');
+            $titular->county_id = $request->input('County_id');
+            $titular->file_number = Str::of($request->input('File_number'))->trim();
+            $titular->employee_number = Str::of($request->input('Employee_number'))->trim();
+            $titular->name = Str::of($request->input('Name'))->trim();
             $titular->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
             $titular->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
-            $titular->name = Str::of($request->input('Name'))->trim();
-            $titular->blood_type = $request->input('Blood_type');
-            $titular->birthday = $request->input('Birthday');
-            $titular->birthplace = Str::of($request->input('Birthplace'))->trim();
             $titular->sex = $request->input('Sex');
-            $titular->marital_status = $request->input('Marital_status');
+            $titular->birthday = $request->input('Birthday');
+            $titular->blood_type = $request->input('Blood_type');
+            // $titular->birthplace = Str::of($request->input('Birthplace'))->trim();       
             $rfc = Str::of($request->input('Rfc'))->trim();
             $titular->rfc = Str::upper($rfc);
             $curp = Str::of($request->input('Curp'))->trim();
             $titular->curp = Str::upper($curp);
+            $titular->marital_status = $request->input('Marital_status');
             $titular->phone = Str::of($request->input('Phone'))->trim();
             $email = Str::of($request->input('Email'))->trim();
             $titular->email = Str::lower($email);
-            $titular->state = Str::of($request->input('State'))->trim();
-            $titular->county = Str::of($request->input('County'))->trim();
+            // $titular->state = Str::of($request->input('State'))->trim();
+            // $titular->county = Str::of($request->input('County'))->trim();
             $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim();
             $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim();
             $titular->street = Str::of($request->input('Street'))->trim();
@@ -195,16 +207,13 @@ class InsuredApiController extends Controller
             $titular->interior_number = Str::of($request->input('Interior_number'))->trim();
             $titular->cp = Str::of($request->input('Cp'))->trim();
             $titular->locality = Str::of($request->input('Locality'))->trim();
-            $titular->account_number = Str::of($request->input('Account_number'))->trim();
-            $titular->clabe = Str::of($request->input('Clabe'))->trim();
-            $titular->bank_id = $request->input('Bank_id');
-            $titular->representative_name = Str::of($request->input('Representative_name'))->trim();
-            $titular->representative_rfc = Str::of($request->input('Representative_rfc'))->trim();
-            $titular->representative_curp = Str::of($request->input('Representative_curp'))->trim();
-            $titular->representative_relationship = Str::of($request->input('Representative_relationship'))->trim();
+            $titular->start_date = $request->input('Start_date');
+            // $titular->work_place = Str::of($request->input('Work_place'))->trim();
+            $titular->register_motive = Str::of($request->input('Register_motive'))->trim();
+            $titular->affiliate_status = $request->input('Affiliate_status');
+            $titular->observations = Str::of($request->input('Observations'))->trim();
             $titular->status = 'active';
             $titular->modified_by = Auth::user()->email;
-            //sleep(1);
             $titular->save();
             DB::commit();
             $response['status'] = 'success';
@@ -360,10 +369,13 @@ class InsuredApiController extends Controller
         //$codigo = 200;
         //return response()->json($response,status:$codigo);
         $rules = [
-            'Subdependency_id' => 'required|numeric|min:1',
-            'Rank_id' => 'required|numeric|min:0',
+            'Subdependency_id' => 'required',
+            'Rank_id' => 'required',
+            'Workplace_county_id' => 'required',
+            'Birthplace_county_id' => 'required',
+            'County_id' => 'required',
             'Start_date' => 'required|date|max:10',
-            'Work_place' => 'nullable|min:3|max:85',
+            // 'Work_place' => 'nullable|min:3|max:85',
             'Register_motive' => 'nullable|min:3|max:250',
             'Affiliate_status' => 'required|not_in:Elije...',
             'Observations' => 'nullable|min:5|max:250',
@@ -372,15 +384,15 @@ class InsuredApiController extends Controller
             'Name' => 'required|min:2|max:30',
             'Blood_type'=>'required',
             'Birthday' => 'nullable|max:10|date',
-            'Birthplace' => 'nullable|min:3|max:85',
+            // 'Birthplace' => 'nullable|min:3|max:85',
             'Sex' => 'required',
             'Marital_status' => 'nullable',
             'Rfc' => 'required|max:13|alpha_num:ascii',
             'Curp' => 'nullable | string | min:18 | max: 18',
             'Phone' => 'nullable|numeric|digits:10',
             'Email' => 'nullable|email|min:5|max:50|unique:insureds,email',
-            'State' => 'nullable|min:5|max:85',
-            'County' => 'nullable|min:3|max:85',
+            // 'State' => 'nullable|min:5|max:85',
+            // 'County' => 'nullable|min:3|max:85',
             'Neighborhood' => 'nullable|min:5|max:50',
             'Roadway_type' => 'nullable|min:5|max:50',
             'Street' => 'nullable|min:5|max:50',
@@ -388,13 +400,6 @@ class InsuredApiController extends Controller
             'Interior_number' => 'nullable|max:7',
             'Cp' => 'nullable|numeric|digits:5',
             'locality' => 'nullable|min:5|max:85',
-            'account_number' => 'nullable|digits:10|unique:insureds,account_number',
-            'Clabe' => 'nullable', 'digits:18', 'unique:insureds,clabe',
-            'Bank_id' => 'nullable',
-            'Representative_name' => 'nullable|max:40',
-            'Representative_rfc' => 'nullable | max:13|alpha_num:ascii',
-            'Representative_curp' => 'nullable | max:18|alpha_num:ascii',
-            'Representative_relationship' => 'nullable',
         ];
         // $messages = [
         //     'File_number.required' => 'El número de expediente es obligatorio.',
@@ -431,8 +436,11 @@ class InsuredApiController extends Controller
             $titular = Insured::find($id);
             $titular->subdependency_id = $request->input('Subdependency_id');
             $titular->rank_id = $request->input('Rank_id');
+            $titular->workplace_county_id = $request->input('Workplace_county_id');
+            $titular->birthplace_county_id = $request->input('Birthplace_county_id');
+            $titular->county_id = $request->input('County_id');
             $titular->start_date = $request->input('Start_date');
-            $titular->work_place = Str::of($request->input('Work_place'))->trim();
+            // $titular->work_place = Str::of($request->input('Work_place'))->trim();
             $titular->register_motive = Str::of($request->input('Register_motive'))->trim();
             $titular->affiliate_status = $request->input('Affiliate_status');
             $titular->observations = Str::of($request->input('Observations'))->trim();
@@ -441,7 +449,7 @@ class InsuredApiController extends Controller
             $titular->name = Str::of($request->input('Name'))->trim();
             $titular->blood_type = $request->input('Blood_type');
             $titular->birthday = $request->input('Birthday');
-            $titular->birthplace = Str::of($request->input('Birthplace'))->trim();
+            // $titular->birthplace = Str::of($request->input('Birthplace'))->trim();
             $titular->sex = $request->input('Sex');
             $titular->marital_status = $request->input('Marital_status');
             $rfc = Str::of($request->input('Rfc'))->trim();
@@ -451,8 +459,8 @@ class InsuredApiController extends Controller
             $titular->phone = Str::of($request->input('Phone'))->trim();
             $email = Str::of($request->input('Email'))->trim();
             $titular->email = Str::lower($email);
-            $titular->state = Str::of($request->input('State'))->trim();
-            $titular->county = Str::of($request->input('County'))->trim();
+            // $titular->state = Str::of($request->input('State'))->trim();
+            // $titular->county = Str::of($request->input('County'))->trim();
             $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim();
             $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim();
             $titular->street = Str::of($request->input('Street'))->trim();
@@ -460,13 +468,6 @@ class InsuredApiController extends Controller
             $titular->interior_number = Str::of($request->input('Interior_number'))->trim();
             $titular->cp = Str::of($request->input('Cp'))->trim();
             $titular->locality = Str::of($request->input('Locality'))->trim();
-            $titular->account_number = Str::of($request->input('Account_number'))->trim();
-            $titular->clabe = Str::of($request->input('Clabe'))->trim();
-            $titular->bank_id = $request->input('Bank_id');
-            $titular->representative_name = Str::of($request->input('Representative_name'))->trim();
-            $titular->representative_rfc = Str::of($request->input('Representative_rfc'))->trim();
-            $titular->representative_curp = Str::of($request->input('Representative_curp'))->trim();
-            $titular->representative_relationship = Str::of($request->input('Representative_relationship'))->trim();
             $titular->modified_by = Auth::user()->email;
             $titular->save();
             DB::commit();
