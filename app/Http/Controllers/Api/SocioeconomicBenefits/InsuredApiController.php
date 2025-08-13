@@ -19,7 +19,7 @@ class InsuredApiController extends Controller
 {
     public function index()
     {
-$titulares = Insured::select([
+        $titulares = Insured::select([
         'id',
         'subdependency_id',
         'rank_id',
@@ -35,11 +35,10 @@ $titulares = Insured::select([
         'curp',
         'start_date',
         'affiliate_status'
-    ])
-    ->with('rank', 'subdependency')
-    ->latest()
-    ->limit(25)
-    ->get();
+    ])->with('rank', 'subdependency')
+      ->latest()
+      ->limit(25)
+      ->get();
 
         return response()->json($titulares);
     }
@@ -97,9 +96,9 @@ $titulares = Insured::select([
         $rules = [
             'Subdependency_id' => 'required',
             'Rank_id' => 'required',
-            'Workplace_county_id' => 'required',
-            'Birthplace_county_id' => 'required',
-            'County_id' => 'required',
+            'Workplace_county_id' => 'nullable',
+            'Birthplace_county_id' => 'nullable',
+            'County_id' => 'nullable',
             //'File_number' => 'required|max:8|unique:insureds,file_number',
             //'File_number' => ['required',Rule::unique('insureds')->where(fn (Builder $query) => $query->where('affiliate_status','Activo'))],
             //Valida si ya hay un registro en la tabla insureds con el mismo numero de afiliacion con un estatus de activo
@@ -193,25 +192,25 @@ $titulares = Insured::select([
             $rfc = Str::of($request->input('Rfc'))->trim();
             $titular->rfc = Str::upper($rfc);
             $curp = Str::of($request->input('Curp'))->trim();
-            $titular->curp = Str::upper($curp);
+            $titular->curp = Str::upper($curp) ?:null;
             $titular->marital_status = $request->input('Marital_status');
-            $titular->phone = Str::of($request->input('Phone'))->trim();
+            $titular->phone = Str::of($request->input('Phone'))->trim() ?:null;
             $email = Str::of($request->input('Email'))->trim();
-            $titular->email = Str::lower($email);
+            $titular->email = Str::lower($email) ?:null;
             // $titular->state = Str::of($request->input('State'))->trim();
             // $titular->county = Str::of($request->input('County'))->trim();
-            $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim();
-            $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim();
-            $titular->street = Str::of($request->input('Street'))->trim();
-            $titular->outdoor_number = Str::of($request->input('Outdoor_number'))->trim();
-            $titular->interior_number = Str::of($request->input('Interior_number'))->trim();
-            $titular->cp = Str::of($request->input('Cp'))->trim();
-            $titular->locality = Str::of($request->input('Locality'))->trim();
+            $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim() ?:null;
+            $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim() ?:null;
+            $titular->street = Str::of($request->input('Street'))->trim() ?:null;
+            $titular->outdoor_number = Str::of($request->input('Outdoor_number'))->trim() ?:null;
+            $titular->interior_number = Str::of($request->input('Interior_number'))->trim() ?:null;
+            $titular->cp = Str::of($request->input('Cp'))->trim() ?:null;
+            $titular->locality = Str::of($request->input('Locality'))->trim() ?:null;
             $titular->start_date = $request->input('Start_date');
             // $titular->work_place = Str::of($request->input('Work_place'))->trim();
-            $titular->register_motive = Str::of($request->input('Register_motive'))->trim();
+            $titular->register_motive = Str::of($request->input('Register_motive'))->trim() ?:null;
             $titular->affiliate_status = $request->input('Affiliate_status');
-            $titular->observations = Str::of($request->input('Observations'))->trim();
+            $titular->observations = Str::of($request->input('Observations'))->trim() ?:null;
             $titular->status = 'active';
             $titular->modified_by = Auth::user()->email;
             $titular->save();
@@ -227,7 +226,133 @@ $titulares = Insured::select([
         }
 
     }
+    public function update(Request $request, $id)
+    {
+        $todo = $request->all();
+        $codigo = 0;
+        $response['status'] = 'fail';
+        $response['errors'] = '';
+        $response['insured'] = '';
+        $response['debug'] = '';
+        //$response['debug'] =$request->input('File_number');
+        //$codigo = 200;
+        //return response()->json($response,status:$codigo);
+        $rules = [
+            'Subdependency_id' => 'required',
+            'Rank_id' => 'required',
+            'Workplace_county_id' => 'nullable',
+            'Birthplace_county_id' => 'nullable',
+            'County_id' => 'nullable',
+            'Start_date' => 'required|date|max:10',
+            // 'Work_place' => 'nullable|min:3|max:85',
+            'Register_motive' => 'nullable|min:3|max:250',
+            'Affiliate_status' => 'required|not_in:Elije...',
+            'Observations' => 'nullable|min:5|max:250',
+            'Last_name_1' => 'required|min:2|max:20',
+            'Last_name_2' => 'nullable|min:2|max:20',
+            'Name' => 'required|min:2|max:30',
+            'Blood_type'=>'required',
+            'Birthday' => 'nullable|max:10|date',
+            // 'Birthplace' => 'nullable|min:3|max:85',
+            'Sex' => 'required',
+            'Marital_status' => 'nullable',
+            'Rfc' => 'required|max:13|alpha_num:ascii',
+            'Curp' => 'nullable | string | min:18 | max: 18',
+            'Phone' => 'nullable|numeric|digits:10',
+            'Email' => 'nullable|email|min:5|max:50|unique:insureds,email',
+            // 'State' => 'nullable|min:5|max:85',
+            // 'County' => 'nullable|min:3|max:85',
+            'Neighborhood' => 'nullable|min:5|max:50',
+            'Roadway_type' => 'nullable|min:5|max:50',
+            'Street' => 'nullable|min:5|max:50',
+            'Outdoor_number' => 'nullable|max:7',
+            'Interior_number' => 'nullable|max:7',
+            'Cp' => 'nullable|numeric|digits:5',
+            'locality' => 'nullable|min:5|max:85',
+        ];
+        // $messages = [
+        //     'File_number.required' => 'El número de expediente es obligatorio.',
+        //     'File_number.max' => 'El número de expediente no debe exceder los 8 caracteres.',
+        //     'File_number.unique' => 'El número de expediente ya está registrado para un afiliado activo.',
+        //     'Subdependency_id.required' => 'La subdependencia es obligatoria.',
+        //     'Subdependency_id.numeric' => 'La subdependencia debe ser un número.',
+        //     'Subdependency_id.min' => 'La subdependencia debe ser al menos 1.',
+        //     // Añade aquí el resto de tus mensajes personalizados...
+        //     'Rfc.required' => 'El RFC es obligatorio.',
+        //     'Rfc.alpha_num' => 'El RFC debe ser alfanumérico.',
+        //     'Rfc.unique' => 'El RFC ya está registrado para un afiliado activo.',
+        //     'Curp.alpha_num' => 'La CURP debe ser alfanumérica.',
+        //     'Curp.unique' => 'La CURP ya está registrada para un afiliado activo.',
+        //     'Email.email' => 'El correo electrónico debe ser una dirección válida.',
+        //     'Email.unique' => 'El correo electrónico ya está registrado.',
+        //     // etc...
+        // ];
+        $validator = Validator::make($request->all(), $rules);
+        // Comprobar si la validación falla
+        if ($validator->fails()) {
+            // Retornar errores de validación
+            $response['errors'] = $validator->errors()->toArray();
+            //$response['debug'] = [$request->all()];
+            $codigo = 200;
 
+            return response()->json($response, status: $codigo);
+        }
+
+        // Si la validación pasa, continua con el resto de tu lógica aquí
+        DB::beginTransaction();
+        try {
+            //$id = $request->input('Id');
+            $titular = Insured::find($id);
+            $titular->subdependency_id = $request->input('Subdependency_id');
+            $titular->rank_id = $request->input('Rank_id');
+            $titular->workplace_county_id = $request->input('Workplace_county_id');
+            $titular->birthplace_county_id = $request->input('Birthplace_county_id');
+            $titular->county_id = $request->input('County_id');
+            $titular->employee_number = Str::of($request->input('Employee_number'))->trim();
+            $titular->name = Str::of($request->input('Name'))->trim();
+            $titular->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
+            $titular->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
+            $titular->sex = $request->input('Sex');
+            $titular->birthday = $request->input('Birthday');
+            $titular->blood_type = $request->input('Blood_type');
+            // $titular->birthplace = Str::of($request->input('Birthplace'))->trim();       
+            $rfc = Str::of($request->input('Rfc'))->trim();
+            $titular->rfc = Str::upper($rfc);
+            $curp = Str::of($request->input('Curp'))->trim();
+            $titular->curp = Str::upper($curp) ?:null;
+            $titular->marital_status = $request->input('Marital_status');
+            $titular->phone = Str::of($request->input('Phone'))->trim() ?:null;
+            $email = Str::of($request->input('Email'))->trim();
+            $titular->email = Str::lower($email) ?:null;
+            // $titular->state = Str::of($request->input('State'))->trim();
+            // $titular->county = Str::of($request->input('County'))->trim();
+            $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim() ?:null;
+            $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim() ?:null;
+            $titular->street = Str::of($request->input('Street'))->trim() ?:null;
+            $titular->outdoor_number = Str::of($request->input('Outdoor_number'))->trim() ?:null;
+            $titular->interior_number = Str::of($request->input('Interior_number'))->trim() ?:null;
+            $titular->cp = Str::of($request->input('Cp'))->trim() ?:null;
+            $titular->locality = Str::of($request->input('Locality'))->trim() ?:null;
+            $titular->start_date = $request->input('Start_date');
+            // $titular->work_place = Str::of($request->input('Work_place'))->trim();
+            $titular->register_motive = Str::of($request->input('Register_motive'))->trim() ?:null;
+            $titular->affiliate_status = $request->input('Affiliate_status');
+            $titular->observations = Str::of($request->input('Observations'))->trim() ?:null;
+            $titular->status = 'active';
+            $titular->modified_by = Auth::user()->email;
+            $titular->save();
+            DB::commit();
+            $response['status'] = 'success';
+            $response['message'] = $titular->file_number;
+            $codigo = 200;
+
+            return response()->json($response, status: $codigo);
+        } catch (Exception $e) {
+            DB::rollBack();
+            $response['debug'] = $e->getMessage();
+
+        }
+    }
     public function busqueda(Request $request)
     {
         $dato = $request->dato;
@@ -356,133 +481,6 @@ $titulares = Insured::select([
             return response()->json($response, status: $codigo);
         }
     }
-
-    public function update(Request $request, $id)
-    {
-        $todo = $request->all();
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['debug'] = '';
-        //$response['debug'] =$request->input('File_number');
-        //$codigo = 200;
-        //return response()->json($response,status:$codigo);
-        $rules = [
-            'Subdependency_id' => 'required',
-            'Rank_id' => 'required',
-            'Workplace_county_id' => 'required',
-            'Birthplace_county_id' => 'required',
-            'County_id' => 'required',
-            'Start_date' => 'required|date|max:10',
-            // 'Work_place' => 'nullable|min:3|max:85',
-            'Register_motive' => 'nullable|min:3|max:250',
-            'Affiliate_status' => 'required|not_in:Elije...',
-            'Observations' => 'nullable|min:5|max:250',
-            'Last_name_1' => 'required|min:2|max:20',
-            'Last_name_2' => 'nullable|min:2|max:20',
-            'Name' => 'required|min:2|max:30',
-            'Blood_type'=>'required',
-            'Birthday' => 'nullable|max:10|date',
-            // 'Birthplace' => 'nullable|min:3|max:85',
-            'Sex' => 'required',
-            'Marital_status' => 'nullable',
-            'Rfc' => 'required|max:13|alpha_num:ascii',
-            'Curp' => 'nullable | string | min:18 | max: 18',
-            'Phone' => 'nullable|numeric|digits:10',
-            'Email' => 'nullable|email|min:5|max:50|unique:insureds,email',
-            // 'State' => 'nullable|min:5|max:85',
-            // 'County' => 'nullable|min:3|max:85',
-            'Neighborhood' => 'nullable|min:5|max:50',
-            'Roadway_type' => 'nullable|min:5|max:50',
-            'Street' => 'nullable|min:5|max:50',
-            'Outdoor_number' => 'nullable|max:7',
-            'Interior_number' => 'nullable|max:7',
-            'Cp' => 'nullable|numeric|digits:5',
-            'locality' => 'nullable|min:5|max:85',
-        ];
-        // $messages = [
-        //     'File_number.required' => 'El número de expediente es obligatorio.',
-        //     'File_number.max' => 'El número de expediente no debe exceder los 8 caracteres.',
-        //     'File_number.unique' => 'El número de expediente ya está registrado para un afiliado activo.',
-        //     'Subdependency_id.required' => 'La subdependencia es obligatoria.',
-        //     'Subdependency_id.numeric' => 'La subdependencia debe ser un número.',
-        //     'Subdependency_id.min' => 'La subdependencia debe ser al menos 1.',
-        //     // Añade aquí el resto de tus mensajes personalizados...
-        //     'Rfc.required' => 'El RFC es obligatorio.',
-        //     'Rfc.alpha_num' => 'El RFC debe ser alfanumérico.',
-        //     'Rfc.unique' => 'El RFC ya está registrado para un afiliado activo.',
-        //     'Curp.alpha_num' => 'La CURP debe ser alfanumérica.',
-        //     'Curp.unique' => 'La CURP ya está registrada para un afiliado activo.',
-        //     'Email.email' => 'El correo electrónico debe ser una dirección válida.',
-        //     'Email.unique' => 'El correo electrónico ya está registrado.',
-        //     // etc...
-        // ];
-        $validator = Validator::make($request->all(), $rules);
-        // Comprobar si la validación falla
-        if ($validator->fails()) {
-            // Retornar errores de validación
-            $response['errors'] = $validator->errors()->toArray();
-            //$response['debug'] = [$request->all()];
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
-        }
-
-        // Si la validación pasa, continua con el resto de tu lógica aquí
-        DB::beginTransaction();
-        try {
-            //$id = $request->input('Id');
-            $titular = Insured::find($id);
-            $titular->subdependency_id = $request->input('Subdependency_id');
-            $titular->rank_id = $request->input('Rank_id');
-            $titular->workplace_county_id = $request->input('Workplace_county_id');
-            $titular->birthplace_county_id = $request->input('Birthplace_county_id');
-            $titular->county_id = $request->input('County_id');
-            $titular->start_date = $request->input('Start_date');
-            // $titular->work_place = Str::of($request->input('Work_place'))->trim();
-            $titular->register_motive = Str::of($request->input('Register_motive'))->trim();
-            $titular->affiliate_status = $request->input('Affiliate_status');
-            $titular->observations = Str::of($request->input('Observations'))->trim();
-            $titular->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
-            $titular->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
-            $titular->name = Str::of($request->input('Name'))->trim();
-            $titular->blood_type = $request->input('Blood_type');
-            $titular->birthday = $request->input('Birthday');
-            // $titular->birthplace = Str::of($request->input('Birthplace'))->trim();
-            $titular->sex = $request->input('Sex');
-            $titular->marital_status = $request->input('Marital_status');
-            $rfc = Str::of($request->input('Rfc'))->trim();
-            $titular->rfc = Str::upper($rfc);
-            $curp = Str::of($request->input('Curp'))->trim();
-            $titular->curp = Str::upper($curp);
-            $titular->phone = Str::of($request->input('Phone'))->trim();
-            $email = Str::of($request->input('Email'))->trim();
-            $titular->email = Str::lower($email);
-            // $titular->state = Str::of($request->input('State'))->trim();
-            // $titular->county = Str::of($request->input('County'))->trim();
-            $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim();
-            $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim();
-            $titular->street = Str::of($request->input('Street'))->trim();
-            $titular->outdoor_number = Str::of($request->input('Outdoor_number'))->trim();
-            $titular->interior_number = Str::of($request->input('Interior_number'))->trim();
-            $titular->cp = Str::of($request->input('Cp'))->trim();
-            $titular->locality = Str::of($request->input('Locality'))->trim();
-            $titular->modified_by = Auth::user()->email;
-            $titular->save();
-            DB::commit();
-            $response['status'] = 'success';
-            $response['message'] = $titular->file_number;
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
-        } catch (Exception $e) {
-            DB::rollBack();
-            $response['debug'] = $e->getMessage();
-
-        }
-    }
-
     // public function baja(Request $request, $id)
     public function baja(Request $request)
      {
