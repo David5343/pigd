@@ -56,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/prestaciones/categorias/listar', [RankApiController::class, 'listar']);
     //Rutas de municipios
     Route::get('/humanos/municipios/listar', [CountyApiController::class, 'listar']);
+    Route::get('/humanos/municipios/buscarporestados/{id}', [CountyApiController::class, 'buscarporestados']);
     //Rutas de estados
     Route::get('/humanos/estados/listar', [StateApiController::class, 'listar']);
     //Rutas de bancos
