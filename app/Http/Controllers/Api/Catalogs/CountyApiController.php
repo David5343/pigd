@@ -9,9 +9,22 @@ class CountyApiController extends Controller
 {
     public function listar()
     {
-        $query = County::where('status', 'active')->get();
+        $query = County::where('status', 'active')
+        ->orderBy('name', 'asc')
+        ->get();
 
-        //$subdepe["subdependencias"] = $query;
+        return response()->json($query);
+    }
+    public function buscarporestados($id)
+    {
+        $query = County::where('state_id', $id)
+        ->orderBy('name', 'asc')
+        ->get();
+
+        if ($query->isEmpty()) {
+            return response()->json(['message' => 'County not found'], 404);
+        }
+
         return response()->json($query);
     }
 }
