@@ -9,10 +9,9 @@ class StateApiController extends Controller
 {
     public function listar()
     {
-        $query = State::where('status', 'active')->get();
-
-        //$response["estados"] = $query;
+        $query = State::where('status', 'active')
+            ->orderBy('name', 'asc')
+            ->get();
         return response()->json($query);
-        //return response()->json($response);
     }
 }
