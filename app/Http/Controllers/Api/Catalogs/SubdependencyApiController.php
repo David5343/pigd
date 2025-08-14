@@ -9,9 +9,10 @@ class SubdependencyApiController extends Controller
 {
     public function listar()
     {
-        $query = Subdependency::where('status', 'active')->get();
-
-        //$subdepe["subdependencias"] = $query;
+        $query = Subdependency::where('status', 'active')
+            ->orderBy('name', 'asc')
+            ->get();
+            
         return response()->json($query);
     }
 }
