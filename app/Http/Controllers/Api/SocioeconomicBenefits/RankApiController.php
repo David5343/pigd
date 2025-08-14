@@ -10,9 +10,9 @@ class RankApiController extends Controller
 {
     public function listar()
     {
-        $query = Rank::where('status', 'active')->get();
-
-        //$subdepe["subdependencias"] = $query;
+        $query = Rank::where('status', 'active')
+            ->orderBy('name', 'asc')
+            ->get();
         return response()->json($query);
     }
 }
