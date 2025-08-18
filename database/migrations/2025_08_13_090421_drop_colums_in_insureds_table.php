@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('insureds', function (Blueprint $table) {
-            $table->dropColumn('birthplace');
-            $table->dropColumn('work_place');
+            $table->dropColumn(['birthplace','work_place']);
         });
     }
 
