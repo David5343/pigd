@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Controllers\Api\Catalogs\AffiliationStatusApiController;
 use App\Http\Controllers\Api\Catalogs\BankApiController;
 use App\Http\Controllers\Api\Catalogs\CountyApiController;
 use App\Http\Controllers\Api\Catalogs\StateApiController;
@@ -30,7 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/prestaciones/titulares/{id}', [InsuredApiController::class, 'show']);
     //Route::delete('/prestaciones/titulares/{id}', [InsuredApiController::class,'destroy']);
     Route::get('/prestaciones/titulares/busqueda/{dato}', [InsuredApiController::class, 'busqueda']);
-    Route::get('/prestaciones/titulares/porfolio/{dato}', [InsuredApiController::class, 'porfolio']);
+    Route::get('/socioeconomic_benefits/insureds/searchbyfolio/{folio}', [InsuredApiController::class, 'searchbyfolio']);
     Route::get('/prestaciones/titulares/porrfc/{dato}', [InsuredApiController::class, 'porrfc']);
     Route::get('/prestaciones/titulares/porcurp/{dato}', [InsuredApiController::class, 'porcurp']);
     Route::put('/prestaciones/titulares/update/{id}', [InsuredApiController::class, 'update']);
@@ -61,6 +62,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/humanos/estados/listar', [StateApiController::class, 'listar']);
     //Rutas de bancos
     Route::get('/humanos/bancos/listar', [BankApiController::class, 'listar']);
+    //Rutas de estatus de afiliacion
+    Route::get('/socioeconomic_benefits/affiliation_statuses/index', [AffiliationStatusApiController::class, 'index']);
     //Credencial Titulares
     Route::get('/prestaciones/credencialtitular', [CredentialInsuredApiController::class, 'index']);
     Route::post('/prestaciones/credencialtitular/guardar', [CredentialInsuredApiController::class, 'store']);
