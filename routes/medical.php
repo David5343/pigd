@@ -29,4 +29,5 @@ Route::group(['middleware' => ['role:Enlace|JefaturaCoordinacion|CoordinacionMed
     Route::get('/medical_coordination/catalogs/medication/create', [MedicationController::class, 'create'])->name('medication.create');
     Route::get('/medical_coordination/catalogs/medication/{id}/edit', [MedicationController::class, 'edit'])->name('medication.edit');
     Route::put('/medical_coordination/catalogs/medication/{id}', [MedicationController::class, 'update'])->name('medication.update');
+    Route::get('/medical_coordination/catalogs/medication/import', [MedicationController::class, 'import'])->name('medication.import');
 });
