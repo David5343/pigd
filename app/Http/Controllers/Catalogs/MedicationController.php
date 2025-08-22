@@ -55,4 +55,8 @@ class MedicationController extends Controller
             return back()->with('msg_warning', 'Error: ' . $e->getMessage());
         }
     }
+    public function import()
+    {
+        return view('catalogs.medications.import');
+    }
 }
