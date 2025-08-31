@@ -18,13 +18,13 @@ class AffiliationStatusApiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Registro no encontrado',
-                'affiliation_status' => null,
+                'statuses' => null,
             ], 404);
         }
         return response()->json([
             'status' => 'success',
             'message' => 'Búsqueda realizada correctamente',
-            'affiliation_status' => $status,
+            'statuses' => $status,
         ], 200);
 
     } catch (\Exception $e) {
