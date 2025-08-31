@@ -45,38 +45,48 @@ class InsuredApiController extends Controller
 
     public function show($id)
     {
-        $response['Status'] = 'fail';
-        $response['Message'] = null;
-        $response['Errors'] = null;
-        $response['Insured'] = null;
-        $response['History'] = null;
-        $response['Debug'] = null;
-        $titular = Insured::where('id', $id)
-            ->with('subdependency')
-            ->with('rank')
-            ->with('bank')
-            ->with('beneficiaries')
+    try {
+        $relations = [
+            'subdependency',
+            'rank',
+            'workplaceCounty',
+            'birthplaceCounty',
+            'county.state',
+            'beneficiaries'
+        ];
+
+        $insured = Insured::with($relations)
+            ->where('id', $id)
             ->first();
-        if ($titular == null) {
-            $response['message'] = 'Registro no encontrado';
 
-            return response()->json($response, 200);
-        } else {
-            $history = Insured::where('file_number', $titular->file_number)
-                ->where('affiliate_status', 'Baja')
-                ->with('subdependency')
-                ->with('rank')
-                ->with('bank')
-                ->with('beneficiaries')
-                ->get();
-            $response['Status'] = 'success';
-            $response['Insured'] = $titular;
-            if ($history != null) {
-                $response['History'] = $history;
-            }
+        $history = Insured::with($relations)
+            ->where('id', $id)
+            ->where('affiliate_status', 'Baja')
+            ->first();
 
-            return response()->json($response, 200);
+        if (!$insured && !$history) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Registro no encontrado',
+                'insured' => null,
+                'history' => null,
+            ], 404);
         }
+        //sleep(33);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Búsqueda realizada correctamente',
+            'insured' => $insured,
+            'history' => $history,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error en el servidor',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
     }
 
     public function idgenerator()
@@ -388,39 +398,6 @@ class InsuredApiController extends Controller
             return response()->json($response, status: $codigo);
         }
     }
-
-    // public function porfolio(Request $request)
-    // {
-    //     $dato = $request->dato;
-    //     $codigo = 0;
-    //     $response['status'] = 'fail';
-    //     $response['message'] = '';
-    //     $response['errors'] = '';
-    //     $response['insured'] = '';
-    //     $response['beneficiary'] = '';
-    //     $response['debug'] = '0';
-    //     $titular = Insured::where('affiliate_status', '!=', 'Baja')
-    //         ->where('file_number', $dato)
-    //         ->with('subdependency')
-    //         ->with('rank')
-    //         ->with('workplaceCounty')
-    //         ->with('birthplaceCounty')
-    //         ->with('county')
-    //         ->with('beneficiaries')
-    //         ->first();
-    //     if ($titular == null) {
-    //         $response['message'] = 'Registro no encontrado';
-    //         $codigo = 200;
-
-    //         return response()->json($response, status: $codigo);
-    //     } else {
-    //         $response['status'] = 'success';
-    //         $response['insured'] = [$titular];
-    //         $codigo = 200;
-
-    //         return response()->json($response, status: $codigo);
-    //     }
-    // }
 public function searchByFolio(Request $request, $folio)
 {
     try {
@@ -466,72 +443,97 @@ public function searchByFolio(Request $request, $folio)
         ], 500);
     }
 }
-    public function porrfc(Request $request)
-    {
-        $dato = $request->dato;
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['debug'] = '0';
-        $titular = Insured::where('affiliate_status', '!=', 'Baja')
-            ->where('rfc', $dato)
-            ->with('subdependency')
-            ->with('rank')
-            ->with('workplaceCounty')
-            ->with('birthplaceCounty')
-            ->with('county')
-            ->with('beneficiaries')
+public function searchByRfc(Request $request, $rfc)
+{
+    try {
+        $relations = [
+            'subdependency',
+            'rank',
+            'workplaceCounty',
+            'birthplaceCounty',
+            'county',
+            'beneficiaries'
+        ];
+
+        $insured = Insured::with($relations)
+            ->where('rfc', $rfc)
             ->first();
-        if ($titular == null) {
-            $response['message'] = 'Registro no encontrado';
-            $codigo = 200;
 
-            return response()->json($response, status: $codigo);
-        } else {
-            $response['status'] = 'success';
-            $response['insured'] = [$titular];
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
-        }
-    }
-
-    public function porcurp(Request $request)
-    {
-        $dato = $request->dato;
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['debug'] = '0';
-        $titular = Insured::where('affiliate_status', '!=', 'Baja')
-            ->where('curp', $dato)
-            ->with('subdependency')
-            ->with('rank')
-            ->with('workplaceCounty')
-            ->with('birthplaceCounty')
-            ->with('county')
-            ->with('beneficiaries')
+        $history = Insured::with($relations)
+            ->where('rfc', $rfc)
+            ->where('affiliate_status', 'Baja')
             ->first();
-        if ($titular == null) {
-            $response['message'] = 'Registro no encontrado';
-            $codigo = 200;
 
-            return response()->json($response, status: $codigo);
-        } else {
-            $response['status'] = 'success';
-            $response['insured'] = [$titular];
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
+        if (!$insured && !$history) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Registro no encontrado',
+                'insured' => null,
+                'history' => null,
+            ], 404);
         }
+        //sleep(33);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Búsqueda realizada correctamente',
+            'insured' => $insured,
+            'history' => $history,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error en el servidor',
+            'error' => $e->getMessage(),
+        ], 500);
     }
-    // public function baja(Request $request, $id)
+}
+
+public function searchByCurp(Request $request, $curp)
+{
+    try {
+        $relations = [
+            'subdependency',
+            'rank',
+            'workplaceCounty',
+            'birthplaceCounty',
+            'county',
+            'beneficiaries'
+        ];
+
+        $insured = Insured::with($relations)
+            ->where('curp', $curp)
+            ->first();
+
+        $history = Insured::with($relations)
+            ->where('curp', $curp)
+            ->where('affiliate_status', 'Baja')
+            ->first();
+
+        if (!$insured && !$history) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Registro no encontrado',
+                'insured' => null,
+                'history' => null,
+            ], 404);
+        }
+        //sleep(33);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Búsqueda realizada correctamente',
+            'insured' => $insured,
+            'history' => $history,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error en el servidor',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
     public function baja(Request $request)
     {
         $response = [
