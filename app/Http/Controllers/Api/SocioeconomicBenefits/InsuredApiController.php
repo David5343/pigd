@@ -382,7 +382,6 @@ class InsuredApiController extends Controller
             ->orwhere('last_name_2', 'like', '%' . $dato . '%')
             ->with('subdependency')
             ->with('rank')
-            ->with('bank')
             ->with('beneficiaries')
             ->get();
         if ($titular->isEmpty()) {
@@ -398,6 +397,51 @@ class InsuredApiController extends Controller
             return response()->json($response, status: $codigo);
         }
     }
+public function search(Request $request, $data)
+{
+    try {
+        $relations = [
+            'subdependency',
+            'rank',
+            'workplaceCounty',
+            'birthplaceCounty',
+            'county',
+            'beneficiaries'
+        ];
+
+        $insured = Insured::with($relations)
+            ->where('file_number', $data)
+            ->first();
+
+        $history = Insured::with($relations)
+            ->where('file_number', $data)
+            ->where('affiliate_status', 'Baja')
+            ->first();
+
+        if (!$insured && !$history) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Registro no encontrado',
+                'insured' => null,
+                'history' => null,
+            ], 404);
+        }
+        //sleep(33);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Búsqueda realizada correctamente',
+            'insured' => $insured,
+            'history' => $history,
+        ], 200);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Error en el servidor',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 public function searchByFolio(Request $request, $folio)
 {
     try {
