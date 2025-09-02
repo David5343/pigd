@@ -26,11 +26,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [ApiController::class, 'index']);
     //Rutas de titulares
     Route::get('/prestaciones/titulares/idgenerator', [InsuredApiController::class, 'idgenerator']);
-    Route::get('/prestaciones/titulares', [InsuredApiController::class, 'index']);
+    Route::get('/socioeconomic_benefits/insureds', [InsuredApiController::class, 'index']);
     Route::post('/prestaciones/titulares/guardar', [InsuredApiController::class, 'store']);
     Route::get('/socioeconomic_benefits/insureds/{id}', [InsuredApiController::class, 'show']);
     //Route::delete('/prestaciones/titulares/{id}', [InsuredApiController::class,'destroy']);
-    Route::get('/prestaciones/titulares/busqueda/{dato}', [InsuredApiController::class, 'busqueda']);
+    Route::get('/socioeconomic_benefits/insureds/search/{data}', [InsuredApiController::class, 'search']);
     Route::get('/socioeconomic_benefits/insureds/searchbyfolio/{folio}', [InsuredApiController::class, 'searchbyfolio']);
     Route::get('/socioeconomic_benefits/insureds/searchbyrfc/{rfc}', [InsuredApiController::class, 'searchbyrfc']);
     Route::get('/socioeconomic_benefits/insureds/searchbycurp/{curp}', [InsuredApiController::class, 'searchbycurp']);
