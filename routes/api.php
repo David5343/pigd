@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/users', [ApiController::class, 'index']);
     //Rutas de titulares
-    Route::get('/prestaciones/titulares/idgenerator', [InsuredApiController::class, 'idgenerator']);
+    Route::get('/socioeconomic_benefits/insureds/idgenerator', [InsuredApiController::class, 'idgenerator']);
     Route::get('/socioeconomic_benefits/insureds', [InsuredApiController::class, 'index']);
     Route::post('/prestaciones/titulares/guardar', [InsuredApiController::class, 'store']);
     Route::get('/socioeconomic_benefits/insureds/{id}', [InsuredApiController::class, 'show']);
