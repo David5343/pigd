@@ -101,10 +101,34 @@ class InsuredApiController extends Controller
 
     public function idgenerator()
     {
-        $no_afiliacion = IdGenerator::generate(['table' => 'insureds', 'field' => 'file_number', 'length' => 8, 'prefix' => 'T']);
-        $response['no_afiliacion'] = $no_afiliacion;
+        try {
+            $file_number = IdGenerator::generate([
+                'table'  => 'insureds',
+                'field'  => 'file_number',
+                'length' => 8,
+                'prefix' => 'T'
+            ]);
 
-        return response()->json($response);
+            if (!$file_number) {
+                return response()->json([
+                    'status'      => 'error',
+                    'message'     => 'Folio no generado',
+                    'file_number' => null,
+                ], 500);
+            }
+
+            return response()->json([
+                'status'      => 'success',
+                'message'     => 'Folio generado correctamente',
+                'file_number' => $file_number,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Error en el servidor',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -118,6 +142,7 @@ class InsuredApiController extends Controller
             'Rank_id' => 'required',
             'Workplace_county_id' => 'nullable',
             'Birthplace_county_id' => 'nullable',
+            'Affiliation_status_id' => 'required',
             'County_id' => 'nullable',
             //'File_number' => 'required|max:8|unique:insureds,file_number',
             //'File_number' => ['required',Rule::unique('insureds')->where(fn (Builder $query) => $query->where('affiliate_status','Activo'))],
@@ -129,33 +154,23 @@ class InsuredApiController extends Controller
             ],
             'Employee_number' => 'required|min:6|max:6|unique:insureds,employee_number',
             'Start_date' => 'required|date|max:10',
-            // 'Work_place' => 'nullable|min:3|max:85',
             'Register_motive' => 'nullable|min:3|max:250',
-            'Affiliate_status' => 'nullable|not_in:Elije...',
             'Observations' => 'nullable|min:5|max:250',
             'Last_name_1' => 'required|min:2|max:20',
             'Last_name_2' => 'nullable|min:2|max:20',
             'Name' => 'required|min:2|max:30',
             'Blood_type' => 'required',
             'Birthday' => 'nullable|max:10|date',
-            // 'Birthplace' => 'nullable|min:3|max:85',
             'Sex' => 'required',
             'Marital_status' => 'nullable',
-            //'Rfc' => 'required|max:13|alpha_num:ascii|unique:insureds,rfc',
-            //'Rfc' => 'required|max:13|alpha_num:ascii',
             'Rfc' => [
                 'required',
                 'alpha_num:ascii',
                 Rule::unique('insureds')->where(fn(Builder $query) => $query->where('affiliate_status', 'Activo')),
             ],
-            //'Curp' => 'nullable| max:18 |alpha_num:ascii|unique:insureds,curp',
-            // 'Curp' => ['nullable| max:18 |min:18|alpha_num:ascii',
-            // Rule::unique('insureds')->where(fn (Builder $query) => $query->where('affiliate_status','Activo'))],
             'Curp' => 'nullable | string | min:18 | max: 18',
             'Phone' => 'nullable|numeric|digits:10',
             'Email' => 'nullable|email|min:5|max:50|unique:insureds,email',
-            // 'State' => 'nullable|min:5|max:85',
-            // 'County' => 'nullable|min:3|max:85',
             'Neighborhood' => 'nullable|min:5|max:50',
             'Roadway_type' => 'nullable|min:5|max:50',
             'Street' => 'nullable|min:5|max:50',
@@ -201,6 +216,7 @@ class InsuredApiController extends Controller
             $titular->rank_id = $request->input('Rank_id');
             $titular->workplace_county_id = $request->input('Workplace_county_id');
             $titular->birthplace_county_id = $request->input('Birthplace_county_id');
+            $titular->affiliation_status_id = $request->input('Affiliation_status_id');
             $titular->county_id = $request->input('County_id');
             $titular->file_number = Str::of($request->input('File_number'))->trim();
             $titular->employee_number = Str::of($request->input('Employee_number'))->trim();
@@ -209,8 +225,7 @@ class InsuredApiController extends Controller
             $titular->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
             $titular->sex = $request->input('Sex');
             $titular->birthday = $request->input('Birthday');
-            $titular->blood_type = $request->input('Blood_type');
-            // $titular->birthplace = Str::of($request->input('Birthplace'))->trim();       
+            $titular->blood_type = $request->input('Blood_type');    
             $rfc = Str::of($request->input('Rfc'))->trim();
             $titular->rfc = Str::upper($rfc);
             $curp = Str::of($request->input('Curp'))->trim();
@@ -219,8 +234,6 @@ class InsuredApiController extends Controller
             $titular->phone = Str::of($request->input('Phone'))->trim() ?: null;
             $email = Str::of($request->input('Email'))->trim();
             $titular->email = Str::lower($email) ?: null;
-            // $titular->state = Str::of($request->input('State'))->trim();
-            // $titular->county = Str::of($request->input('County'))->trim();
             $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim() ?: null;
             $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim() ?: null;
             $titular->street = Str::of($request->input('Street'))->trim() ?: null;
@@ -229,9 +242,7 @@ class InsuredApiController extends Controller
             $titular->cp = Str::of($request->input('Cp'))->trim() ?: null;
             $titular->locality = Str::of($request->input('Locality'))->trim() ?: null;
             $titular->start_date = $request->input('Start_date');
-            // $titular->work_place = Str::of($request->input('Work_place'))->trim();
             $titular->register_motive = Str::of($request->input('Register_motive'))->trim() ?: null;
-            $titular->affiliate_status = $request->input('Affiliate_status');
             $titular->observations = Str::of($request->input('Observations'))->trim() ?: null;
             $titular->status = 'active';
             $titular->modified_by = Auth::user()->email;
@@ -373,40 +384,6 @@ class InsuredApiController extends Controller
             $response['debug'] = $e->getMessage();
         }
     }
-    public function busqueda(Request $request)
-    {
-        $dato = $request->dato;
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['debug'] = '0';
-        $titular = Insured::where('id', $dato)
-            ->orwhere('file_number', $dato)
-            ->orwhere('rfc', $dato)
-            ->orwhere('curp', $dato)
-            ->orwhere('name', 'like', '%' . $dato . '%')
-            ->orwhere('last_name_1', 'like', '%' . $dato . '%')
-            ->orwhere('last_name_2', 'like', '%' . $dato . '%')
-            ->with('subdependency')
-            ->with('rank')
-            ->with('beneficiaries')
-            ->get();
-        if ($titular->isEmpty()) {
-            $response['message'] = 'Registro no encontrado';
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
-        } else {
-            $response['status'] = 'success';
-            $response['insured'] = $titular;
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
-        }
-    }
     public function search(Request $request, $data)
     {
         try {
@@ -419,14 +396,14 @@ class InsuredApiController extends Controller
                 'beneficiaries'
             ];
 
-$insureds = Insured::with($relations)
-    ->where(function ($query) use ($data) {
-        $query->whereRaw("CONCAT_WS(' ', last_name_1, last_name_2, name) LIKE ?", ["%$data%"])
-              ->orWhere('file_number', 'like', "%$data%")
-              ->orWhere('rfc', 'like', "%$data%")
-              ->orWhere('curp', 'like', "%$data%");
-    })
-    ->get();
+            $insureds = Insured::with($relations)
+                ->where(function ($query) use ($data) {
+                    $query->whereRaw("CONCAT_WS(' ', last_name_1, last_name_2, name) LIKE ?", ["%$data%"])
+                        ->orWhere('file_number', 'like', "%$data%")
+                        ->orWhere('rfc', 'like', "%$data%")
+                        ->orWhere('curp', 'like', "%$data%");
+                })
+                ->get();
 
             if ($insureds->isEmpty()) {
                 return response()->json([
