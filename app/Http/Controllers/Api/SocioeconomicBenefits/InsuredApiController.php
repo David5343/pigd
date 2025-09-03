@@ -265,9 +265,6 @@ class InsuredApiController extends Controller
         $response['errors'] = '';
         $response['insured'] = '';
         $response['debug'] = '';
-        //$response['debug'] =$request->input('File_number');
-        //$codigo = 200;
-        //return response()->json($response,status:$codigo);
         $rules = [
             'Subdependency_id' => 'required',
             'Rank_id' => 'required',
@@ -276,7 +273,6 @@ class InsuredApiController extends Controller
             'County_id' => 'nullable',
             'Employee_number' => 'required|min:6|max:6|unique:insureds,employee_number,' . $id,
             'Start_date' => 'required|date|max:10',
-            // 'Work_place' => 'nullable|min:3|max:85',
             'Register_motive' => 'nullable|min:3|max:250',
             'Affiliate_status' => 'required|not_in:Elije...',
             'Observations' => 'nullable|min:5|max:250',
@@ -285,15 +281,12 @@ class InsuredApiController extends Controller
             'Name' => 'required|min:2|max:30',
             'Blood_type' => 'required',
             'Birthday' => 'nullable|max:10|date',
-            // 'Birthplace' => 'nullable|min:3|max:85',
             'Sex' => 'required',
             'Marital_status' => 'nullable',
             'Rfc' => 'required|max:13|alpha_num:ascii',
             'Curp' => 'nullable | string | min:18 | max: 18',
             'Phone' => 'nullable|numeric|digits:10',
             'Email' => 'nullable|email|min:5|max:50|unique:insureds,email',
-            // 'State' => 'nullable|min:5|max:85',
-            // 'County' => 'nullable|min:3|max:85',
             'Neighborhood' => 'nullable|min:5|max:50',
             'Roadway_type' => 'nullable|min:5|max:50',
             'Street' => 'nullable|min:5|max:50',
@@ -333,12 +326,12 @@ class InsuredApiController extends Controller
         // Si la validación pasa, continua con el resto de tu lógica aquí
         DB::beginTransaction();
         try {
-            //$id = $request->input('Id');
             $titular = Insured::find($id);
             $titular->subdependency_id = $request->input('Subdependency_id');
             $titular->rank_id = $request->input('Rank_id');
             $titular->workplace_county_id = $request->input('Workplace_county_id');
             $titular->birthplace_county_id = $request->input('Birthplace_county_id');
+            $titular->affiliation_status_id = $request->input('Affiliation_status_id');
             $titular->county_id = $request->input('County_id');
             $titular->employee_number = Str::of($request->input('Employee_number'))->trim();
             $titular->name = Str::of($request->input('Name'))->trim();
@@ -346,8 +339,7 @@ class InsuredApiController extends Controller
             $titular->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
             $titular->sex = $request->input('Sex');
             $titular->birthday = $request->input('Birthday');
-            $titular->blood_type = $request->input('Blood_type');
-            // $titular->birthplace = Str::of($request->input('Birthplace'))->trim();       
+            $titular->blood_type = $request->input('Blood_type');    
             $rfc = Str::of($request->input('Rfc'))->trim();
             $titular->rfc = Str::upper($rfc);
             $curp = Str::of($request->input('Curp'))->trim();
@@ -356,8 +348,6 @@ class InsuredApiController extends Controller
             $titular->phone = Str::of($request->input('Phone'))->trim() ?: null;
             $email = Str::of($request->input('Email'))->trim();
             $titular->email = Str::lower($email) ?: null;
-            // $titular->state = Str::of($request->input('State'))->trim();
-            // $titular->county = Str::of($request->input('County'))->trim();
             $titular->neighborhood = Str::of($request->input('Neighborhood'))->trim() ?: null;
             $titular->roadway_type = Str::of($request->input('Roadway_type'))->trim() ?: null;
             $titular->street = Str::of($request->input('Street'))->trim() ?: null;
@@ -366,9 +356,7 @@ class InsuredApiController extends Controller
             $titular->cp = Str::of($request->input('Cp'))->trim() ?: null;
             $titular->locality = Str::of($request->input('Locality'))->trim() ?: null;
             $titular->start_date = $request->input('Start_date');
-            // $titular->work_place = Str::of($request->input('Work_place'))->trim();
             $titular->register_motive = Str::of($request->input('Register_motive'))->trim() ?: null;
-            $titular->affiliate_status = $request->input('Affiliate_status');
             $titular->observations = Str::of($request->input('Observations'))->trim() ?: null;
             $titular->status = 'active';
             $titular->modified_by = Auth::user()->email;
