@@ -89,7 +89,7 @@ class CredentialInsuredApiController extends Controller
             ->exists();
 
         if ($existeVigente) {
-            $response['errors'] = ['Insured_id' => 'Ya existe una credencial vigente para este jubilado.'];
+            $response['errors'] = ['Insured_id' => 'Ya existe una credencial vigente para este titular.'];
 
             return response()->json($response, 200);
         }
