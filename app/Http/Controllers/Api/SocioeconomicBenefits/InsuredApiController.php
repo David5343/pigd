@@ -156,7 +156,6 @@ class InsuredApiController extends Controller
             'Last_name_1' => 'required|min:2|max:20',
             'Last_name_2' => 'nullable|min:2|max:20',
             'Name' => 'required|min:2|max:30',
-            'Blood_type' => 'required',
             'Birthday' => 'nullable|max:10|date',
             'Sex' => 'required',
             'Marital_status' => 'nullable',
@@ -255,7 +254,6 @@ class InsuredApiController extends Controller
             'Last_name_1' => 'required|min:2|max:20',
             'Last_name_2' => 'nullable|min:2|max:20',
             'Name' => 'required|min:2|max:30',
-            'Blood_type' => 'required',
             'Birthday' => 'nullable|max:10|date',
             'Sex' => 'required',
             'Marital_status' => 'nullable',
@@ -349,6 +347,7 @@ class InsuredApiController extends Controller
             $insureds = Insured::with($relations)
                 ->where(function ($query) use ($data) {
                     $query->whereRaw("CONCAT_WS(' ', last_name_1, last_name_2, name) LIKE ?", ["%$data%"])
+                        ->orWhereRaw("CONCAT_WS(' ', name,last_name_1, last_name_2) LIKE ?", ["%$data%"])
                         ->orWhere('file_number', 'like', "%$data%")
                         ->orWhere('rfc', 'like', "%$data%")
                         ->orWhere('curp', 'like', "%$data%");
@@ -642,19 +641,6 @@ class InsuredApiController extends Controller
         DB::beginTransaction();
         try {
             $insured = Insured::findOrFail($id);
-
-            // Solo actualizamos los campos enviados en el request
-            // if ($request->has('Phone')) {
-            //     $insured->phone = Str::of($request->input('Phone'))->trim() ?: null;
-            // }
-
-            // if ($request->has('Email')) {
-            //     $insured->email = Str::lower(Str::of($request->input('Email'))->trim()) ?: null;
-            // }
-
-            // if ($request->has('Neighborhood')) {
-            //     $insured->neighborhood = Str::of($request->input('Neighborhood'))->trim() ?: null;
-            // }
             $fecha_baja = $request->input('Inactive_date');
             $baja_dependencia = $request->input('Inactive_date_dependency');
             $motivo_baja = Str::of($request->input('Inactive_motive'))->trim();
