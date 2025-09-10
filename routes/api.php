@@ -27,15 +27,15 @@ Route::middleware('auth:sanctum')->group(function () {
     //Rutas de titulares
     Route::get('/socioeconomic_benefits/insureds/idgenerator', [InsuredApiController::class, 'idgenerator']);
     Route::get('/socioeconomic_benefits/insureds', [InsuredApiController::class, 'index']);
-    Route::post('/prestaciones/titulares/guardar', [InsuredApiController::class, 'store']);
+    Route::post('/socioeconomic_benefits/insureds/store', [InsuredApiController::class, 'store']);
     Route::get('/socioeconomic_benefits/insureds/{id}', [InsuredApiController::class, 'show']);
     //Route::delete('/prestaciones/titulares/{id}', [InsuredApiController::class,'destroy']);
     Route::get('/socioeconomic_benefits/insureds/search/{data}', [InsuredApiController::class, 'search']);
     Route::get('/socioeconomic_benefits/insureds/searchbyfolio/{folio}', [InsuredApiController::class, 'searchbyfolio']);
     Route::get('/socioeconomic_benefits/insureds/searchbyrfc/{rfc}', [InsuredApiController::class, 'searchbyrfc']);
     Route::get('/socioeconomic_benefits/insureds/searchbycurp/{curp}', [InsuredApiController::class, 'searchbycurp']);
-    Route::put('/prestaciones/titulares/update/{id}', [InsuredApiController::class, 'update']);
-    Route::put('/prestaciones/titulares/baja/{id}', [InsuredApiController::class, 'baja']);
+    Route::put('/socioeconomic_benefits/insureds/update/{id}', [InsuredApiController::class, 'update']);
+    Route::patch('/socioeconomic_benefits/insureds/deactivate/{id}', [InsuredApiController::class, 'deactivate']);
     //Route::put('/prestaciones/titulares/guardarfoto/{id}', [InsuredApiController::class, 'guardarfoto']);
     Route::put('/prestaciones/titulares/guardarfoto/{data}', [InsuredApiController::class, 'guardarfoto']);
     Route::put('/prestaciones/titulares/guardarfirma/{id}', [InsuredApiController::class, 'guardarfirma']);
