@@ -36,9 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/insureds/searchbycurp/{curp}', [InsuredApiController::class, 'searchbycurp']);
     Route::put('/socioeconomic_benefits/insureds/update/{id}', [InsuredApiController::class, 'update']);
     Route::patch('/socioeconomic_benefits/insureds/deactivate/{id}', [InsuredApiController::class, 'deactivate']);
-    //Route::put('/prestaciones/titulares/guardarfoto/{id}', [InsuredApiController::class, 'guardarfoto']);
-    Route::put('/prestaciones/titulares/guardarfoto/{data}', [InsuredApiController::class, 'guardarfoto']);
-    Route::put('/prestaciones/titulares/guardarfirma/{id}', [InsuredApiController::class, 'guardarfirma']);
+    Route::patch('/socioeconomic_benefits/insureds/photo/{id}', [InsuredApiController::class, 'photo']);
+    Route::patch('/socioeconomic_benefits/insureds/signature/{id}', [InsuredApiController::class, 'signature']);
     //Rutas de familiares
     Route::get('/prestaciones/familiares/idgenerator', [BeneficiaryApiController::class, 'idgenerator']);
     Route::get('/prestaciones/familiares', [BeneficiaryApiController::class, 'index']);
