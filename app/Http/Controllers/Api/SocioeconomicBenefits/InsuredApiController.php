@@ -510,113 +510,6 @@ class InsuredApiController extends Controller
             ], 500);
         }
     }
-    public function baja(Request $request)
-    {
-        $response = [
-            'Status' => 'fail',
-            'Message' => '',
-            'Errors' => '',
-            'Insured' => '',
-            'Debug' => '',
-        ];
-
-        $rules = [
-            'File_number' => 'required|max:8',
-            'Inactive_date' => 'required|date',
-            'Inactive_date_dependency' => 'required|date',
-            'Inactive_motive' => 'required',
-            'Inactive_reference' => 'nullable|max:250',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            $response['Status'] = 'fail';
-            $response['Errors'] = $validator->errors()->toArray();
-            return response()->json($response, 200);
-        }
-
-        DB::beginTransaction();
-        try {
-            $fecha_baja = $request->input('Inactive_date');
-            $baja_dependencia = $request->input('Inactive_date_dependency');
-            $motivo_baja = Str::of($request->input('Inactive_motive'))->trim();
-            $referencia = Str::of($request->input('Inactive_reference'))->trim();
-            $id = $request->input('Id');
-            $titular = Insured::find($id);
-            if (!$titular) {
-                $response['Status'] = 'success';
-                $response['Message'] = "Titular no encontrado";
-                $response['Debug'] = $id;
-                return response()->json($response, 200);
-            }
-
-            if ($motivo_baja == 'Acta administrativa') {
-                $titular->inactive_date = $request->input('Inactive_date');
-                $titular->inactive_date_dependency = $baja_dependencia;
-                $titular->inactive_motive = $motivo_baja;
-                $titular->inactive_reference = $referencia;
-                $titular->affiliate_status = 'Baja por aplicar';
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-                $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
-                    'inactive_date' => $fecha_baja,
-                    'inactive_motive' => $motivo_baja . ' del titular',
-                    'affiliate_status' => 'Baja por aplicar',
-                    'modified_by' => Auth::user()->email,
-                ]);
-
-                $response['Message'] = ($affectedRows === 0) ?
-                    'El registro ' . $titular->file_number . ' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
-                    'El registro ' . $titular->file_number . ' y sus familiares fueron dados de baja con éxito!';
-            } elseif ($motivo_baja == 'Defunsión') {
-                $titular->inactive_date = $fecha_baja;
-                $titular->inactive_date_dependency = $baja_dependencia;
-                $titular->inactive_motive = $motivo_baja;
-                $titular->inactive_reference = $referencia;
-                $titular->affiliate_status = 'Baja';
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-                $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
-                    'inactive_date' => $fecha_baja,
-                    'inactive_motive' => $motivo_baja . ' del titular',
-                    'affiliate_status' => 'Baja por Aplicar',
-                    'modified_by' => Auth::user()->email,
-                ]);
-
-                $response['Message'] = ($affectedRows === 0) ?
-                    'El registro ' . $titular->file_number . ' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
-                    'El registro ' . $titular->file_number . ' y sus familiares fueron dados de baja con éxito!';
-            } elseif ($motivo_baja == 'Pensión' || $motivo_baja == 'Renuncia voluntaria') {
-                $titular->inactive_date = $fecha_baja;
-                $titular->inactive_date_dependency = $baja_dependencia;
-                $titular->inactive_motive = $motivo_baja;
-                $titular->inactive_reference = $referencia;
-                $titular->affiliate_status = 'Baja';
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-                $affectedRows = Beneficiary::where('insured_id', $titular->id)->update([
-                    'inactive_date' => $fecha_baja,
-                    'inactive_motive' => $motivo_baja . ' del titular',
-                    'affiliate_status' => 'Baja',
-                    'modified_by' => Auth::user()->email,
-                ]);
-
-                $response['Message'] = ($affectedRows === 0) ?
-                    'El registro ' . $titular->file_number . ' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
-                    'El registro ' . $titular->file_number . ' y sus familiares fueron dados de baja con éxito!';
-            } else {
-                throw new \Exception("Motivo de baja no reconocido: $motivo_baja");
-            }
-            DB::commit();
-            $response['Status'] = 'success';
-            return response()->json($response, 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            $response['debug'] = $e->getMessage();
-            return response()->json($response, status: 500);
-        }
-    }
     public function deactivate(Request $request, $id)
     {
         $rules = [
@@ -730,100 +623,98 @@ class InsuredApiController extends Controller
             ], 500);
         }
     }
-    public function guardarfoto(Request $request)
+    public function photo(Request $request, $id)
     {
-        $response['Status'] = 'fail';
-        $response['Message'] = '';
-        $response['Errors'] = '';
-        $response['Insured'] = '';
-        $response['History'] = '';
-        $response['debug'] = '';
-
-        // Validación de la solicitud
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'File_number' => 'required|string|max:8',
             'Photo' => 'required|string'
-        ]);
-        // Comprobar si la validación falla
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
         if ($validator->fails()) {
-            // Retornar errores de validación
-            $response['Errors'] = $validator->errors()->toArray();
-            //$response['debug'] = [$request->all()];
-            return response()->json($response);
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'Error de validación',
+                'insured' => null,
+                'errors' => $validator->errors()->toArray(),
+            ], 422);
         }
 
-        // Si la validación pasa, continua con el resto de tu lógica aquí
         DB::beginTransaction();
         try {
-            $titular = Insured::find($request->input('Id'));
-            if ($titular == null) {
-                $response['Message'] = 'Registro no encontrado';
-                return response()->json($response);
-            } else {
-                $titular->photo = Str::of($request->input('Photo'))->trim();
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-                DB::commit();
-                $response['Status'] = 'success';
-                $response['Message'] = $titular->file_number;
-                return response()->json($response);
+            $insured = Insured::findOrFail($id);
+            if (!$insured) {
+                return response()->json([
+                    'status' => 'warning',
+                    'message' => 'Registro no encontrado',
+                    'insured' => null,
+                    'errors' => $validator->errors()->toArray(),
+                ], 422);
             }
-        } catch (Exception $e) {
+            $insured->photo = Str::of($request->input('Photo'))->trim();
+            $insured->modified_by = Auth::user()->email;
+            $insured->save();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Registro actualizado correctamente',
+                'insured' => $insured,
+            ], 200);
+        } catch (\Exception $e) {
             DB::rollBack();
-            $response['debug'] = $e->getMessage();
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
-    public function guardarfirma(Request $request, $id)
+    public function signature(Request $request, $id)
     {
-        $todo = $request->all();
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['history'] = '';
-        $response['debug'] = '';
         $rules = [
-
-            'File_number' => 'required',
-            'max:8',
-            'Signature' => 'required',
+            'File_number' => 'required|string|max:8',
+            'Signature' => 'required|string'
         ];
-        $validator = Validator::make($request->all(), $rules);
-        // Comprobar si la validación falla
-        if ($validator->fails()) {
-            // Retornar errores de validación
-            $response['errors'] = $validator->errors()->toArray();
-            //$response['debug'] = [$request->all()];
-            $codigo = 200;
 
-            return response()->json($response, status: $codigo);
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'Error de validación',
+                'insured' => null,
+                'errors' => $validator->errors()->toArray(),
+            ], 422);
         }
 
-        // Si la validación pasa, continua con el resto de tu lógica aquí
         DB::beginTransaction();
         try {
-            $titular = Insured::find($id);
-            if ($titular == null) {
-                $response['message'] = 'Registro no encontrado';
-                $codigo = 200;
-
-                return response()->json($response, status: $codigo);
-            } else {
-                $titular->signature = Str::of($request->input('Signature'))->trim();
-                $titular->modified_by = Auth::user()->email;
-                $titular->save();
-                DB::commit();
-                $response['status'] = 'success';
-                $response['message'] = $titular->file_number;
-                $codigo = 200;
-
-                return response()->json($response, status: $codigo);
+            $insured = Insured::findOrFail($id);
+            if (!$insured) {
+                return response()->json([
+                    'status' => 'warning',
+                    'message' => 'Registro no encontrado',
+                    'insured' => null,
+                    'errors' => $validator->errors()->toArray(),
+                ], 422);
             }
-        } catch (Exception $e) {
+            $insured->signature = Str::of($request->input('Signature'))->trim();
+            $insured->modified_by = Auth::user()->email;
+            $insured->save();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Registro actualizado correctamente',
+                'insured' => $insured,
+            ], 200);
+        } catch (\Exception $e) {
             DB::rollBack();
-            $response['debug'] = $e->getMessage();
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }
