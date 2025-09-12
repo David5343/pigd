@@ -45,6 +45,7 @@ class BeneficiaryApiController extends Controller
         $response['Debug'] = null;
         $familiar = Beneficiary::where('id', $id)
             ->with('insured.subdependency')
+            ->with('insured.affiliationStatus')
             ->first();
         if ($familiar == null) {
             $response['message'] = 'Registro no encontrado';
