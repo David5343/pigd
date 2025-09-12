@@ -74,9 +74,9 @@ class InsuredApiController extends Controller
                 ->first();
 
             $history = Insured::with($relations)
-                ->where('id', $id)
-                ->where('affiliate_status', 'Baja')
-                ->first();
+                ->where('file_number', $insured->file_number)
+                ->where('affiliation_status_id', 4)
+                ->get();
 
             if (!$insured && !$history) {
                 return response()->json([
