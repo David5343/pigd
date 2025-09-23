@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/insureds/idgenerator', [InsuredApiController::class, 'idgenerator']);
     Route::get('/socioeconomic_benefits/insureds', [InsuredApiController::class, 'index']);
     Route::post('/socioeconomic_benefits/insureds/store', [InsuredApiController::class, 'store']);
+    Route::post('/socioeconomic_benefits/insureds/reentry', [InsuredApiController::class, 'reentry']);
     Route::get('/socioeconomic_benefits/insureds/{id}', [InsuredApiController::class, 'show']);
     //Route::delete('/prestaciones/titulares/{id}', [InsuredApiController::class,'destroy']);
     Route::get('/socioeconomic_benefits/insureds/search/{data}', [InsuredApiController::class, 'search']);
@@ -38,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/socioeconomic_benefits/insureds/deactivate/{id}', [InsuredApiController::class, 'deactivate']);
     Route::patch('/socioeconomic_benefits/insureds/photo/{id}', [InsuredApiController::class, 'photo']);
     Route::patch('/socioeconomic_benefits/insureds/signature/{id}', [InsuredApiController::class, 'signature']);
+     
     //Rutas de familiares
     Route::get('/prestaciones/familiares/idgenerator', [BeneficiaryApiController::class, 'idgenerator']);
     Route::get('/prestaciones/familiares', [BeneficiaryApiController::class, 'index']);
