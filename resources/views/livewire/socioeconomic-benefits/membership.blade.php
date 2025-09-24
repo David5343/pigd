@@ -112,7 +112,7 @@
                                                 {{ $item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name }}
                                             </td>
                                             <td class="whitespace-nowrap px-6 py-4">{{ $item->rfc }}</td>
-                                            <td class="whitespace-nowrap px-6 py-4">{{ $item->affiliate_status }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4">{{ $item->affiliationStatus->name }}</td>
                                             <td class="whitespace-nowrap px-6 py-4">
                                                 <a
                                                     href="{{ url('socioeconomic_benefits/membership/' . $item->id . '/edit') }}">
