@@ -21,19 +21,19 @@ class Membership extends Component
     }
     public function getInsuredPreProperty()
     {
-        return Insured::where('affiliate_status','Preafiliado')->count();
+        return Insured::where('affiliation_status_id',1)->count();
     }
     public function getInsuredActivosProperty()
     {
-        return Insured::where('affiliate_status','Activo')->count();
+        return Insured::where('affiliation_status_id',2)->count();
     }
     public function getInsuredBajasProperty()
     {
-        return Insured::where('affiliate_status','Baja')->count();
+        return Insured::where('affiliation_status_id',4)->count();
     }
     public function getInsuredBajasPendientesProperty()
     {
-        return Insured::where('affiliate_status','Baja por Aplicar')->count();
+        return Insured::where('affiliation_status_id',5)->count();
     }
     public function getInsuredTotalProperty()
     {
@@ -50,7 +50,7 @@ class Membership extends Component
     public function render()
     {
         // $lista = Insured::where('status', 'active')
-        $lista = Insured::where(function($query) {
+        $lista = Insured::with('affiliationStatus')->where(function($query) {
             $query->where('file_number', 'like', '%'.$this->search.'%')
                   ->orWhere('name', 'like', '%'.$this->search.'%')
                   ->orWhere('last_name_1', 'like', '%'.$this->search.'%')
