@@ -46,7 +46,7 @@ class FinalizePendingDeactivateCommand extends Command
 
             // 1. Obtener IDs y actualizar asegurados en un solo paso
             $insuredIds = Insured::where('affiliation_status_id', 5)
-                ->whereDate('inactive_date', '<=', $limitDate->toDateString())
+                ->whereDate('inactive_date_dependency', '<=', $limitDate->toDateString())
                 ->pluck('id'); // aquí sacamos los IDs
 
             // actualizar asegurados con esos IDs
