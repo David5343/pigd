@@ -11,5 +11,5 @@ use Illuminate\Support\Facades\Schedule;
 // })->purpose('Display an inspiring quote')->hourly();
 
 //Schedule::command(BackupDatabase::class)->dailyAt('19:00');
-//Schedule::command(FinalizePendingDeactivateCommand::class)->dailyAt('08:00');
-Schedule::command(FinalizePendingDeactivateCommand::class)->everyMinute();
+Schedule::command(FinalizePendingDeactivateCommand::class)->dailyAt('08:00');
+//Schedule::command(FinalizePendingDeactivateCommand::class)->everyMinute();
