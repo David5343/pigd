@@ -36,6 +36,7 @@ class FinalizePendingDeactivateCommand extends Command
      */
     public function handle()
     {
+        Log::info('✅ Se ejecutó insureds:finalize-pending-deactivate-command ' . now());
         $this->info('Iniciando proceso de actualización...');
         // fecha límite: hace 61 días (solo fecha)
         $limitDate = Carbon::today()->subDays(61);
