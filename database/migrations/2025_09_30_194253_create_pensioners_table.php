@@ -17,10 +17,6 @@ return new class extends Migration
                     ->nullable()
                     ->constrained()
                     ->onDelete('restrict');
-            $table->foreignId('affiliation_status_id')
-                    ->nullable()
-                    ->constrained('affiliation_statuses')
-                    ->onDelete('restrict');
             $table->foreignId('county_id')
                     ->nullable()
                     ->constrained()
@@ -46,7 +42,7 @@ return new class extends Migration
             $table->date('inactive_date')->nullable();
             $table->string('photo', 255)->nullable();
             $table->string('signature', 255)->nullable();
-            $table->enum('status', ['active', 'inactive', 'deleted']);
+            $table->enum('status', ['Activo', 'Baja']);
             $table->string('modified_by', 55)->nullable();
             $table->timestamps();
             $table->softDeletes();
