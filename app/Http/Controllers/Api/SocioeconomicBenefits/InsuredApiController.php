@@ -247,6 +247,7 @@ class InsuredApiController extends Controller
             'Rank_id' => 'required',
             'Workplace_county_id' => 'nullable',
             'Birthplace_county_id' => 'nullable',
+            'Affiliation_status_id' => 'required',
             'County_id' => 'nullable',
             'Employee_number' => 'required|min:6|max:6|unique:insureds,employee_number,' . $id,
             'Start_date' => 'required|date|max:10',
@@ -290,6 +291,7 @@ class InsuredApiController extends Controller
             $insured->rank_id = $request->input('Rank_id');
             $insured->workplace_county_id = $request->input('Workplace_county_id');
             $insured->birthplace_county_id = $request->input('Birthplace_county_id');
+            $insured->affiliation_status_id = $request->input('Affiliation_status_id');
             $insured->county_id = $request->input('County_id');
             $insured->employee_number = Str::of($request->input('Employee_number'))->trim();
             $insured->name = Str::of($request->input('Name'))->trim();
