@@ -5,7 +5,7 @@ use App\Http\Controllers\Catalogs\DependencyController;
 use App\Http\Controllers\Catalogs\SubdependencyController;
 use App\Http\Controllers\Catalogs\PensionTypeController;
 use App\Http\Controllers\Catalogs\RankController;
-use App\Http\Controllers\Catalogs\WorkRisksController;
+use App\Http\Controllers\Catalogs\WorkRiskController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
@@ -37,10 +37,10 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/catalogs/pension_types/{id}/edit', [PensionTypeController::class, 'edit'])->name('pension_types.edit');
     Route::put('/socioeconomic_benefits/catalogs/pension_types/{id}', [PensionTypeController::class, 'update'])->name('pension_types.update');
     //Rutas para Tipo de riesgos de trabajo
-    Route::get('/socioeconomic_benefits/catalogs/work_risks', [WorkRisksController::class, 'index'])->name('work_risks.index');
-    Route::get('/socioeconomic_benefits/catalogs/work_risks/create', [WorkRisksController::class, 'create'])->name('work_risks.create');
-    Route::get('/socioeconomic_benefits/catalogs/work_risks/{id}/edit', [WorkRisksController::class, 'edit'])->name('work_risks.edit');
-    Route::put('/socioeconomic_benefits/catalogs/work_risks/{id}', [WorkRisksController::class, 'update'])->name('work_risks.update');
+    Route::get('/socioeconomic_benefits/catalogs/work_risks', [WorkRiskController::class, 'index'])->name('work_risks.index');
+    Route::get('/socioeconomic_benefits/catalogs/work_risks/create', [WorkRiskController::class, 'create'])->name('work_risks.create');
+    Route::get('/socioeconomic_benefits/catalogs/work_risks/{id}/edit', [WorkRiskController::class, 'edit'])->name('work_risks.edit');
+    Route::put('/socioeconomic_benefits/catalogs/work_risks/{id}', [WorkRiskController::class, 'update'])->name('work_risks.update');
         //Rutas para Categorias
     Route::get('/socioeconomic_benefits/catalogs/ranks', [RankController::class, 'index'])->name('ranks.index');
     Route::get('/socioeconomic_benefits/catalogs/ranks/create', [RankController::class, 'create'])->name('ranks.create');
