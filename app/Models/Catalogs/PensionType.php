@@ -9,6 +9,6 @@ class PensionType extends Model
 {
     public function workRisks(): HasMany
     {
-        return $this->hasMany(WorkRisks::class);
+        return $this->hasMany(WorkRisk::class);
     }
 }
