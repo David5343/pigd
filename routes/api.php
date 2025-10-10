@@ -78,7 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/prestaciones/credencialfamiliar/{id}', [CredentialBeneficiaryApiController::class, 'show']);
     Route::put('/prestaciones/credencialfamiliar/finalizar/{id}',[CredentialBeneficiaryApiController::class, 'finalizar']);
     //Tipos de Pensionados
-    Route::get('/prestaciones/tipopensiones', [PensionTypeApiController::class, 'index']);
+    Route::get('/socioeconomic_benefits/pensiontypes', [PensionTypeApiController::class, 'index']);
     //Pensionados
     Route::get('/prestaciones/pensionados', [RetireeApiController::class, 'index']);
     Route::post('/prestaciones/pensionados/guardar', [RetireeApiController::class, 'store']);
