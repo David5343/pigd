@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Catalogs;
 
-use App\Models\Catalogs\WorkRisks as CatalogsWorkRisks;
+use App\Models\Catalogs\WorkRisk as CatalogsWorkRisk;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -28,7 +28,7 @@ class WorkRisks extends Component
     public function render()
     {
         $search = trim($this->search);
-        $work_risks = CatalogsWorkRisks::where(function ($query) use ($search) {
+        $work_risks = CatalogsWorkRisk::where(function ($query) use ($search) {
             $query->where('name', 'like', '%' . $search . '%');
         })
         ->orderBy('name', 'asc')

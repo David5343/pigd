@@ -3,7 +3,7 @@
 namespace App\Livewire\Catalogs;
 
 use App\Models\Catalogs\PensionType;
-use App\Models\Catalogs\WorkRisks;
+use App\Models\Catalogs\WorkRisk;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +31,7 @@ class WorkRisksCreate extends Component
 
         try {
             DB::beginTransaction();
-            $work_risks = new WorkRisks();
+            $work_risks = new WorkRisk();
             $work_risks->name = Str::of($this->name)->trim();
             $work_risks->pension_type_id =$this->pension_type_id;
             $work_risks->modified_by = Auth::user()->email;
