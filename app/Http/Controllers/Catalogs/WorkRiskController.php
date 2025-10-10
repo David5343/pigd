@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Catalogs;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogs\PensionType;
-use App\Models\Catalogs\WorkRisks;
+use App\Models\Catalogs\WorkRisk;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class WorkRisksController extends Controller
+class WorkRiskController extends Controller
 {
     public function index()
     {
@@ -25,7 +25,7 @@ class WorkRisksController extends Controller
     }
     public function edit(string $id)
     {
-        $row = WorkRisks::find($id);
+        $row = WorkRisk::find($id);
         $pension_types = PensionType::all();
         return view('catalogs.work-risk.edit', ['row' => $row,'pensiones'=>$pension_types]);
     }
@@ -38,7 +38,7 @@ class WorkRisksController extends Controller
 
         try {
             DB::beginTransaction();
-            $work_risks = WorkRisks::find($id);
+            $work_risks = WorkRisk::find($id);
 
             if (!$work_risks) {
                 return back()->with('msg_warning', 'Tipo de riesgo no encontrado');
