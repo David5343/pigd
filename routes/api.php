@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\SocioeconomicBenefits\PensionTypeApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\RankApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\RetireeApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\TicketApiController;
+use App\Http\Controllers\Api\SocioeconomicBenefits\WorkRiskApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -77,8 +78,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/prestaciones/credencialfamiliar/busqueda/{dato}', [CredentialBeneficiaryApiController::class, 'busqueda']);
     Route::get('/prestaciones/credencialfamiliar/{id}', [CredentialBeneficiaryApiController::class, 'show']);
     Route::put('/prestaciones/credencialfamiliar/finalizar/{id}',[CredentialBeneficiaryApiController::class, 'finalizar']);
-    //Tipos de Pensionados
+    //Tipos de Pensiones
     Route::get('/socioeconomic_benefits/pensiontypes', [PensionTypeApiController::class, 'index']);
+    //Tipos de Riesgos de trabajo
+    Route::get('/socioeconomic_benefits/workrisks', [WorkRiskApiController::class, 'index']);
     //Pensionados
     Route::get('/prestaciones/pensionados', [RetireeApiController::class, 'index']);
     Route::post('/prestaciones/pensionados/guardar', [RetireeApiController::class, 'store']);
