@@ -5,7 +5,7 @@ namespace App\Models\Catalogs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class WorkRisks extends Model
+class WorkRisk extends Model
 {
     public function pensionType(): BelongsTo
     {
