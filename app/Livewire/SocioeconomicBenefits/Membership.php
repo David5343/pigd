@@ -21,19 +21,19 @@ class Membership extends Component
     }
     public function getInsuredPreProperty()
     {
-        return Insured::where('affiliation_status_id',1)->count();
+        return Insured::where('affiliation_status_id', 1)->count();
     }
     public function getInsuredActivosProperty()
     {
-        return Insured::where('affiliation_status_id',2)->count();
+        return Insured::where('affiliation_status_id', 2)->count();
     }
     public function getInsuredBajasProperty()
     {
-        return Insured::where('affiliation_status_id',4)->count();
+        return Insured::where('affiliation_status_id', 4)->count();
     }
     public function getInsuredBajasPendientesProperty()
     {
-        return Insured::where('affiliation_status_id',5)->count();
+        return Insured::where('affiliation_status_id', 5)->count();
     }
     public function getInsuredTotalProperty()
     {
@@ -41,25 +41,31 @@ class Membership extends Component
     }
     public function getInsuredTotalHombresProperty()
     {
-        return Insured::where('sex','Hombre')->count();
+        return Insured::where('sex', 'Hombre')->count();
     }
     public function getInsuredTotalMujeresProperty()
     {
-        return Insured::where('sex','Mujer')->count();
+        return Insured::where('sex', 'Mujer')->count();
     }
     public function render()
     {
-        // $lista = Insured::where('status', 'active')
-        $lista = Insured::with('affiliationStatus')->where(function($query) {
-            $query->where('file_number', 'like', '%'.$this->search.'%')
-                  ->orWhere('name', 'like', '%'.$this->search.'%')
-                  ->orWhere('last_name_1', 'like', '%'.$this->search.'%')
-                  ->orWhere('last_name_2', 'like', '%'.$this->search.'%')
-                  ->orWhere('rfc', 'like', '%'.$this->search.'%')
-                  ->orWhere('curp', 'like', '%'.$this->search.'%');
-        })
-        ->orderBy('file_number', 'asc')
-        ->paginate($this->numberRows);
-        return view('livewire.socioeconomic-benefits.membership',['lista'=>$lista]);
+        $lista = Insured::with('affiliationStatus')
+            ->where(function ($query) {
+                $search = "%{$this->search}%";
+
+                // Buscar por nombre completo o parte de él
+                $query->where('last_name_1', 'like', $search)
+                    ->orWhere('last_name_2', 'like', $search)
+                    ->orWhere('name', 'like', $search)
+                    ->orWhere('rfc', 'like', $search)
+                    ->orWhere('curp', 'like', $search)
+                    ->orWhere('file_number', 'like', $search);
+            })
+            ->orderBy('file_number', 'asc')
+            ->paginate($this->numberRows);
+
+        return view('livewire.socioeconomic-benefits.membership', [
+            'lista' => $lista,
+        ]);
     }
 }
