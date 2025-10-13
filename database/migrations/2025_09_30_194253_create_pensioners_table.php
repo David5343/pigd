@@ -25,6 +25,10 @@ return new class extends Migration
                     ->nullable()
                     ->constrained('pension_types')
                     ->onDelete('restrict');
+            $table->foreignId('work_risks_id')
+                    ->nullable()
+                    ->constrained('work_risks')
+                    ->onDelete('restrict');
             $table->string('noi_number', 15)->nullable()->unique();
             $table->date('start_date')->nullable();
             $table->string('observations', 255)->nullable();
