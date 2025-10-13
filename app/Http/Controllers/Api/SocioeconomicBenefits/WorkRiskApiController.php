@@ -34,4 +34,33 @@ class WorkRiskApiController extends Controller
             ], 500);
         }
     }
+    public function searchByPension(Request $request, $id)
+    {
+        try {
+
+            $worksrisks = WorkRisk::with('pensionType')
+                ->where('pension_type_id', $id)
+                ->get();
+
+            if ($worksrisks->isEmpty()) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'risks' => null,
+                ], 404);
+            }
+            //sleep(33);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'risks' => $worksrisks,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
