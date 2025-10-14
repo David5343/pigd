@@ -196,7 +196,7 @@ class BeneficiaryApiController extends Controller
         $response['insured'] = '';
         $response['beneficiary'] = '';
         $response['debug'] = '0';
-        $familiar = Beneficiary::where('status', 'active')
+        $familiar = Beneficiary::where('affiliate_status','!=', 'Baja')
             ->where('file_number', $dato)
             ->with('bank')
             ->with('insured')
@@ -225,7 +225,7 @@ class BeneficiaryApiController extends Controller
         $response['insured'] = '';
         $response['beneficiary'] = '';
         $response['debug'] = '0';
-        $familiar = Beneficiary::where('status', 'active')
+        $familiar = Beneficiary::where('affiliate_status','!=', 'Baja')
             ->where('rfc', $dato)
             ->with('bank')
             ->with('insured')
@@ -254,7 +254,7 @@ class BeneficiaryApiController extends Controller
         $response['insured'] = '';
         $response['beneficiary'] = '';
         $response['debug'] = '0';
-        $familiar = Beneficiary::where('status', 'active')
+        $familiar = Beneficiary::where('affiliate_status','!=', 'Baja')
             ->where('curp', $dato)
             ->with('bank')
             ->with('insured')
