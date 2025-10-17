@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\SocioeconomicBenefits;
 
 use App\Http\Controllers\Controller;
+use App\Models\SocioeconomicBenefits\Insured;
 use App\Models\SocioeconomicBenefits\Pensioner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,7 +81,45 @@ class PensionerApiController extends Controller
             ], 500);
         }
     }
+    public function searchinsuredbyemployee(Request $request, $employee)
+    {
+        try {
+            $relations = [
+                'subdependency',
+                'rank',
+                'workplaceCounty',
+                'birthplaceCounty',
+                'county',
+                'affiliationStatus',
+                'beneficiaries'
+            ];
 
+            $insured = Insured::with($relations)
+                ->where('employee_number', $employee)
+                ->where('affiliation_status_id', 4)
+                ->first();
+
+            if (!$insured) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'insured' => null,
+                ], 404);
+            }
+            //sleep(33);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'insured' => $insured,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function photo(Request $request, $id)
     {
         $rules = [
