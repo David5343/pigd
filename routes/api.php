@@ -85,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/workrisks', [WorkRiskApiController::class, 'index']);
     Route::get('/socioeconomic_benefits/workrisks/searchbypension/{id}', [WorkRiskApiController::class, 'searchbypension']);
     //Pensionados
-    Route::get('/prestaciones/pensionados', [RetireeApiController::class, 'index']);
+    Route::get('/socioeconomic_benefits/pensioners', [PensionerApiController::class, 'index']);
     Route::post('/socioeconomic_benefits/pensioners/store', [PensionerApiController::class, 'store']);
     Route::get('/prestaciones/pensionados/busqueda/{dato}', [RetireeApiController::class, 'busqueda']);
     Route::get('/prestaciones/pensionados/search/{dato}', [RetireeApiController::class, 'search']);
