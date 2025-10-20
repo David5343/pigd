@@ -40,7 +40,7 @@ return new class extends Migration
             $table->string('marital_status', 255)->nullable();
             $table->string('rfc', 15)->nullable();
             $table->string('curp', 20)->nullable();
-            $table->string('phone', 5)->nullable();
+            $table->string('phone', 15)->nullable();
             $table->string('email', 255)->nullable();
             $table->string('address', 255)->nullable();
             $table->date('inactive_date')->nullable();
