@@ -18,12 +18,8 @@ class PensionerApiController extends Controller
     public function index()
     {
         try {
-            $relations = [
-                'subdependency',
-                'beneficiaries',
-            ];
 
-            $pensioners = Pensioner::with($relations)
+            $pensioners = Pensioner::all()
                 ->latest()
                 ->limit(25)
                 ->get();
@@ -32,7 +28,7 @@ class PensionerApiController extends Controller
                 return response()->json([
                     'status' => 'fail',
                     'message' => 'Registro no encontrado',
-                    'insureds' => null,
+                    'pensioners' => null,
                 ], 404);
             }
 
@@ -140,7 +136,7 @@ class PensionerApiController extends Controller
             'Rfc' => 'required|string|min:13|max:13',
             'Curp' => 'nullable | string | min:18 | max: 18',
             'Phone' => 'nullable|numeric|digits:10',
-            'Email' => 'nullable|email|min:5|max:50|unique:insureds,email',
+            'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email',
             'County_id' => 'nullable',
         ];
 
