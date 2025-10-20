@@ -18,11 +18,12 @@ class PensionerApiController extends Controller
     public function index()
     {
         try {
-
-            $pensioners = Pensioner::all()
-                ->latest()
-                ->limit(25)
-                ->get();
+            $relations = [
+                'subdependency',
+                'county.state',
+                'pensionType'
+            ];
+            $pensioners = Pensioner::with($relations)->get();
 
             if ($pensioners->isEmpty()) {
                 return response()->json([
@@ -35,7 +36,7 @@ class PensionerApiController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Búsqueda realizada correctamente',
-                'pensioners' => $pensioners,
+                'pensioners' => $pensioners
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -133,7 +134,15 @@ class PensionerApiController extends Controller
             'Birthday' => 'nullable|max:10|date',
             'Sex' => 'required',
             'Marital_status' => 'nullable',
-            'Rfc' => 'required|string|min:13|max:13',
+            'Rfc' => [
+                'required',
+                'string',
+                'min:13',
+                'max:13',
+                Rule::unique('pensioners')->where(function ($query) use ($request) {
+                    return $query->where('pension_types_id', $request->Pension_types_id);
+                }),
+            ],
             'Curp' => 'nullable | string | min:18 | max: 18',
             'Phone' => 'nullable|numeric|digits:10',
             'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email',
@@ -151,22 +160,22 @@ class PensionerApiController extends Controller
                 'errors' => $validator->errors()->toArray(),
             ], 422);
         }
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
             $pensioner = new Pensioner();
             $pensioner->subdependency_id = $request->input('Subdependency_id');
             $pensioner->county_id = $request->input('County_id');
             $pensioner->pension_types_id = $request->input('Pension_types_id');
-            $pensioner->work_risks_id = $request->input('Work_risks_id');
+            $pensioner->work_risks_id = $request->input('Work_risks_id') ?: null;
             $pensioner->noi_number = Str::of($request->input('Noi_number'))->trim();  
             $pensioner->start_date = $request->input('Start_date');            
             $pensioner->observations = Str::of($request->input('Observations'))->trim() ?: null;
             $pensioner->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
-            $pensioner->last_name_2 = Str::of($request->input('Last_name_2'))->trim();
+            $pensioner->last_name_2 = Str::of($request->input('Last_name_2'))->trim() ?: null;
             $pensioner->name = Str::of($request->input('Name'))->trim();
             $pensioner->birthday = $request->input('Birthday');
             $pensioner->sex = $request->input('Sex');
-            $pensioner->marital_status = $request->input('Marital_status');
+            $pensioner->marital_status = $request->input('Marital_status') ?: null;
             $rfc = Str::of($request->input('Rfc'))->trim();
             $curp = Str::of($request->input('Curp'))->trim();
             $pensioner->rfc = Str::upper($rfc);
@@ -178,19 +187,19 @@ class PensionerApiController extends Controller
             $pensioner->status = 'Activo';
             $pensioner->modified_by = Auth::user()->email;
             $pensioner->save();
-            DB::commit();
+            //DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Registro guardado correctamente',
                 'pensioner' => $pensioner,
             ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => 'Error en el servidor',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'status' => 'fail',
+        //         'message' => 'Error en el servidor',
+        //         'error' => $e->getMessage(),
+        //     ], 500);
+        // }
     }
     public function photo(Request $request, $id)
     {
@@ -290,5 +299,43 @@ class PensionerApiController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+    public function search(Request $request, $data)
+    {
+        try {
+            $relations = [
+                'subdependency',
+                'county.state',
+                'pensionType'
+            ];
+            $pensioners = Pensioner::with($relations)
+            ->where(function ($query) use ($data) {
+                $query->where('noi_number', 'like', "%{$data}%")
+                      ->orWhere('rfc', 'like', "%{$data}%")
+                      ->orWhere('curp', 'like', "%{$data}%")
+                      ->orWhere(DB::raw("CONCAT(last_name_1, ' ', last_name_2, ' ', name)"), 'like', "%{$data}%")
+                      ->orWhere(DB::raw("CONCAT(name,' ',last_name_1, ' ', last_name_2)"), 'like', "%{$data}%");
+            })->get();
+
+            if ($pensioners->isEmpty()) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'pensioners' => null,
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'pensioners' => $pensioners
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }        
     }
 }
