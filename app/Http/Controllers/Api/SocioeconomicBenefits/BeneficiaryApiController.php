@@ -162,16 +162,29 @@ class BeneficiaryApiController extends Controller
         $response['insured'] = '';
         $response['beneficiary'] = '';
         $response['debug'] = '0';
-        $familiar = Beneficiary::where('id', $dato)
-            ->orwhere('file_number', $dato)
-            ->orwhere('rfc', $dato)
-            ->orwhere('curp', $dato)
-            ->orwhere('name', 'like', '%'.$dato.'%')
-            ->orwhere('last_name_1', 'like', '%'.$dato.'%')
-            ->orwhere('last_name_2', 'like', '%'.$dato.'%')
-            ->with('bank')
-            ->with('insured')
-            ->get();
+        // $familiar = Beneficiary::where('id', $dato)
+        //     ->orwhere('file_number', $dato)
+        //     ->orwhere('rfc', $dato)
+        //     ->orwhere('curp', $dato)
+        //     ->orwhere('name', 'like', '%'.$dato.'%')
+        //     ->orwhere('last_name_1', 'like', '%'.$dato.'%')
+        //     ->orwhere('last_name_2', 'like', '%'.$dato.'%')
+        //     ->with('bank')
+        //     ->with('insured')
+        //     ->get();
+        $relations = [
+                'bank',
+                'insured'
+            ];
+            $familiar = Beneficiary::with($relations)
+            ->where(function ($query) use ($dato) {
+                $query->where('id',$dato)
+                    ->orWhere('file_number', 'like', "%{$dato}%")
+                      ->orWhere('rfc', 'like', "%{$dato}%")
+                      ->orWhere('curp', 'like', "%{$dato}%")
+                      ->orWhere(DB::raw("CONCAT(last_name_1, ' ', last_name_2, ' ', name)"), 'like', "%{$dato}%")
+                      ->orWhere(DB::raw("CONCAT(name,' ',last_name_1, ' ', last_name_2)"), 'like', "%{$dato}%");
+            })->get();        
         if ($familiar->isEmpty()) {
             $response['message'] = 'Registro no encontrado';
             $codigo = 200;
