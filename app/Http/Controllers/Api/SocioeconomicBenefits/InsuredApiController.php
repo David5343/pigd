@@ -349,11 +349,11 @@ class InsuredApiController extends Controller
 
             $insureds = Insured::with($relations)
                 ->where(function ($query) use ($data) {
-                    $query->whereRaw("CONCAT_WS(' ', last_name_1, last_name_2, name) LIKE ?", ["%$data%"])
-                        ->orWhereRaw("CONCAT_WS(' ', name,last_name_1, last_name_2) LIKE ?", ["%$data%"])
-                        ->orWhere('file_number', 'like', "%$data%")
-                        ->orWhere('rfc', 'like', "%$data%")
-                        ->orWhere('curp', 'like', "%$data%");
+                $query->where('file_number', 'like', "%{$data}%")
+                      ->orWhere('rfc', 'like', "%{$data}%")
+                      ->orWhere('curp', 'like', "%{$data}%")
+                      ->orWhere(DB::raw("CONCAT(last_name_1, ' ', last_name_2, ' ', name)"), 'like', "%{$data}%")
+                      ->orWhere(DB::raw("CONCAT(name,' ',last_name_1, ' ', last_name_2)"), 'like', "%{$data}%");
                 })
                 ->get();
 
