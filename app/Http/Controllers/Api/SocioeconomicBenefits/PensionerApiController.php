@@ -338,4 +338,36 @@ class PensionerApiController extends Controller
             ], 500);
         }        
     }
+    public function searchByNoi(Request $request, $noi)
+    {
+        try {
+            $relations = [
+                'subdependency',
+                'county.state',
+                'pensionType'
+            ];
+            $pensioner = Pensioner::with($relations)
+                ->where('noi_number', $noi)
+                ->first();
+
+            if (!$pensioner) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'pensioner' => null,
+                ], 404);
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'pensioner' => $pensioner,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
