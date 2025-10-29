@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\SocioeconomicBenefits;
 
 use App\Http\Controllers\Controller;
+use App\Models\SocioeconomicBenefits\CredentialPensioner;
 use App\Models\SocioeconomicBenefits\CredentialRetiree;
 use Exception;
 use Illuminate\Http\Request;
@@ -61,59 +62,44 @@ class CredentialPensionerApiController extends Controller
 
     public function store(Request $request)
     {
-        $response['status'] = 'fail';
-        $response['errors'] = '';
-        $response['retiree'] = '';
-        $response['debug'] = '';
-
         $rules = [
-            'Retiree_id' => 'required | numeric',
+            'Pensioner_id' => 'required | numeric',
             'Expires_at' => 'required|date_format:Y-m-d H:i:s',
         ];
+
         $validator = Validator::make($request->all(), $rules);
         // Comprobar si la validación falla
         if ($validator->fails()) {
             // Retornar errores de validación
-            $response['errors'] = $validator->errors()->toArray();
-            $response['debug'] = $request->all();
-
-            return response()->json($response, 200);
-        }
-        // Verificar si ya existe un registro "VIGENTE" para el retiree_id dado
-        $existeVigente = CredentialRetiree::where('retiree_id', $request->input('Retiree_id'))
-            ->where('credential_status', 'VIGENTE')
-            ->exists();
-
-        if ($existeVigente) {
-            $response['errors'] = ['Retiree_id' => 'Ya existe una credencial vigente para este jubilado.'];
-
-            return response()->json($response, 200);
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'Error de validación',
+                'credential' => null,
+                'errors' => $validator->errors()->toArray(),
+            ], 422);
         }
         DB::beginTransaction();
         try {
-            $fechaActual = now()->toDateTimeString();
-            $credencialRetire = new CredentialRetiree();
-            $credencialRetire->issued_at = $fechaActual;
-            $credencialRetire->expires_at = $request->input('Expires_at');
-            $credencialRetire->retiree_id = $request->input('Retiree_id');
-            if ($request->input('Insured_type' == 'Titular')) {
-                $credencialRetire->expiration_types = 'PERMANENTE';
-            } else {
-                $credencialRetire->expiration_types = 'PERSONALIZADO';
-            }
-            $credencialRetire->credential_status = 'VIGENTE';
-            $credencialRetire->status = 'active';
-            $credencialRetire->modified_by = Auth::user()->email;
-            $credencialRetire->save();
+            $credential = new CredentialPensioner();
+            $credential->pensioner_id = $request->Pensioner_id;
+            $credential->issued_at = now();
+            $credential->expires_at = $request->Expires_at;
+            $credential->credential_status = 'VIGENTE';
+            $credential->status = 'active';
+            $credential->modified_by = Auth::user()->email;
+            $credential->save();
             DB::commit();
-            $response['status'] = 'success';
-            $response['credential'] = $credencialRetire->id;
-
-            return response()->json($response, 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            $response['debug'] = $e->getMessage();
-
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Registro guardado correctamente',
+                'credential' => $credential,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
