@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Catalogs\SubdependencyApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\BeneficiaryApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\CredentialBeneficiaryApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\CredentialInsuredApiController;
+use App\Http\Controllers\Api\SocioeconomicBenefits\CredentialPensionerApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\CredentialRetireeApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\InsuredApiController;
 use App\Http\Controllers\Api\SocioeconomicBenefits\PensionerApiController;
@@ -91,10 +92,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/pensioners/searchinsuredbyemployee/{employee}', [PensionerApiController::class, 'searchinsuredbyemployee']);
     Route::get('/socioeconomic_benefits/pensioners/searchbynoi/{noi}', [PensionerApiController::class, 'searchbynoi']);
     //Credencial Pensionados
-    Route::get('/prestaciones/credencialpensionados', [CredentialRetireeApiController::class, 'index']);
-    Route::post('/socioeconomic_benefits/credentialpensioners/store', [PensionerApiController::class, 'store']);
-    Route::get('/prestaciones/credencialpensionados/{id}', [CredentialRetireeApiController::class, 'show']);
-    Route::get('/prestaciones/credencialpensionados/search/{dato}', [CredentialRetireeApiController::class, 'search']);
+    Route::get('/prestaciones/credencialpensionados', [CredentialPensionerApiController::class, 'index']);
+    Route::post('/socioeconomic_benefits/credentialpensioners/store', [CredentialPensionerApiController::class, 'store']);
+    Route::get('/socioeconomic_benefits/credentialpensioners/{id}', [CredentialPensionerApiController::class, 'show']);
+    Route::get('/prestaciones/credencialpensionados/search/{dato}', [CredentialPensionerApiController::class, 'search']);
     //Turnos
     Route::get('/prestaciones/turnos', [TicketApiController::class, 'index']);
     Route::post('/prestaciones/turnos/guardar', [TicketApiController::class, 'store']);
