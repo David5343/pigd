@@ -27,36 +27,33 @@ class CredentialPensionerApiController extends Controller
 
     public function show($id)
     {
+        try {
+            $relations = [
+                'pensioner.subdependency'
+            ];
 
-        $codigo = 0;
-        $response['status'] = 'fail';
-        $response['message'] = '';
-        $response['errors'] = '';
-        $response['insured'] = '';
-        $response['beneficiary'] = '';
-        $response['retiree'] = '';
-        $response['history'] = '';
-        $response['credential'] = '0';
-        $response['debug'] = '0';
-        $credencial = CredentialRetiree::where('id', $id)
-            ->with('retiree.insured.subdependency.dependency')
-            ->with('retiree.beneficiary.insured.subdependency.dependency')
-            ->first();
-        if ($credencial == null) {
-            $response['message'] = 'Registro no encontrado';
-            $codigo = 200;
+            $credential = CredentialPensioner::with($relations)
+                ->where('id', $id)
+                ->first();
 
-            return response()->json($response, status: $codigo);
-        } else {
-            $history = CredentialRetiree::where('retiree_id', $credencial->retiree_id)
-                ->where('credential_status', 'VENCIDA')
-                ->get();
-            $response['status'] = 'success';
-            $response['credential'] = $credencial;
-            $response['history'] = $history;
-            $codigo = 200;
-
-            return response()->json($response, status: $codigo);
+            if (!$credential) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'credential' => null,
+                ], 404);
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'credential' => $credential
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -78,11 +75,22 @@ class CredentialPensionerApiController extends Controller
                 'errors' => $validator->errors()->toArray(),
             ], 422);
         }
+        // Verificar si ya existe un registro "VIGENTE" para el pensioner_id dado
+        $existeVigente = CredentialPensioner::where('pensioner_id', $request->input('Pensioner_id'))
+            ->where('credential_status', 'VIGENTE')
+            ->exists();
+
+        if ($existeVigente) {
+            $response['errors'] = ['Pensioner_id' => 'Ya existe una credencial vigente para este Pensionado.'];
+
+            return response()->json($response, 200);
+        }
         DB::beginTransaction();
         try {
+            $fechaActual = now()->toDateTimeString();
             $credential = new CredentialPensioner();
             $credential->pensioner_id = $request->Pensioner_id;
-            $credential->issued_at = now();
+            $credential->issued_at = $fechaActual;
             $credential->expires_at = $request->Expires_at;
             $credential->credential_status = 'VIGENTE';
             $credential->status = 'active';
