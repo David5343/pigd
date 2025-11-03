@@ -15,14 +15,35 @@ class CredentialPensionerApiController extends Controller
 {
     public function index()
     {
-        $pensionados = CredentialRetiree::with('retiree')
-            ->with('retiree.insured.subdependency')
-            ->with('retiree.beneficiary.insured.subdependency')
-            ->latest()
-            ->limit(25)
-            ->get();
+        try {
+            $relations = [
+                'pensioner',
+            ];
 
-        return response()->json($pensionados);
+            $credentials = CredentialPensioner::with($relations)
+                ->latest()
+                ->limit(25)
+                ->get();
+
+            if ($credentials->isEmpty()) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'credentials' => null,
+                ], 404);
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'credentials' => $credentials,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function show($id)
