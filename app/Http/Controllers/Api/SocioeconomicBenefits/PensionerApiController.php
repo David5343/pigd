@@ -123,6 +123,7 @@ class PensionerApiController extends Controller
     {
         $rules = [
             'Noi_number' => 'required|max:4|unique:pensioners,noi_number',
+            'File_number' => 'nullable|max:10',
             'Start_date' => 'required|date|max:10',
             'Pension_types_id'=> 'required',
             'Work_risks_id'=> 'nullable',
@@ -160,14 +161,15 @@ class PensionerApiController extends Controller
                 'errors' => $validator->errors()->toArray(),
             ], 422);
         }
-        // DB::beginTransaction();
-        // try {
+        DB::beginTransaction();
+        try {
             $pensioner = new Pensioner();
             $pensioner->subdependency_id = $request->input('Subdependency_id');
             $pensioner->county_id = $request->input('County_id');
             $pensioner->pension_types_id = $request->input('Pension_types_id');
             $pensioner->work_risks_id = $request->input('Work_risks_id') ?: null;
-            $pensioner->noi_number = Str::of($request->input('Noi_number'))->trim();  
+            $pensioner->noi_number = Str::of($request->input('Noi_number'))->trim();
+            $pensioner->file_number = Str::of($request->input('File_number'))->trim();
             $pensioner->start_date = $request->input('Start_date');            
             $pensioner->observations = Str::of($request->input('Observations'))->trim() ?: null;
             $pensioner->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
@@ -187,19 +189,19 @@ class PensionerApiController extends Controller
             $pensioner->status = 'Activo';
             $pensioner->modified_by = Auth::user()->email;
             $pensioner->save();
-            //DB::commit();
+            DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Registro guardado correctamente',
                 'pensioner' => $pensioner,
             ], 201);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'status' => 'fail',
-        //         'message' => 'Error en el servidor',
-        //         'error' => $e->getMessage(),
-        //     ], 500);
-        // }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
     public function photo(Request $request, $id)
     {
