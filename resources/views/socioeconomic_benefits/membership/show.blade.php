@@ -20,13 +20,17 @@
                 </div>
                 <div class="flex justify-center mt-5">
                     <figure class="mb-4 inline-block max-w-sm">
-                        <img src="{{ empty($titular->photo) ? asset('images/icono_no_imagen.png') : url($titular->photo) }}"
+                        <img src="{{ empty($titular->photo) ? asset('images/icono_no_imagen.png') : 'http:'.$titular->photo }}"
+                        class="mb-4 h-auto max-w-full max-h-full rounded-lg align-middle leading-none shadow-lg"
+                            alt="Hollywood Sign on The Hill">
+
+                        {{-- <img src="{{ empty($titular->photo) ? asset('images/icono_no_imagen.png') : url($titular->photo) }}"
                             class="mb-4 h-auto max-w-full max-h-full rounded-lg align-middle leading-none shadow-lg"
-                            alt="Hollywood Sign on The Hill" />
+                            alt="Hollywood Sign on The Hill" /> --}}
                         <figcaption class="text-center text-sm text-neutral-600 dark:text-neutral-400">
                             <p><span>ESTATUS DE AFILIACIÓN</span></p>
                             @php
-                                $status = $titular->affiliate_status;
+                                $status = $titular->affiliationStatus->name;
 
                                 $statusColors = match ($status) {
                                     'Activo' => 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400',
@@ -42,7 +46,7 @@
 
                             <p>
                                 <span class="inline-block whitespace-nowrap rounded-md px-2 py-1 {{ $statusColors }}">
-                                    {{ $titular->affiliate_status }}
+                                    {{ $titular->affiliationStatus->name }}
                                 </span>
                             </p>
 
@@ -99,10 +103,10 @@
                                             </td>
                                             <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
                                                 <p><strong>LUGAR DE TRABAJO:</strong>
-                                                    @if (($titular->work_place == '') | ($titular->work_place == null))
+                                                    @if (($titular->workplaceCounty == '') | ($titular->workplaceCounty == null))
                                                         NO DISPONIBLE
                                                     @else
-                                                        {{ $titular->work_place }}
+                                                        {{ $titular->workplaceCounty->name }}
                                                     @endif
                                                 </p>
                                             </td>
@@ -225,15 +229,15 @@
                                         <tr class="bg-gray-100 dark:bg-gray-700">
                                             <td class="border border-gray-300 px-4 py-2">
                                                 <p><strong>LUGAR DE NACIMIENTO:</strong>
-                                                    @if (($titular->birthplace == '') | ($titular->birthplace == null))
+                                                    @if (($titular->birthplaceCounty == '') | ($titular->birthplaceCounty == null))
                                                         NO DISPONIBLE
                                                     @else
-                                                        {{ $titular->birthplace }}
+                                                        {{ $titular->birthplaceCounty->name }}
                                                     @endif
                                                 </p>
                                             </td>
                                             <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>SEXO:</strong> {{ $titular->sexo }}</p>
+                                                <p><strong>SEXO:</strong> {{ $titular->sex }}</p>
                                             </td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
@@ -288,11 +292,11 @@
                                             </td>
                                             <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
                                                 <p><strong>ESTADO:</strong>
-                                                    @if (($titular->state == '') | ($titular->state == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $titular->state }}
-                                                    @endif
+                                                @if (!$titular->county?->state)
+                                                    NO DISPONIBLE
+                                                @else
+                                                    {{ $titular->county->state->name }}
+                                                @endif
                                                 </p>
                                             </td>
                                         </tr>
@@ -302,7 +306,7 @@
                                                     @if (($titular->county == '') | ($titular->county == null))
                                                         NO DISPONIBLE
                                                     @else
-                                                        {{ $titular->county }}
+                                                        {{ $titular->county->name }}
                                                     @endif
                                                 </p>
                                             </td>
