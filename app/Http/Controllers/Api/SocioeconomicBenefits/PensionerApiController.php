@@ -119,6 +119,47 @@ class PensionerApiController extends Controller
             ], 500);
         }
     }
+        public function searchinsuredbyfilenumber(Request $request, $file)
+    {
+        try {
+            $relations = [
+                'subdependency',
+                'rank',
+                'workplaceCounty',
+                'birthplaceCounty',
+                'county',
+                'affiliationStatus',
+                'beneficiaries'
+            ];
+
+            $insured = Insured::with($relations)
+                ->where('file_number', $file)
+                ->where('inactive_motive','Pensión')
+                ->where('affiliation_status_id', 4)
+                ->OrderByDesc('id')
+                ->first();
+
+            if (!$insured) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'insured' => null,
+                ], 404);
+            }
+            //sleep(33);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'insured' => $insured,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function store(Request $request)
     {
         $rules = [
