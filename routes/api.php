@@ -92,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/pensioners/searchinsuredbyemployee/{employee}', [PensionerApiController::class, 'searchinsuredbyemployee']);
     Route::get('/socioeconomic_benefits/pensioners/searchbynoi/{noi}', [PensionerApiController::class, 'searchbynoi']);
     Route::get('/socioeconomic_benefits/pensioners/searchinsuredbyfilenumber/{file}', [PensionerApiController::class, 'searchinsuredbyfilenumber']);
+    Route::put('/socioeconomic_benefits/pensioners/update/{id}', [PensionerApiController::class, 'update']);
     Route::patch('/socioeconomic_benefits/pensioners/photo/{id}', [PensionerApiController::class, 'photo']);
     Route::patch('/socioeconomic_benefits/pensioners/signature/{id}', [PensionerApiController::class, 'signature']);
     //Credencial Pensionados
