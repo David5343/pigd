@@ -247,16 +247,17 @@ class PensionerApiController extends Controller
         public function update(Request $request,$id)
     {
     $rules = [
-        'Noi_number' => [
-            'required',
-            'max:4',
-            Rule::unique('pensioners', 'noi_number')->ignore($id, 'id'),
-        ],
+        'Noi_number' => 'required|max:4',
+        // 'Noi_number' => [
+        //     'required',
+        //     'max:4',
+        //     Rule::unique('pensioners', 'noi_number')->ignore($id, 'pensioner_id'),
+        // ],
         'File_number' => 'nullable|max:8',
         'Start_date' => 'required|date|max:10',
         'Pension_types_id'=> 'required',
         'Work_risks_id'=> 'nullable',
-        'Subdependency_id' => 'required',
+        'Subdependency_id' => 'nullable',
         'Observations' => 'nullable|min:5|max:250',
         'Last_name_1' => 'required|min:2|max:20',
         'Last_name_2' => 'nullable|min:2|max:20',
@@ -264,23 +265,24 @@ class PensionerApiController extends Controller
         'Birthday' => 'nullable|max:10|date',
         'Sex' => 'required',
         'Marital_status' => 'nullable',
-        'Rfc' => [
-            'required',
-            'string',
-            'min:13',
-            'max:13',
-            Rule::unique('pensioners', 'rfc')
-                ->where(function ($query) use ($request) {
-                    return $query->where('pension_types_id', $request->Pension_types_id);
-                })
-                ->ignore($id, 'id'), // asegúrate de pasar el nombre correcto de la PK
-        ],
+        'Rfc'=>'required|string|min:13|max:13',
+        // 'Rfc' => [
+        //     'required',
+        //     'string',
+        //     'min:13',
+        //     'max:13',
+        //     Rule::unique('pensioners', 'rfc')
+        //         ->where(function ($query) use ($request) {
+        //             return $query->where('pension_types_id', $request->Pension_types_id);
+        //         })
+        //         ->ignore($id, 'pensioner_id'), // asegúrate de pasar el nombre correcto de la PK
+        // ],
         'Curp' => 'nullable|string|min:18|max:18',
         'Phone' => 'nullable|numeric|digits:10',
-        'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email,' . $id,
+        //'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email,' . $id,
+        'Email' => 'nullable|email|min:5|max:50',
         'County_id' => 'nullable',
     ];
-
         $validator = Validator::make($request->all(), $rules);
         // Comprobar si la validación falla
         if ($validator->fails()) {
@@ -288,14 +290,14 @@ class PensionerApiController extends Controller
             return response()->json([
                 'status' => 'warning',
                 'message' => 'Error de validación',
-                'pensioners' => null,
+                'pensioner' => null,
                 'errors' => $validator->errors()->toArray(),
             ], 422);
         }
         DB::beginTransaction();
         try {
             $pensioner = Pensioner::find($id);
-            $pensioner->subdependency_id = $request->input('Subdependency_id');
+            $pensioner->subdependency_id = $request->input('Subdependency_id') ? : null;
             $pensioner->county_id = $request->input('County_id');
             $pensioner->pension_types_id = $request->input('Pension_types_id');
             $pensioner->work_risks_id = $request->input('Work_risks_id') ?: null;
