@@ -247,8 +247,12 @@ class PensionerApiController extends Controller
         public function update(Request $request,$id)
     {
     $rules = [
-        'Noi_number' => 'required|max:4|unique:pensioners,noi_number,' . $id,
-        'File_number' => 'nullable|max:10',
+        'Noi_number' => [
+            'required',
+            'max:4',
+            Rule::unique('pensioners', 'noi_number')->ignore($id, 'id'),
+        ],
+        'File_number' => 'nullable|max:8',
         'Start_date' => 'required|date|max:10',
         'Pension_types_id'=> 'required',
         'Work_risks_id'=> 'nullable',
@@ -265,11 +269,11 @@ class PensionerApiController extends Controller
             'string',
             'min:13',
             'max:13',
-            Rule::unique('pensioners')
-                ->ignore($id) // 👈 Ignora el registro actual
+            Rule::unique('pensioners', 'rfc')
                 ->where(function ($query) use ($request) {
                     return $query->where('pension_types_id', $request->Pension_types_id);
-                }),
+                })
+                ->ignore($id, 'id'), // asegúrate de pasar el nombre correcto de la PK
         ],
         'Curp' => 'nullable|string|min:18|max:18',
         'Phone' => 'nullable|numeric|digits:10',
