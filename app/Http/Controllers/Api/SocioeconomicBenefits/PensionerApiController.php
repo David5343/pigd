@@ -244,15 +244,10 @@ class PensionerApiController extends Controller
             ], 500);
         }
     }
-        public function update(Request $request,$id)
+    public function update(Request $request,$id)
     {
     $rules = [
-        'Noi_number' => 'required|max:4',
-        // 'Noi_number' => [
-        //     'required',
-        //     'max:4',
-        //     Rule::unique('pensioners', 'noi_number')->ignore($id, 'pensioner_id'),
-        // ],
+        'Noi_number' => 'required|max:4|unique:pensioners,noi_number,'.$id,
         'File_number' => 'nullable|max:8',
         'Start_date' => 'required|date|max:10',
         'Pension_types_id'=> 'required',
@@ -265,22 +260,18 @@ class PensionerApiController extends Controller
         'Birthday' => 'nullable|max:10|date',
         'Sex' => 'required',
         'Marital_status' => 'nullable',
-        'Rfc'=>'required|string|min:13|max:13',
-        // 'Rfc' => [
-        //     'required',
-        //     'string',
-        //     'min:13',
-        //     'max:13',
-        //     Rule::unique('pensioners', 'rfc')
-        //         ->where(function ($query) use ($request) {
-        //             return $query->where('pension_types_id', $request->Pension_types_id);
-        //         })
-        //         ->ignore($id, 'pensioner_id'), // asegúrate de pasar el nombre correcto de la PK
-        // ],
+        'Rfc' => [ 'required',
+                    'string',
+                    'min:13',
+                    'max:13',
+                     Rule::unique('pensioners')->ignore($id) // 👈 Ignora el registro actual
+                      ->where(function ($query) use ($request) {
+                         return $query->where('pension_types_id', $request->Pension_types_id);
+                         }),
+                         ],
         'Curp' => 'nullable|string|min:18|max:18',
         'Phone' => 'nullable|numeric|digits:10',
-        //'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email,' . $id,
-        'Email' => 'nullable|email|min:5|max:50',
+        'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email,'. $id,
         'County_id' => 'nullable',
     ];
         $validator = Validator::make($request->all(), $rules);
