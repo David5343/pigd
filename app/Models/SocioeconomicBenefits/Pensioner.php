@@ -8,6 +8,7 @@ use App\Models\Catalogs\Subdependency;
 use App\Models\Catalogs\WorkRisk;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pensioner extends Model
 {
@@ -26,5 +27,9 @@ class Pensioner extends Model
         public function workRisks(): BelongsTo
     {
         return $this->belongsTo(WorkRisk::class);
+    }
+    public function beneficiaries(): HasMany
+    {
+        return $this->hasMany(PensionerBeneficiary::class);
     }
 }
