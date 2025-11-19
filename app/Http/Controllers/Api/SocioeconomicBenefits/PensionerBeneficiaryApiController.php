@@ -33,7 +33,7 @@ class PensionerBeneficiaryApiController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Búsqueda realizada correctamente',
-                'pensioners' => $beneficiaries
+                'beneficiaries' => $beneficiaries
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -92,13 +92,14 @@ class PensionerBeneficiaryApiController extends Controller
                 'min:13',
                 'max:13',//Pendiente de revisar validacion rfc
                 Rule::unique('pensioner_beneficiaries')->where(function ($query) use ($request) {
-                    return $query->where('pension_types_id', $request->Pension_types_id);
+                    return $query->where('rfc', $request->Rfc);
                 }),
             ],
             'Curp' => 'nullable | string | min:18 | max: 18',
+            'Disabled_person' => 'nullable | string',
+            'Relationship' => 'nullable | string',
+            'Address' => 'nullable | string|max:200',
             'Observations' => 'nullable|min:5|max:250',
-            
-            'Marital_status' => 'nullable',
         ];
 
         $validator = Validator::make($request->all(), $rules);
