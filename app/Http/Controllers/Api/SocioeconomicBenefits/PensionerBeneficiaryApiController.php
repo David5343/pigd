@@ -78,7 +78,7 @@ class PensionerBeneficiaryApiController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'Pensioner_id'=> 'required',
+            'Pensioner_id' => 'required',
             'File_number' => 'nullable|max:10',
             'Start_date' => 'required|date|max:10',
             'Last_name_1' => 'required|min:2|max:20',
@@ -90,10 +90,11 @@ class PensionerBeneficiaryApiController extends Controller
                 'required',
                 'string',
                 'min:13',
-                'max:13',//Pendiente de revisar validacion rfc
-                Rule::unique('pensioner_beneficiaries')->where(function ($query) use ($request) {
-                    return $query->where('rfc', $request->Rfc);
-                }),
+                'max:13',
+                Rule::unique('pensioner_beneficiaries')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('affiliate_status', 'Activo');
+                    }),
             ],
             'Curp' => 'nullable | string | min:18 | max: 18',
             'Disabled_person' => 'nullable | string',
@@ -109,43 +110,111 @@ class PensionerBeneficiaryApiController extends Controller
             return response()->json([
                 'status' => 'warning',
                 'message' => 'Error de validación',
-                'pensioners' => null,
+                'beneficiary' => null,
                 'errors' => $validator->errors()->toArray(),
             ], 422);
         }
         DB::beginTransaction();
         try {
-            $pensioner = new PensionerBeneficiary();
-            $pensioner->subdependency_id = $request->input('Subdependency_id');
-            $pensioner->county_id = $request->input('County_id');
-            $pensioner->pension_types_id = $request->input('Pension_types_id');
-            $pensioner->work_risks_id = $request->input('Work_risks_id') ?: null;
-            $pensioner->noi_number = Str::of($request->input('Noi_number'))->trim();
-            $pensioner->file_number = Str::of($request->input('File_number'))->trim();
-            $pensioner->start_date = $request->input('Start_date');            
-            $pensioner->observations = Str::of($request->input('Observations'))->trim() ?: null;
-            $pensioner->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
-            $pensioner->last_name_2 = Str::of($request->input('Last_name_2'))->trim() ?: null;
-            $pensioner->name = Str::of($request->input('Name'))->trim();
-            $pensioner->birthday = $request->input('Birthday');
-            $pensioner->sex = $request->input('Sex');
-            $pensioner->marital_status = $request->input('Marital_status') ?: null;
+            $beneficiary = new PensionerBeneficiary();
+            $beneficiary->pensioner_id = $request->input('Pensioner_id');
+            $beneficiary->file_number = Str::of($request->input('File_number'))->trim();
+            $beneficiary->start_date = $request->input('Start_date');
+            $beneficiary->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
+            $beneficiary->last_name_2 = Str::of($request->input('Last_name_2'))->trim() ?: null;
+            $beneficiary->name = Str::of($request->input('Name'))->trim();
+            $beneficiary->birthday = $request->input('Birthday');
+            $beneficiary->sex = $request->input('Sex');
             $rfc = Str::of($request->input('Rfc'))->trim();
             $curp = Str::of($request->input('Curp'))->trim();
-            $pensioner->rfc = Str::upper($rfc);
-            $pensioner->curp = Str::upper($curp) ?: null;       
-            $pensioner->phone = Str::of($request->input('Phone'))->trim() ?: null;
-            $email = Str::of($request->input('Email'))->trim();
-            $pensioner->email = Str::lower($email) ?: null;
-            $pensioner->address = $request->input('Address');
-            $pensioner->status = 'Activo';
-            $pensioner->modified_by = Auth::user()->email;
-            $pensioner->save();
+            $beneficiary->rfc = Str::upper($rfc);
+            $beneficiary->curp = Str::upper($curp) ?: null;
+            $beneficiary->disabled_person = $request->input('Disabled_person') ?: null;
+            $beneficiary->relationship = Str::of($request->input('Relationship'))->trim() ?: null;
+            $beneficiary->address = $request->input('Address');
+            $beneficiary->observations = Str::of($request->input('Observations'))->trim() ?: null;
+            $beneficiary->affiliate_status = 'Activo';
+            $beneficiary->modified_by = Auth::user()->email;
+            $beneficiary->save();
             DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Registro guardado correctamente',
-                'pensioner' => $pensioner,
+                'beneficiary' => $beneficiary,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function update(Request $request, $id)
+    {
+        $rules = [
+            'Pensioner_id' => 'required',
+            'File_number' => 'nullable|max:10',
+            'Start_date' => 'required|date|max:10',
+            'Last_name_1' => 'required|min:2|max:20',
+            'Last_name_2' => 'nullable|min:2|max:20',
+            'Name' => 'required|min:2|max:30',
+            'Birthday' => 'nullable|max:10|date',
+            'Sex' => 'required',
+            'Rfc' => [
+                'required',
+                'string',
+                'min:13',
+                'max:13',
+                Rule::unique('pensioner_beneficiaries')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('affiliate_status', 'Activo');
+                    }),
+            ],
+            'Curp' => 'nullable | string | min:18 | max: 18',
+            'Disabled_person' => 'nullable | string',
+            'Relationship' => 'nullable | string',
+            'Address' => 'nullable | string|max:200',
+            'Observations' => 'nullable|min:5|max:250',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        // Comprobar si la validación falla
+        if ($validator->fails()) {
+            // Retornar errores de validación
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'Error de validación',
+                'beneficiary' => null,
+                'errors' => $validator->errors()->toArray(),
+            ], 422);
+        }
+        DB::beginTransaction();
+        try {
+            $beneficiary = PensionerBeneficiary::find($id);
+            $beneficiary->pensioner_id = $request->input('Pensioner_id');
+            $beneficiary->file_number = Str::of($request->input('File_number'))->trim();
+            $beneficiary->start_date = $request->input('Start_date');
+            $beneficiary->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
+            $beneficiary->last_name_2 = Str::of($request->input('Last_name_2'))->trim() ?: null;
+            $beneficiary->name = Str::of($request->input('Name'))->trim();
+            $beneficiary->birthday = $request->input('Birthday');
+            $beneficiary->sex = $request->input('Sex');
+            $rfc = Str::of($request->input('Rfc'))->trim();
+            $curp = Str::of($request->input('Curp'))->trim();
+            $beneficiary->rfc = Str::upper($rfc);
+            $beneficiary->curp = Str::upper($curp) ?: null;
+            $beneficiary->disabled_person = $request->input('Disabled_person') ?: null;
+            $beneficiary->relationship = Str::of($request->input('Relationship'))->trim() ?: null;
+            $beneficiary->address = $request->input('Address');
+            $beneficiary->observations = Str::of($request->input('Observations'))->trim() ?: null;
+            $beneficiary->modified_by = Auth::user()->email;
+            $beneficiary->save();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Registro guardado correctamente',
+                'beneficiary' => $beneficiary,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
