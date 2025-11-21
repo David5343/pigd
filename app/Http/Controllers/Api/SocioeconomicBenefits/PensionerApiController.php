@@ -119,7 +119,7 @@ class PensionerApiController extends Controller
             ], 500);
         }
     }
-        public function searchinsuredbyfilenumber(Request $request, $file)
+    public function searchinsuredbyfilenumber(Request $request, $file)
     {
         try {
             $relations = [
@@ -134,7 +134,7 @@ class PensionerApiController extends Controller
 
             $insured = Insured::with($relations)
                 ->where('file_number', $file)
-                ->where('inactive_motive','Pensión')
+                ->where('inactive_motive', 'Pensión')
                 ->where('affiliation_status_id', 4)
                 ->OrderByDesc('id')
                 ->first();
@@ -166,8 +166,8 @@ class PensionerApiController extends Controller
             'Noi_number' => 'required|max:4|unique:pensioners,noi_number',
             'File_number' => 'nullable|max:10',
             'Start_date' => 'required|date|max:10',
-            'Pension_types_id'=> 'required',
-            'Work_risks_id'=> 'nullable',
+            'Pension_types_id' => 'required',
+            'Work_risks_id' => 'nullable',
             'Subdependency_id' => 'required',
             'Observations' => 'nullable|min:5|max:250',
             'Last_name_1' => 'required|min:2|max:20',
@@ -211,7 +211,7 @@ class PensionerApiController extends Controller
             $pensioner->work_risks_id = $request->input('Work_risks_id') ?: null;
             $pensioner->noi_number = Str::of($request->input('Noi_number'))->trim();
             $pensioner->file_number = Str::of($request->input('File_number'))->trim();
-            $pensioner->start_date = $request->input('Start_date');            
+            $pensioner->start_date = $request->input('Start_date');
             $pensioner->observations = Str::of($request->input('Observations'))->trim() ?: null;
             $pensioner->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
             $pensioner->last_name_2 = Str::of($request->input('Last_name_2'))->trim() ?: null;
@@ -222,7 +222,7 @@ class PensionerApiController extends Controller
             $rfc = Str::of($request->input('Rfc'))->trim();
             $curp = Str::of($request->input('Curp'))->trim();
             $pensioner->rfc = Str::upper($rfc);
-            $pensioner->curp = Str::upper($curp) ?: null;       
+            $pensioner->curp = Str::upper($curp) ?: null;
             $pensioner->phone = Str::of($request->input('Phone'))->trim() ?: null;
             $email = Str::of($request->input('Email'))->trim();
             $pensioner->email = Str::lower($email) ?: null;
@@ -244,36 +244,38 @@ class PensionerApiController extends Controller
             ], 500);
         }
     }
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-    $rules = [
-        'Noi_number' => 'required|max:4|unique:pensioners,noi_number,'.$id,
-        'File_number' => 'nullable|max:8',
-        'Start_date' => 'required|date|max:10',
-        'Pension_types_id'=> 'required',
-        'Work_risks_id'=> 'nullable',
-        'Subdependency_id' => 'nullable',
-        'Observations' => 'nullable|min:5|max:250',
-        'Last_name_1' => 'required|min:2|max:20',
-        'Last_name_2' => 'nullable|min:2|max:20',
-        'Name' => 'required|min:2|max:30',
-        'Birthday' => 'nullable|max:10|date',
-        'Sex' => 'required',
-        'Marital_status' => 'nullable',
-        'Rfc' => [ 'required',
-                    'string',
-                    'min:13',
-                    'max:13',
-                     Rule::unique('pensioners')->ignore($id) // 👈 Ignora el registro actual
-                      ->where(function ($query) use ($request) {
-                         return $query->where('pension_types_id', $request->Pension_types_id);
-                         }),
-                         ],
-        'Curp' => 'nullable|string|min:18|max:18',
-        'Phone' => 'nullable|numeric|digits:10',
-        'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email,'. $id,
-        'County_id' => 'nullable',
-    ];
+
+        $rules = [
+            'Noi_number' => 'required|max:4|unique:pensioners,noi_number,' . $id,
+            'File_number' => 'nullable|max:8',
+            'Start_date' => 'required|date|max:10',
+            'Pension_types_id' => 'required',
+            'Work_risks_id' => 'nullable',
+            'Subdependency_id' => 'nullable',
+            'Observations' => 'nullable|min:5|max:250',
+            'Last_name_1' => 'required|min:2|max:20',
+            'Last_name_2' => 'nullable|min:2|max:20',
+            'Name' => 'required|min:2|max:30',
+            'Birthday' => 'nullable|max:10|date',
+            'Sex' => 'required',
+            'Marital_status' => 'nullable',
+            'Rfc' => [
+                'required',
+                'string',
+                'min:13',
+                'max:13',
+                Rule::unique('pensioners')->ignore($id) // 👈 Ignora el registro actual
+                    ->where(function ($query) use ($request) {
+                        return $query->where('pension_types_id', $request->Pension_types_id);
+                    }),
+            ],
+            'Curp' => 'nullable|string|min:18|max:18',
+            'Phone' => 'nullable|numeric|digits:10',
+            'Email' => 'nullable|email|min:5|max:50|unique:pensioners,email,' . $id,
+            'County_id' => 'nullable',
+        ];
         $validator = Validator::make($request->all(), $rules);
         // Comprobar si la validación falla
         if ($validator->fails()) {
@@ -288,13 +290,13 @@ class PensionerApiController extends Controller
         DB::beginTransaction();
         try {
             $pensioner = Pensioner::find($id);
-            $pensioner->subdependency_id = $request->input('Subdependency_id') ? : null;
+            $pensioner->subdependency_id = $request->input('Subdependency_id') ?: null;
             $pensioner->county_id = $request->input('County_id');
             $pensioner->pension_types_id = $request->input('Pension_types_id');
             $pensioner->work_risks_id = $request->input('Work_risks_id') ?: null;
             $pensioner->noi_number = Str::of($request->input('Noi_number'))->trim();
             $pensioner->file_number = Str::of($request->input('File_number'))->trim();
-            $pensioner->start_date = $request->input('Start_date');            
+            $pensioner->start_date = $request->input('Start_date');
             $pensioner->observations = Str::of($request->input('Observations'))->trim() ?: null;
             $pensioner->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
             $pensioner->last_name_2 = Str::of($request->input('Last_name_2'))->trim() ?: null;
@@ -305,7 +307,7 @@ class PensionerApiController extends Controller
             $rfc = Str::of($request->input('Rfc'))->trim();
             $curp = Str::of($request->input('Curp'))->trim();
             $pensioner->rfc = Str::upper($rfc);
-            $pensioner->curp = Str::upper($curp) ?: null;       
+            $pensioner->curp = Str::upper($curp) ?: null;
             $pensioner->phone = Str::of($request->input('Phone'))->trim() ?: null;
             $email = Str::of($request->input('Email'))->trim();
             $pensioner->email = Str::lower($email) ?: null;
@@ -435,13 +437,13 @@ class PensionerApiController extends Controller
                 'pensionType'
             ];
             $pensioners = Pensioner::with($relations)
-            ->where(function ($query) use ($data) {
-                $query->where('noi_number', 'like', "%{$data}%")
-                      ->orWhere('rfc', 'like', "%{$data}%")
-                      ->orWhere('curp', 'like', "%{$data}%")
-                      ->orWhere(DB::raw("CONCAT(last_name_1, ' ', last_name_2, ' ', name)"), 'like', "%{$data}%")
-                      ->orWhere(DB::raw("CONCAT(name,' ',last_name_1, ' ', last_name_2)"), 'like', "%{$data}%");
-            })->get();
+                ->where(function ($query) use ($data) {
+                    $query->where('noi_number', 'like', "%{$data}%")
+                        ->orWhere('rfc', 'like', "%{$data}%")
+                        ->orWhere('curp', 'like', "%{$data}%")
+                        ->orWhere(DB::raw("CONCAT(last_name_1, ' ', last_name_2, ' ', name)"), 'like', "%{$data}%")
+                        ->orWhere(DB::raw("CONCAT(name,' ',last_name_1, ' ', last_name_2)"), 'like', "%{$data}%");
+                })->get();
 
             if ($pensioners->isEmpty()) {
                 return response()->json([
@@ -462,7 +464,7 @@ class PensionerApiController extends Controller
                 'message' => 'Error en el servidor',
                 'error' => $e->getMessage(),
             ], 500);
-        }        
+        }
     }
     public function searchByNoi(Request $request, $noi)
     {
