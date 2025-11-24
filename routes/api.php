@@ -109,6 +109,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/socioeconomic_benefits/credentialpensioners/store', [CredentialPensionerApiController::class, 'store']);
     Route::get('/socioeconomic_benefits/credentialpensioners/{id}', [CredentialPensionerApiController::class, 'show']);
     Route::get('/socioeconomic_benefits/credentialpensioners/search/{dato}', [CredentialPensionerApiController::class, 'search']);
+    //Credencial beneficiarios de Pensionados
+    Route::get('/socioeconomic_benefits/credentialpensionersb/searchbyfolio/{folio}', [CredentialPensionerApiController::class, 'searchbyfolio']);
     //Turnos
     Route::get('/prestaciones/turnos', [TicketApiController::class, 'index']);
     Route::post('/prestaciones/turnos/guardar', [TicketApiController::class, 'store']);
