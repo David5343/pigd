@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Auth;
 
 class PensionerBeneficiaryApiController extends Controller
@@ -18,9 +19,12 @@ class PensionerBeneficiaryApiController extends Controller
     {
         try {
             $relations = [
-                'pensioner',
+                'pensioner.pensionType',
             ];
-            $beneficiaries = PensionerBeneficiary::with($relations)->get();
+            $beneficiaries = PensionerBeneficiary::with($relations)
+                ->latest()
+                ->limit(25)
+                ->get();
 
             if ($beneficiaries->isEmpty()) {
                 return response()->json([
@@ -86,17 +90,17 @@ class PensionerBeneficiaryApiController extends Controller
             'Name' => 'required|min:2|max:30',
             'Birthday' => 'nullable|max:10|date',
             'Sex' => 'required',
-            'Rfc' => [
+            'Rfc' => 'nullable | string | min:13 | max: 13',
+            'Curp' => [
                 'required',
                 'string',
-                'min:13',
-                'max:13',
+                'min:18',
+                'max:18',
                 Rule::unique('pensioner_beneficiaries')
                     ->where(function ($query) use ($request) {
                         return $query->where('affiliate_status', 'Activo');
                     }),
             ],
-            'Curp' => 'nullable | string | min:18 | max: 18',
             'Disabled_person' => 'nullable | string',
             'Relationship' => 'nullable | string',
             'Address' => 'nullable | string|max:200',
@@ -131,7 +135,7 @@ class PensionerBeneficiaryApiController extends Controller
             $beneficiary->curp = Str::upper($curp) ?: null;
             $beneficiary->disabled_person = $request->input('Disabled_person') ?: null;
             $beneficiary->relationship = Str::of($request->input('Relationship'))->trim() ?: null;
-            $beneficiary->address = $request->input('Address');
+            $beneficiary->address = $request->input('Address') ?: null;
             $beneficiary->observations = Str::of($request->input('Observations'))->trim() ?: null;
             $beneficiary->affiliate_status = 'Activo';
             $beneficiary->modified_by = Auth::user()->email;
@@ -216,6 +220,72 @@ class PensionerBeneficiaryApiController extends Controller
                 'message' => 'Registro guardado correctamente',
                 'beneficiary' => $beneficiary,
             ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function idgenerator()
+    {
+        try {
+            $file_number = IdGenerator::generate([
+                'table'  => 'pensioner_beneficiaries',
+                'field'  => 'file_number',
+                'length' => 8,
+                'prefix' => 'B'
+            ]);
+
+            if (!$file_number) {
+                return response()->json([
+                    'status'      => 'fail',
+                    'message'     => 'Folio no generado',
+                    'file_number' => null,
+                ], 500);
+            }
+
+            return response()->json([
+                'status'      => 'success',
+                'message'     => 'Folio generado correctamente',
+                'file_number' => $file_number,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'fail',
+                'message' => 'Error en el servidor',
+                'error'   => $e->getMessage(),
+            ], 500);
+        }
+    }
+        public function search(Request $request, $data)
+    {
+        try {
+            $relations = [
+                'pensioner.pensionType',
+            ];
+            $beneficiaries = PensionerBeneficiary::with($relations)
+                ->where(function ($query) use ($data) {
+                    $query->where('file_number', 'like', "%{$data}%")
+                        ->orWhere('curp', 'like', "%{$data}%")
+                        ->orWhere(DB::raw("CONCAT(last_name_1, ' ', last_name_2, ' ', name)"), 'like', "%{$data}%")
+                        ->orWhere(DB::raw("CONCAT(name,' ',last_name_1, ' ', last_name_2)"), 'like', "%{$data}%");
+                })->get();
+
+            if ($beneficiaries->isEmpty()) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'beneficiaries' => null,
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'beneficiaries' => $beneficiaries
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',
