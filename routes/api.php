@@ -97,10 +97,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/socioeconomic_benefits/pensioners/photo/{id}', [PensionerApiController::class, 'photo']);
     Route::patch('/socioeconomic_benefits/pensioners/signature/{id}', [PensionerApiController::class, 'signature']);
     //Beneficiarios de Pensionados
+    Route::get('/socioeconomic_benefits/pensionerbeneficiaries/idgenerator', [PensionerBeneficiaryApiController::class, 'idgenerator']);
     Route::get('/socioeconomic_benefits/pensionerbeneficiaries', [PensionerBeneficiaryApiController::class, 'index']);
     Route::post('/socioeconomic_benefits/pensionerbeneficiaries/store', [PensionerBeneficiaryApiController::class, 'store']);
+    Route::get('/socioeconomic_benefits/pensionerbeneficiaries/search/{dato}', [PensionerBeneficiaryApiController::class, 'search']);
     Route::get('/socioeconomic_benefits/pensionerbeneficiaries/{id}', [PensionerBeneficiaryApiController::class, 'show']);
     Route::put('/socioeconomic_benefits/pensionerbeneficiaries/update/{id}', [PensionerBeneficiaryApiController::class, 'update']);
+    
     //Credencial Pensionados
     Route::get('/socioeconomic_benefits/credentialpensioners', [CredentialPensionerApiController::class, 'index']);
     Route::post('/socioeconomic_benefits/credentialpensioners/store', [CredentialPensionerApiController::class, 'store']);
