@@ -259,7 +259,7 @@ class PensionerBeneficiaryApiController extends Controller
             ], 500);
         }
     }
-        public function search(Request $request, $data)
+    public function search(Request $request, $data)
     {
         try {
             $relations = [
@@ -285,6 +285,36 @@ class PensionerBeneficiaryApiController extends Controller
                 'status' => 'success',
                 'message' => 'Búsqueda realizada correctamente',
                 'beneficiaries' => $beneficiaries
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function searchbyfolio(Request $request, $folio)
+    {
+        try {
+            $relations = [
+                'pensioner.pensionType',
+            ];
+            $beneficiary = PensionerBeneficiary::with($relations)
+                ->where('file_number', $folio)
+                ->first();
+
+            if (!$beneficiary) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'beneficiary' => null,
+                ], 404);
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'beneficiary' => $beneficiary,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
