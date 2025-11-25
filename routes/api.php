@@ -101,6 +101,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/pensionerbeneficiaries', [PensionerBeneficiaryApiController::class, 'index']);
     Route::post('/socioeconomic_benefits/pensionerbeneficiaries/store', [PensionerBeneficiaryApiController::class, 'store']);
     Route::get('/socioeconomic_benefits/pensionerbeneficiaries/search/{dato}', [PensionerBeneficiaryApiController::class, 'search']);
+    Route::get('/socioeconomic_benefits/pensionerbeneficiaries/searchbyfolio/{folio}', [PensionerBeneficiaryApiController::class, 'searchbyfolio']);
     Route::get('/socioeconomic_benefits/pensionerbeneficiaries/{id}', [PensionerBeneficiaryApiController::class, 'show']);
     Route::put('/socioeconomic_benefits/pensionerbeneficiaries/update/{id}', [PensionerBeneficiaryApiController::class, 'update']);
     
@@ -110,7 +111,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/credentialpensioners/{id}', [CredentialPensionerApiController::class, 'show']);
     Route::get('/socioeconomic_benefits/credentialpensioners/search/{dato}', [CredentialPensionerApiController::class, 'search']);
     //Credencial beneficiarios de Pensionados
-    Route::get('/socioeconomic_benefits/credentialpensionersb/searchbyfolio/{folio}', [CredentialPensionerApiController::class, 'searchbyfolio']);
+    Route::get('/socioeconomic_benefits/credentialpensionersb', [CredentialPensionerApiController::class, 'index']);
     //Turnos
     Route::get('/prestaciones/turnos', [TicketApiController::class, 'index']);
     Route::post('/prestaciones/turnos/guardar', [TicketApiController::class, 'store']);
