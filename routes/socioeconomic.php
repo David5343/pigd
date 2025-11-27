@@ -6,6 +6,8 @@ use App\Http\Controllers\Catalogs\SubdependencyController;
 use App\Http\Controllers\Catalogs\PensionTypeController;
 use App\Http\Controllers\Catalogs\RankController;
 use App\Http\Controllers\Catalogs\WorkRiskController;
+use App\Http\Controllers\SocioeconomicBenefits\InsuredReportsController;
+use App\Http\Controllers\SocioeconomicBenefits\ReportsController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
@@ -46,4 +48,6 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/catalogs/ranks/create', [RankController::class, 'create'])->name('ranks.create');
     Route::get('/socioeconomic_benefits/catalogs/ranks/{id}/edit', [RankController::class, 'edit'])->name('ranks.edit');
     Route::put('/socioeconomic_benefits/catalogs/ranks/{id}', [RankController::class, 'update'])->name('ranks.update');
+    //Rutas para reportes
+    Route::get('/socioeconomic_benefits/reports', [ReportsController::class, 'index'])->name('reports.index');
         });
