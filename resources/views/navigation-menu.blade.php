@@ -679,39 +679,9 @@
                             </div>
                             <!-- Separador -->
                             <div class="border-t border-gray-200"></div>
-                                                        <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Reportes') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('membership.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Altas y bajas titulares') }}
-                                    </a>
-                                    <a href="{{ route('beneficiaries.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Altas y bajas familiares') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Pensionados') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Beneficiarios de pensión') }}
-                                    </a>
-                                </div>
-                            </div>
+                            <x-dropdown-link href="{{ route('reports.index') }}">
+                                {{ __('Reportes') }}
+                            </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
                 </div>
