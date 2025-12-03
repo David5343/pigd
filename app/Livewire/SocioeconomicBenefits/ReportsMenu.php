@@ -10,7 +10,6 @@ use Livewire\Component;
 class ReportsMenu extends Component
 {
     public $date_start = '';
-
     public $date_end = '';
 
     public function mount()
@@ -19,53 +18,54 @@ class ReportsMenu extends Component
         $this->date_end = now()->format('Y-m-d');
     }
 
-    public function generarPDFTitularAltas()
-    {
-        $inicio = $this->date_start.' 00:00:00';
-        $fin = $this->date_end.' 23:59:59';
-            $relations = [
-                'subdependency',
-                'affiliationStatus',
-            ];
-        $registros = Insured::with($relations)
-        ->whereBetween('created_at', [$inicio, $fin])->get();
+public function generarPDFTitularAltas()
+{
+    $inicio = $this->date_start . ' 00:00:00';
+    $fin = $this->date_end . ' 23:59:59';
 
-        $data = [
-            'registros' => $registros,
-            'fechaInicio' => Carbon::parse($this->date_start)->format('d/m/Y'),
-            'fechaFin' => Carbon::parse($this->date_end)->format('d/m/Y'),
-            'fechaCreacion' => now()->format('d/m/Y'),
-        ];
+    $registros = Insured::with(['subdependency', 'affiliationStatus'])
+        ->whereBetween('created_at', [$inicio, $fin])
+        ->get();
 
-        $pdf = Pdf::loadView('socioeconomic_benefits.reports.insureds.reporte-altas', $data)
-            ->setPaper('letter', 'portrait')
-            ->setOption('isPhpEnabled', true);
+    $data = [
+        'registros' => $registros,
+        'total' => $registros->count(),
+        'fechaInicio' => Carbon::parse($this->date_start)->format('d/m/Y'),
+        'fechaFin' => Carbon::parse($this->date_end)->format('d/m/Y'),
+        'fechaCreacion' => now()->format('d/m/Y'),
+    ];
 
-        $pdf->output();
+    $pdf = Pdf::setOption([
+            'defaultFont' => 'DejaVu Sans',
+            'isPhpEnabled' => true,
+            'margin-top' => 170, // espacio para header con logos
+        ])
+        ->loadView('socioeconomic_benefits.reports.insureds.reporte-altas', $data)
+        ->setPaper('letter', 'landscape');
 
-        $dompdf = $pdf->getDomPDF();
-        $canvas = $dompdf->get_canvas();
-        $font = $dompdf->getFontMetrics()->get_font('Helvetica', 'normal');
+    // FOOTER: Página X de Y
+    $dompdf = $pdf->getDomPDF();
+    $canvas = $dompdf->get_canvas();
+    $font = $dompdf->getFontMetrics()->get_font('DejaVu Sans', 'normal');
 
-        // Coordenadas
-        $w = $canvas->get_width();
-        $y = $canvas->get_height() - 40;
+    $w = $canvas->get_width();
+    $y = $canvas->get_height() - 35;
 
-        // Pie centrado
-        $canvas->page_text(
-            $w / 2,
-            $y,
-            'Página {PAGE_NUM} de {PAGE_COUNT}',
-            $font,
-            10,
-            [0, 0, 0]
-        );
+    $canvas->page_text(
+        $w / 2,
+        $y,
+        'Página {PAGE_NUM} de {PAGE_COUNT}',
+        $font,
+        10,
+        [0, 0, 0]
+    );
 
-        return response()->streamDownload(
-            fn () => print ($pdf->output()),
-            'reporte-altas.pdf'
-        );
-    }
+    return response()->streamDownload(
+        fn () => print($pdf->output()),
+        'reporte-altas.pdf'
+    );
+}
+
 
     public function render()
     {
