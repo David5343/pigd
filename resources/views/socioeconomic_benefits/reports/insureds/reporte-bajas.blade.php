@@ -117,7 +117,7 @@ tr {
 <main>
 
     <div class="resumen">
-        TOTAL DE ALTAS: {{ $total }}
+        TOTAL DE BAJAS: {{ $total }}
     </div>
 
     <table>
