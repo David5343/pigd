@@ -11,6 +11,7 @@ class ReportsMenu extends Component
 {
     public $date_start = '';
     public $date_end = '';
+    public $option = '';
 
     public function mount()
     {
@@ -18,55 +19,32 @@ class ReportsMenu extends Component
         $this->date_end = now()->format('Y-m-d');
     }
 
-public function generarPDFTitularAltas()
-{
-    $inicio = $this->date_start . ' 00:00:00';
-    $fin = $this->date_end . ' 23:59:59';
+    public function generar()
+    {
+    switch ($this->option) {
+        case 'altas_titulares':
+            return $this->redirect(route('reports.insureds-altas', [
+                'inicio' => $this->date_start,
+                'fin' => $this->date_end,
+            ]));
 
-    $registros = Insured::with(['subdependency', 'affiliationStatus'])
-        ->whereBetween('created_at', [$inicio, $fin])
-        ->get();
+        case 'bajas_titulares':
+            return $this->redirect(route('reports.insureds-bajas', [
+                'inicio' => $this->date_start,
+                'fin' => $this->date_end,
+            ]));
 
-    $data = [
-        'registros' => $registros,
-        'total' => $registros->count(),
-        'fechaInicio' => Carbon::parse($this->date_start)->format('d/m/Y'),
-        'fechaFin' => Carbon::parse($this->date_end)->format('d/m/Y'),
-        'fechaCreacion' => now()->format('d/m/Y'),
-    ];
+        case 'preafiliados':
+            return $this->redirect(route('reports.preafiliados', [
+                'inicio' => $this->date_start,
+                'fin' => $this->date_end,
+            ]));
 
-    $pdf = Pdf::setOption([
-            'defaultFont' => 'DejaVu Sans',
-            'isPhpEnabled' => true,
-            'margin-top' => 170, // espacio para header con logos
-        ])
-        ->loadView('socioeconomic_benefits.reports.insureds.reporte-altas', $data)
-        ->setPaper('letter', 'landscape');
-
-    // FOOTER: Página X de Y
-    $dompdf = $pdf->getDomPDF();
-    $canvas = $dompdf->get_canvas();
-    $font = $dompdf->getFontMetrics()->get_font('DejaVu Sans', 'normal');
-
-    $w = $canvas->get_width();
-    $y = $canvas->get_height() - 35;
-
-    $canvas->page_text(
-        $w / 2,
-        $y,
-        'Página {PAGE_NUM} de {PAGE_COUNT}',
-        $font,
-        10,
-        [0, 0, 0]
-    );
-
-    return response()->streamDownload(
-        fn () => print($pdf->output()),
-        'reporte-altas.pdf'
-    );
-}
-
-
+        default:
+            $this->addError('option', 'Seleccione una opción válida.');
+            return;
+    }
+    }
     public function render()
     {
         return view('livewire.socioeconomic-benefits.reports-menu');

@@ -17,32 +17,16 @@
     <!-- Reporte de -->
     <div class="flex flex-col w-full md:w-1/5">
         <label class="text-sm font-medium text-gray-700">Reporte de:</label>
-        <select wire:model="report_type" id="report_type" name="report_type"
+        <select wire:model="option" id="option" name="option"
             class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
             <option value="altas_titulares">Alta de titulares</option>
             <option value="bajas_titulares">Baja de titulares</option>
             <option value="">Preafiliados</option>
         </select>
-        @error('report_type')
+        @error('option')
             <div class="bg-red-100 text-red-700 p-2 rounded-lg mt-2">{{ $message }}</div>
         @enderror
     </div>
-
-    {{-- <!-- Tipo de derechohabiente -->
-    <div class="flex flex-col w-full md:w-1/5">
-        <label class="text-sm font-medium text-gray-700">Tipo de derechohabiente</label>
-        <select wire:model="insured_type" id="insured_type" name="insured_type"
-            class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
-            <option value="">Titulares</option>
-            <option value="">Familiares</option>
-            <option value="">Pensionados</option>
-            <option value="">Beneficiarios</option>
-        </select>
-        @error('insured_type')
-            <div class="bg-red-100 text-red-700 p-2 rounded-lg mt-2">{{ $message }}</div>
-        @enderror
-    </div> --}}
-
 </div>
 <div class="flex flex-wrap w-full gap-4 mt-4">
 
@@ -70,7 +54,7 @@
                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
                 Cancelar
             </a>
-            <button wire:click="generarPDFTitularAltas"
+            <button wire:click="generar"
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Generar</button>
         </div>
 </div>

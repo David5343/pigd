@@ -50,4 +50,6 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::put('/socioeconomic_benefits/catalogs/ranks/{id}', [RankController::class, 'update'])->name('ranks.update');
     //Rutas para reportes
     Route::get('/socioeconomic_benefits/reports', [ReportsController::class, 'index'])->name('reports.index');
+    Route::get('/socioeconomic_benefits/reports/insured_altas', [InsuredReportsController::class, 'altas'])->name('reports.insureds-altas');
+    Route::get('/socioeconomic_benefits/reports/insured_bajas', [InsuredReportsController::class, 'bajas'])->name('reports.insureds-bajas');
         });
