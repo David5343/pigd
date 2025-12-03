@@ -3,62 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <style>
-    body {
-        font-family: DejaVu Sans, sans-serif;
-        font-size: 11px;
-        margin: 80px 40px 80px 40px;
-    }
+body {
+    font-family: 'DejaVu Sans', sans-serif;
+    font-size: 11px;
+    margin: 170px 40px 80px 40px; /* espacio para header */
+}
 
-    /* ENCABEZADO */
-    header {
-        position: fixed;
-        top: -60px;
-        left: 0;
-        right: 0;
-        height: 70px;
-        text-align: center;
-        line-height: 1.2;
-    }
+/* HEADER FIJO (SOLO PARA EL TEXTO, SIN IMÁGENES) */
+header {
+    position: fixed;
+    top: -25px;
+    left: 0;
+    right: 0;
+    height: 160px;
+    text-align: center;
+    border-bottom: 1px solid #7f8085;
+    padding-bottom: 10px;
+}
 
-    /* PIE DE PÁGINA */
-    footer {
-        position: fixed;
-        bottom: -60px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        font-size: 10px;
-        line-height: 1.2;
-        border-top: 1px solid #000;
-        padding-top: 5px;
-    }
+/* LOGO IZQUIERDO */
+.logo-left {
+    position: fixed;
+    top: -10px;     /* AJUSTA AQUÍ si quieres subir o bajar */
+    left: 25px;
+    width: 85px;    /* para imagen 417x387 */
+    height: auto;
+}
 
-    /* TABLA */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+/* LOGO DERECHO */
+.logo-right {
+    position: fixed;
+    top: -10px;      /* AJUSTA AQUÍ también */
+    right: 25px;
+    width: 85px;     /* para imagen 417x457 */
+    height: auto;
+}
 
-    th, td {
-        border: 1px solid #000;
-        padding: 4px 3px;
-    }
+/* FOOTER */
+footer {
+    position: fixed;
+    bottom: -60px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 10px;
+    border-top: 1px solid #000;
+    padding-top: 5px;
+}
 
-    th {
-        background: #ddd;
-        font-weight: bold;
-        font-size: 10px;
-    }
+/* TABLA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
 
-    .titulo {
-        font-size: 14px;
-        font-weight: bold;
-    }
+th, td {
+    border: 1px solid #000;
+    padding: 4px 3px;
+    word-wrap: break-word;
+}
+
+th {
+    background: #ddd;
+    text-align: center;
+    font-size: 10px;
+}
+
+tr {
+    page-break-inside: avoid;
+}
+
+
 </style>
 </head>
 
 <body>
+
+<img src="{{ public_path('images/gob_chiapas.png') }}" class="logo-left">
+<img src="{{ public_path('images/logo_fide.png') }}" class="logo-right">
 
 <header>
     <div style="font-weight:bold; font-size:16px;">
@@ -71,7 +94,7 @@
         "2025, año de Rosario Castellanos Figueroa"
     </div>
 
-    <div class="titulo" style="margin-top:10px;">
+    <div style="margin-top:10px; font-size:14px; font-weight:bold;">
         REPORTE DE ALTAS DE TITULARES (TRABAJADORES)
     </div>
 
@@ -84,13 +107,19 @@
     </div>
 </header>
 
+
 <footer>
-    9na Sur Poniente 462, Barr. Los Milagros. <br>
+    9na Sur Poniente 462, Barr. Los Milagros.<br>
     C.P. 29066, Tuxtla Gutiérrez, Chiapas.<br>
     Tel. (961) 61 11623 y 61 11654
 </footer>
 
 <main>
+
+    <div class="resumen">
+        TOTAL DE ALTAS: {{ $total }}
+    </div>
+
     <table>
         <thead>
         <tr>
@@ -100,7 +129,6 @@
             <th>NOMBRE_COMPLETO</th>
             <th>RFC</th>
             <th>SEXO</th>
-            <th>EDAD</th>
             <th>FECHA_ALTA_DEPENDENCIA</th>
             <th>FECHA_CAPTURA</th>
             <th>ESTATUS</th>
@@ -113,17 +141,17 @@
                 <td>{{ $r->file_number }}</td>
                 <td>{{ $r->employee_number }}</td>
                 <td>{{ $r->subdependency->name }}</td>
-                <td>{{ $r->last_name_1.' '.$r->last_name_2.' '.$r->name}}</td>
+                <td>{{ $r->last_name_1.' '.$r->last_name_2.' '.$r->name }}</td>
                 <td>{{ $r->rfc }}</td>
                 <td>{{ $r->sex }}</td>
-                <td>{{ $r->file_number }}</td>
                 <td>{{ $r->start_date }}</td>
-                <td>{{ $r->created_at }}</td>
+                <td>{{ $r->created_at->format('d/m/Y') }}</td>
                 <td>{{ $r->affiliationStatus->name }}</td>
             </tr>
         @endforeach
         </tbody>
     </table>
+
 </main>
 
 </body>
