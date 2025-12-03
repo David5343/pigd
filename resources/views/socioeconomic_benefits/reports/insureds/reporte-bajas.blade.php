@@ -129,7 +129,7 @@ tr {
             <th>NOMBRE_COMPLETO</th>
             <th>RFC</th>
             <th>SEXO</th>
-            <th>FECHA_BAJA_DEPENDENCIA</th>
+            {{-- <th>FECHA_BAJA_DEPENDENCIA</th> --}}
             <th>FECHA_BAJA</th>
             <th>ESTATUS</th>
         </tr>
@@ -144,7 +144,7 @@ tr {
                 <td>{{ $r->last_name_1.' '.$r->last_name_2.' '.$r->name }}</td>
                 <td>{{ $r->rfc }}</td>
                 <td>{{ $r->sex }}</td>
-                <td>{{ $r->inactive_date_dependency }}</td>
+                {{-- <td>{{ $r->inactive_date_dependency }}</td> --}}
                 <td>{{ $r->inactive_date }}</td>
                 <td>{{ $r->affiliationStatus->name }}</td>
             </tr>
