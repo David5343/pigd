@@ -21,29 +21,33 @@ class ReportsMenu extends Component
 
     public function generar()
     {
-    switch ($this->option) {
-        case 'altas_titulares':
-            return $this->redirect(route('reports.insureds-altas', [
-                'inicio' => $this->date_start,
-                'fin' => $this->date_end,
-            ]));
+        switch ($this->option) {
+            case 'altas_titulares':
+                return $this->redirect(route('reports.insureds-altas', [
+                    'inicio' => $this->date_start,
+                    'fin' => $this->date_end,
+                ]));
 
-        case 'bajas_titulares':
-            return $this->redirect(route('reports.insureds-bajas', [
-                'inicio' => $this->date_start,
-                'fin' => $this->date_end,
-            ]));
+            case 'bajas_titulares':
+                return $this->redirect(route('reports.insureds-bajas', [
+                    'inicio' => $this->date_start,
+                    'fin' => $this->date_end,
+                ]));
 
-        case 'preafiliados':
-            return $this->redirect(route('reports.preafiliados', [
-                'inicio' => $this->date_start,
-                'fin' => $this->date_end,
-            ]));
-
-        default:
-            $this->addError('option', 'Seleccione una opción válida.');
-            return;
-    }
+            case 'altas_familiares':
+                return $this->redirect(route('reports.beneficiaries-altas', [
+                    'inicio' => $this->date_start,
+                    'fin' => $this->date_end,
+                ]));
+            case 'bajas_familiares':
+                return $this->redirect(route('reports.beneficiaries-bajas', [
+                    'inicio' => $this->date_start,
+                    'fin' => $this->date_end,
+                ]));
+            default:
+                $this->addError('option', 'Seleccione una opción válida.');
+                return;
+        }
     }
     public function render()
     {

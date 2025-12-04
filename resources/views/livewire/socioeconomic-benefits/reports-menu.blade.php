@@ -21,7 +21,8 @@
             class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
             <option value="altas_titulares">Alta de titulares</option>
             <option value="bajas_titulares">Baja de titulares</option>
-            <option value="">Preafiliados</option>
+            <option value="altas_familiares">Alta de familiares</option>
+            <option value="bajas_familiares">Baja de familiares</option>
         </select>
         @error('option')
             <div class="bg-red-100 text-red-700 p-2 rounded-lg mt-2">{{ $message }}</div>

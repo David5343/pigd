@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\SocioeconomicBenefits;
 
 use App\Http\Controllers\Controller;
+use App\Models\SocioeconomicBenefits\Beneficiary;
 use Illuminate\Http\Request;
-use App\Models\SocioeconomicBenefits\Insured;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
-class InsuredReportsController extends Controller
+class BeneficiaryReportsController extends Controller
 {
     public function altas()
     {
         $inicio = request('inicio') . ' 00:00:00';
         $fin = request('fin') . ' 23:59:59';
 
-        $registros = Insured::with(['subdependency', 'affiliationStatus'])
+        $registros = Beneficiary::with('insured')
             ->whereBetween('created_at', [$inicio, $fin])
             ->get();
 
@@ -32,7 +32,7 @@ class InsuredReportsController extends Controller
             'isPhpEnabled' => true,
             'margin-top' => 170,
         ])
-            ->loadView('socioeconomic_benefits.reports.insureds.reporte-altas', $data)
+            ->loadView('socioeconomic_benefits.reports.beneficiaries.reporte-altas', $data)
             ->setPaper('letter', 'landscape');
 
         // footer
@@ -56,9 +56,9 @@ class InsuredReportsController extends Controller
         $inicio = request('inicio') . ' 00:00:00';
         $fin = request('fin') . ' 23:59:59';
 
-        $registros = Insured::with(['subdependency', 'affiliationStatus'])
+        $registros = Beneficiary::with('insured')
             ->whereBetween('inactive_date', [$inicio, $fin])
-            ->where('affiliation_status_id',4)
+            ->where('affiliate_status','Baja')
             ->get();
 
         $data = [
@@ -74,7 +74,7 @@ class InsuredReportsController extends Controller
             'isPhpEnabled' => true,
             'margin-top' => 170,
         ])
-            ->loadView('socioeconomic_benefits.reports.insureds.reporte-bajas', $data)
+            ->loadView('socioeconomic_benefits.reports.beneficiaries.reporte-bajas', $data)
             ->setPaper('letter', 'landscape');
 
         // footer
@@ -91,6 +91,6 @@ class InsuredReportsController extends Controller
             [0, 0, 0]
         );
 
-        return $pdf->download('reporte-bajas-titulares.pdf');
+        return $pdf->download('reporte-bajas-familiares.pdf');
     }
 }
