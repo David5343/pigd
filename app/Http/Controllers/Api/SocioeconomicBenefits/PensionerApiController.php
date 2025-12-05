@@ -23,7 +23,10 @@ class PensionerApiController extends Controller
                 'county.state',
                 'pensionType'
             ];
-            $pensioners = Pensioner::with($relations)->get();
+            $pensioners = Pensioner::with($relations)
+                ->latest()
+                ->limit(25)
+                ->get();
 
             if ($pensioners->isEmpty()) {
                 return response()->json([

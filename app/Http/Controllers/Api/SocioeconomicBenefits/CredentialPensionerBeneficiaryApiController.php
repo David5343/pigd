@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SocioeconomicBenefits\CredentialPensionerBeneficiary;
 use Illuminate\Http\Request;
 
-class CredentialPensionerBeneficiayApiController extends Controller
+class CredentialPensionerBeneficiaryApiController extends Controller
 {
     public function index()
     {
@@ -31,6 +31,37 @@ class CredentialPensionerBeneficiayApiController extends Controller
                 'status' => 'success',
                 'message' => 'Búsqueda realizada correctamente',
                 'credentials' => $credentials
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function show($id)
+    {
+        try {
+            $relations = [
+                'pensioner.subdependency'
+            ];
+
+            $credential = CredentialPensionerBeneficiary::with($relations)
+                ->where('id', $id)
+                ->first();
+
+            if (!$credential) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'credential' => null,
+                ], 404);
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'credential' => $credential
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
