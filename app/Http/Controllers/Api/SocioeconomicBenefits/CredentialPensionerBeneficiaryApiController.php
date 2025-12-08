@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api\SocioeconomicBenefits;
 use App\Http\Controllers\Controller;
 use App\Models\SocioeconomicBenefits\CredentialPensionerBeneficiary;
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CredentialPensionerBeneficiaryApiController extends Controller
 {
@@ -44,7 +48,7 @@ class CredentialPensionerBeneficiaryApiController extends Controller
     {
         try {
             $relations = [
-                'pensioner.subdependency'
+                'pensionerBeneficiary.pensioner.subdependency'
             ];
 
             $credential = CredentialPensionerBeneficiary::with($relations)
@@ -63,6 +67,59 @@ class CredentialPensionerBeneficiaryApiController extends Controller
                 'message' => 'Búsqueda realizada correctamente',
                 'credential' => $credential
             ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function store(Request $request)
+    {
+        $rules = [
+            'Beneficiary_id' => 'required | numeric',
+            'Expires_at' => 'required|date_format:Y-m-d H:i:s',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        // Comprobar si la validación falla
+        if ($validator->fails()) {
+            // Retornar errores de validación
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'Error de validación',
+                'credential' => null,
+                'errors' => $validator->errors()->toArray(),
+            ], 422);
+        }
+        // Verificar si ya existe un registro "VIGENTE" para el pensioner_id dado
+        $existeVigente = CredentialPensionerBeneficiary::where('beneficiary_id', $request->input('Beneficiary_id'))
+            ->where('credential_status', 'VIGENTE')
+            ->exists();
+
+        if ($existeVigente) {
+            $response['errors'] = ['beneficiary_id' => 'Ya existe una credencial vigente para este Pensionado.'];
+
+            return response()->json($response, 200);
+        }
+        DB::beginTransaction();
+        try {
+            $fechaActual = now()->toDateTimeString();
+            $credential = new CredentialPensionerBeneficiary();
+            $credential->beneficiary_id = $request->Beneficiary_id;
+            $credential->issued_at = $fechaActual;
+            $credential->expires_at = $request->Expires_at;
+            $credential->credential_status = 'VIGENTE';
+            $credential->status = 'active';
+            $credential->modified_by = Auth::user()->email;
+            $credential->save();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Registro guardado correctamente',
+                'credential' => $credential,
+            ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',

@@ -113,6 +113,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/socioeconomic_benefits/credentialpensioners/search/{dato}', [CredentialPensionerApiController::class, 'search']);
     //Credencial beneficiarios de Pensionados
     Route::get('/socioeconomic_benefits/credentialpensionersb', [CredentialPensionerBeneficiaryApiController::class, 'index']);
+    Route::post('/socioeconomic_benefits/credentialpensionersb/store', [CredentialPensionerBeneficiaryApiController::class, 'store']);
     Route::get('/socioeconomic_benefits/credentialpensionersb/{id}', [CredentialPensionerBeneficiaryApiController::class, 'show']);
     //Turnos
     Route::get('/prestaciones/turnos', [TicketApiController::class, 'index']);

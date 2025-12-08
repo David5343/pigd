@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PensionerBeneficiary extends Model
 {
-        public function pensioner(): BelongsTo
+    protected $table = 'pensioner_beneficiaries';
+    public function pensioner(): BelongsTo
     {
         return $this->belongsTo(Pensioner::class);
+    }
+    public function credentials()
+    {
+        return $this->hasMany(CredentialPensionerBeneficiary::class, 'beneficiary_id');
     }
 }
