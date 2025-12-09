@@ -11,6 +11,6 @@ class CredentialPensionerBeneficiary extends Model
 
     public function pensionerBeneficiary(): BelongsTo
     {
-        return $this->belongsTo(PensionerBeneficiary::class, 'beneficiary_id');
+        return $this->belongsTo(PensionerBeneficiary::class,'beneficiary_id');
     }
 }

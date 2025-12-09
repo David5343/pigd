@@ -16,7 +16,7 @@ class CredentialPensionerBeneficiaryApiController extends Controller
     {
         try {
             $relations = [
-                'pensioner.pensionType',
+                'pensionerBeneficiary',
             ];
             $credentials = CredentialPensionerBeneficiary::with($relations)
                 ->latest()
@@ -120,6 +120,40 @@ class CredentialPensionerBeneficiaryApiController extends Controller
                 'message' => 'Registro guardado correctamente',
                 'credential' => $credential,
             ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'Error en el servidor',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function search(Request $request)
+    {
+        try {
+
+            $relations = [
+                'pensionerBeneficiary.pensioner.subdependency'
+            ];
+            $dato = $request->dato;
+        $credentials = CredentialPensionerBeneficiary::with($relations)
+            ->whereHas('pensionerBeneficiary', function($q) use ($dato){
+                $q->where('file_number', $dato);
+            })
+            ->get();
+
+            if (!$credentials) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Registro no encontrado',
+                    'credential' => null,
+                ], 404);
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Búsqueda realizada correctamente',
+                'credentials' => $credentials
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',
