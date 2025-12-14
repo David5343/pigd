@@ -553,7 +553,7 @@ class InsuredApiController extends Controller
             }
             $msj = '';
             if ($motivo_baja == 'Acta administrativa') {
-                $insured->inactive_date = $fecha_baja;
+                //$insured->inactive_date = $fecha_baja;
                 $insured->inactive_date_dependency = $baja_dependencia;
                 $insured->inactive_motive = $motivo_baja;
                 $insured->inactive_reference = $referencia;
@@ -562,7 +562,7 @@ class InsuredApiController extends Controller
                 $insured->modified_by = Auth::user()->email;
                 $insured->save();
                 $affectedRows = Beneficiary::where('insured_id', $insured->id)->update([
-                    'inactive_date' => $fecha_baja,
+                    //'inactive_date' => $fecha_baja,
                     'inactive_motive' => $motivo_baja . ' del titular',
                     'affiliate_status' => 'Baja por aplicar',
                     'modified_by' => Auth::user()->email,
