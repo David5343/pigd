@@ -41,11 +41,13 @@ class Membership extends Component
     }
     public function getInsuredTotalHombresProperty()
     {
-        return Insured::where('sex', 'Hombre')->count();
+        return Insured::where('sex', 'Hombre')
+                        ->whereIn('affiliation_status_id', [1, 2, 5])->count();
     }
     public function getInsuredTotalMujeresProperty()
     {
-        return Insured::where('sex', 'Mujer')->count();
+        return Insured::where('sex', 'Mujer')
+                        ->whereIn('affiliation_status_id', [1, 2, 5])->count();
     }
     public function render()
     {
