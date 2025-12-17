@@ -19,13 +19,13 @@ class Membership extends Component
     {
         $this->resetPage();
     }
-    public function getInsuredPreProperty()
+    public function getInsuredPreafiliadosProperty()
     {
         return Insured::where('affiliation_status_id', 1)->count();
     }
     public function getInsuredActivosProperty()
     {
-        return Insured::where('affiliation_status_id', 2)->count();
+        return Insured::whereIn('affiliation_status_id', [1,2,5])->count();
     }
     public function getInsuredBajasProperty()
     {
