@@ -25,7 +25,7 @@ class Membership extends Component
     }
     public function getInsuredActivosProperty()
     {
-        return Insured::whereIn('affiliation_status_id', [1,2,5])->count();
+        return Insured::whereIn('affiliation_status_id', [1, 2, 5])->count();
     }
     public function getInsuredBajasProperty()
     {
@@ -42,12 +42,30 @@ class Membership extends Component
     public function getInsuredTotalHombresProperty()
     {
         return Insured::where('sex', 'Hombre')
-                        ->whereIn('affiliation_status_id', [1, 2, 5])->count();
+            ->whereIn('affiliation_status_id', [1, 2, 5])->count();
     }
     public function getInsuredTotalMujeresProperty()
     {
         return Insured::where('sex', 'Mujer')
-                        ->whereIn('affiliation_status_id', [1, 2, 5])->count();
+            ->whereIn('affiliation_status_id', [1, 2, 5])->count();
+    }
+    public function getInsuredTotalFGEProperty()
+    {
+        return Insured::with('subdependency.dependency')
+            ->whereIn('affiliation_status_id', [1, 2, 5])
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalia General del Estado');
+            })
+            ->count();
+    }
+    public function getInsuredTotalSSPProperty()
+    {
+        return Insured::with('subdependency.dependency')
+            ->whereIn('affiliation_status_id', [1, 2, 5])
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })
+            ->count();
     }
     public function render()
     {
