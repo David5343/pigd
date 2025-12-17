@@ -53,17 +53,23 @@ class Beneficiaries extends Component
                             ->where('sex','Mujer')
                             ->where('affiliate_status','Activo')->count();
     }
-    public function getBeneficiaryActivosProperty()
+    public function getBeneficiaryTotalCommonLawMarriageProperty()
     {
-        return Beneficiary::where('affiliate_status','Activo')->count();
+        return Beneficiary::where('relationship','Concubina')
+                            ->where('sex','Mujer')
+                            ->where('affiliate_status','Activo')->count();
+    }
+    public function getBeneficiaryBajasPendientesProperty()
+    {
+        return Beneficiary::where('affiliate_status','Baja por Aplicar')->count();
     }
     public function getBeneficiaryBajasProperty()
     {
         return Beneficiary::where('affiliate_status','Baja')->count();
     }
-    public function getBeneficiaryBajasPendientesProperty()
+    public function getBeneficiaryActivosProperty()
     {
-        return Beneficiary::where('affiliate_status','Baja por Aplicar')->count();
+        return Beneficiary::whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryTotalProperty()
     {
