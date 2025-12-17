@@ -19,6 +19,40 @@ class Beneficiaries extends Component
     {
         $this->resetPage();
     }
+    public function getBeneficiaryTotalFathersProperty()
+    {
+        return Beneficiary::where('relationship','Padre')
+                            ->where('affiliate_status','Activo')->count();
+    }
+    public function getBeneficiaryTotalMothersProperty()
+    {
+        return Beneficiary::where('relationship','Madre')
+                            ->where('affiliate_status','Activo')->count();
+    }
+    public function getBeneficiaryTotalChildrenProperty()
+    {
+        return Beneficiary::where('relationship','Hijo/a')
+                            ->where('sex','Hombre')
+                            ->where('affiliate_status','Activo')->count();
+    }
+    public function getBeneficiaryTotalDaughtersProperty()
+    {
+        return Beneficiary::where('relationship','Hijo/a')
+                            ->where('sex','Mujer')
+                            ->where('affiliate_status','Activo')->count();
+    }
+    public function getBeneficiaryTotalHusbandsProperty()
+    {
+        return Beneficiary::where('relationship','Esposo/a')
+                            ->where('sex','Hombre')
+                            ->where('affiliate_status','Activo')->count();
+    }
+    public function getBeneficiaryTotalWivesProperty()
+    {
+        return Beneficiary::where('relationship','Esposo/a')
+                            ->where('sex','Mujer')
+                            ->where('affiliate_status','Activo')->count();
+    }
     public function getBeneficiaryActivosProperty()
     {
         return Beneficiary::where('affiliate_status','Activo')->count();
@@ -34,14 +68,6 @@ class Beneficiaries extends Component
     public function getBeneficiaryTotalProperty()
     {
         return Beneficiary::all()->count();
-    }
-    public function getBeneficiaryTotalFathersProperty()
-    {
-        return Beneficiary::where('relationship','Padre')->count();
-    }
-        public function getBeneficiaryTotalMothersProperty()
-    {
-        return Beneficiary::where('relationship','Madre')->count();
     }
     public function render()
     {
