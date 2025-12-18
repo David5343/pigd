@@ -16,7 +16,7 @@ class InsertPensionerBSeeder extends Seeder
      */
     public function run(): void
     {
-        $path = database_path('seeders/data/cargar_pensionados.xlsx');
+        $path = database_path('seeders/data/pensioner_beneficiaries.xlsx');
                 try {
             Excel::import(new PensionerBImport, $path);
             $this->command->info('✅ Datos importados correctamente desde el archivo Excel.');

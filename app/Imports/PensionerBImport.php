@@ -29,18 +29,25 @@ class PensionerBImport implements ToCollection, WithHeadingRow, WithMapping
                         $fecha = Carbon::createFromFormat('d/m/Y', $row['start_date'])->format('Y-m-d');
                     }
                 }
-
+                $fecha_nacimiento = null;
+                if (!empty($row['birthday'])) {
+                    if (is_numeric($row['birthday'])) {
+                        $fecha_nacimiento = Date::excelToDateTimeObject($row['birthday'])->format('Y-m-d');
+                    } else {
+                        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $row['birthday'])->format('Y-m-d');
+                    }
+                }
                 // Insertar fila en la base de datos
                 DB::table('pensioner_beneficiaries')->insert([
                     'pensioner_id' => $row['pensioner_id'] ?? null,
-                    'file_number'       => $this->formatNoiNumber($row['file_number'] ?? null),
+                    'file_number'       => $row['file_number'] ?? null,
                     'start_date'       => $fecha,
                     'last_name_1'      => $row['last_name_1'] ?? null,
                     'last_name_2'      => $row['last_name_2'] ?? null,
                     'name'             => $row['name'] ?? null,
-                    'birthday'         =>$row['birthday'] ?? null,
+                    'birthday'         =>$fecha_nacimiento,
                     'sex'              => $row['sex'] ?? null,
-                    'rfc'             => $row['rfc'] ?? null,
+                    // 'rfc'             => $row['rfc'] ?? null,
                     'curp'             => $row['curp'] ?? null,
                     'disabled_person'  => $row['disabled_person'] ?? null,
                     'relationship'     => $row['relationship'] ?? null,
