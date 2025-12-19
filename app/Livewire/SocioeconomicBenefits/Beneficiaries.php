@@ -61,7 +61,7 @@ class Beneficiaries extends Component
     }
     public function getBeneficiaryBajasPendientesProperty()
     {
-        return Beneficiary::where('affiliate_status','Baja por Aplicar')->count();
+        return Beneficiary::where('affiliate_status','Baja por aplicar')->count();
     }
     public function getBeneficiaryBajasProperty()
     {
