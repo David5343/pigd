@@ -31,25 +31,25 @@ class Beneficiaries extends Component
     }
     public function getBeneficiaryTotalChildrenProperty()
     {
-        return Beneficiary::where('relationship','Hijo/a')
+        return Beneficiary::where('relationship','Hijo')
                             ->where('sex','Hombre')
                             ->where('affiliate_status','Activo')->count();
     }
     public function getBeneficiaryTotalDaughtersProperty()
     {
-        return Beneficiary::where('relationship','Hijo/a')
+        return Beneficiary::where('relationship','Hija')
                             ->where('sex','Mujer')
                             ->where('affiliate_status','Activo')->count();
     }
     public function getBeneficiaryTotalHusbandsProperty()
     {
-        return Beneficiary::where('relationship','Esposo/a')
+        return Beneficiary::where('relationship','Esposo')
                             ->where('sex','Hombre')
-                            ->where('affiliate_status','Activo')->count();
+                            ->where('affiliate_status','Activo')->first();
     }
     public function getBeneficiaryTotalWivesProperty()
     {
-        return Beneficiary::where('relationship','Esposo/a')
+        return Beneficiary::where('relationship','Esposa')
                             ->where('sex','Mujer')
                             ->where('affiliate_status','Activo')->count();
     }
