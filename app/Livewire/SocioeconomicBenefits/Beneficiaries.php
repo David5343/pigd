@@ -22,42 +22,42 @@ class Beneficiaries extends Component
     public function getBeneficiaryTotalFathersProperty()
     {
         return Beneficiary::where('relationship','Padre')
-                            ->where('affiliate_status','Activo')->count();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryTotalMothersProperty()
     {
         return Beneficiary::where('relationship','Madre')
-                            ->where('affiliate_status','Activo')->count();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryTotalChildrenProperty()
     {
         return Beneficiary::where('relationship','Hijo')
                             ->where('sex','Hombre')
-                            ->where('affiliate_status','Activo')->count();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryTotalDaughtersProperty()
     {
         return Beneficiary::where('relationship','Hija')
                             ->where('sex','Mujer')
-                            ->where('affiliate_status','Activo')->count();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryTotalHusbandsProperty()
     {
         return Beneficiary::where('relationship','Esposo')
                             ->where('sex','Hombre')
-                            ->where('affiliate_status','Activo')->first();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->first();
     }
     public function getBeneficiaryTotalWivesProperty()
     {
         return Beneficiary::where('relationship','Esposa')
                             ->where('sex','Mujer')
-                            ->where('affiliate_status','Activo')->count();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryTotalCommonLawMarriageProperty()
     {
         return Beneficiary::where('relationship','Concubina')
                             ->where('sex','Mujer')
-                            ->where('affiliate_status','Activo')->count();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryBajasPendientesProperty()
     {
