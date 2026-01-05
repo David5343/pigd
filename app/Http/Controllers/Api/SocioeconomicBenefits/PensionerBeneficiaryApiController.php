@@ -157,6 +157,7 @@ class PensionerBeneficiaryApiController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
+            'Pensioner_id' => 'required',
             'File_number' => 'nullable|max:10',
             'Start_date' => 'required|date|max:10',
             'Last_name_1' => 'required|min:2|max:20',
