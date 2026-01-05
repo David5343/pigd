@@ -157,7 +157,6 @@ class PensionerBeneficiaryApiController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'Pensioner_id' => 'required',
             'File_number' => 'nullable|max:10',
             'Start_date' => 'required|date|max:10',
             'Last_name_1' => 'required|min:2|max:20',
@@ -165,17 +164,17 @@ class PensionerBeneficiaryApiController extends Controller
             'Name' => 'required|min:2|max:30',
             'Birthday' => 'nullable|max:10|date',
             'Sex' => 'required',
-            'Rfc' => [
+            'Rfc' => 'nullable | string | min:13 | max: 13',
+            'Curp' => [
                 'required',
                 'string',
-                'min:13',
-                'max:13',
+                'min:18',
+                'max:18',
                 Rule::unique('pensioner_beneficiaries')
                     ->where(function ($query) use ($request) {
                         return $query->where('affiliate_status', 'Activo');
-                    }),
-            ],
-            'Curp' => 'nullable | string | min:18 | max: 18',
+                    })->ignore($id),
+            ],           
             'Disabled_person' => 'nullable | string',
             'Relationship' => 'nullable | string',
             'Address' => 'nullable | string|max:200',
@@ -296,15 +295,16 @@ class PensionerBeneficiaryApiController extends Controller
     }
     public function searchbyfolio(Request $request, $folio)
     {
+        $folio = trim($folio);
         try {
             $relations = [
                 'pensioner.pensionType',
             ];
-            $beneficiary = PensionerBeneficiary::with($relations)
-                ->where('file_number', $folio)
-                ->first();
+            $pbeneficiary = PensionerBeneficiary::with($relations)
+            ->where('file_number', $folio)
+            ->first();
 
-            if (!$beneficiary) {
+            if (!$pbeneficiary) {
                 return response()->json([
                     'status' => 'fail',
                     'message' => 'Registro no encontrado',
@@ -314,7 +314,7 @@ class PensionerBeneficiaryApiController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Búsqueda realizada correctamente',
-                'beneficiary' => $beneficiary,
+                'beneficiary' => $pbeneficiary,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
