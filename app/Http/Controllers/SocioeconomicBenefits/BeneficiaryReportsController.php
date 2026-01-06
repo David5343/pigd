@@ -49,7 +49,7 @@ class BeneficiaryReportsController extends Controller
             [0, 0, 0]
         );
 
-        return $pdf->download('reporte-altas-titulares.pdf');
+        return $pdf->download('reporte-altas-familiares.pdf');
     }
     public function bajas()
     {
