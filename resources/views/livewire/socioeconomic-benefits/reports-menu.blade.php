@@ -15,10 +15,11 @@
 <div class="flex flex-wrap w-full gap-4">
 
     <!-- Reporte de -->
-    <div class="flex flex-col w-full md:w-1/5">
+    <div class="flex flex-col w-full md:w-1/4">
         <label class="text-sm font-medium text-gray-700">Reporte de:</label>
         <select wire:model="option" id="option" name="option"
             class="border rounded-lg px-3 py-2 w-full focus:ring focus:ring-blue-200" required>
+            <option value="">-- Seleccione una opción --</option>
             <option value="altas_titulares">Alta de titulares</option>
             <option value="bajas_titulares">Baja de titulares</option>
             <option value="altas_familiares">Alta de familiares</option>

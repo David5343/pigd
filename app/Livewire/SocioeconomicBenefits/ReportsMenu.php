@@ -21,6 +21,11 @@ class ReportsMenu extends Component
 
     public function generar()
     {
+        $this->validate([
+            'option' => 'required|in:altas_titulares,bajas_titulares,altas_familiares,bajas_familiares',
+            'date_start' => 'required|date',
+            'date_end' => 'required|date|after_or_equal:date_start',
+        ]);
         switch ($this->option) {
             case 'altas_titulares':
                 return $this->redirect(route('reports.insureds-altas', [
