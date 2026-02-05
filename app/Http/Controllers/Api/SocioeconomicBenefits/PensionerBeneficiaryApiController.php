@@ -83,7 +83,7 @@ class PensionerBeneficiaryApiController extends Controller
     {
         $rules = [
             'Pensioner_id' => 'required',
-            'File_number' => 'nullable|min:10|max:10|unique:pensioner_beneficiaries,file_number',
+            'File_number' => 'nullable|min:8|max:8|unique:pensioner_beneficiaries,file_number',
             'Start_date' => 'required|date|max:10',
             'Last_name_1' => 'required|min:2|max:20',
             'Last_name_2' => 'nullable|min:2|max:20',
