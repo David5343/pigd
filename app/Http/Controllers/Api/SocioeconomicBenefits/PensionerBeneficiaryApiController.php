@@ -234,7 +234,7 @@ class PensionerBeneficiaryApiController extends Controller
             $file_number = IdGenerator::generate([
                 'table'  => 'pensioner_beneficiaries',
                 'field'  => 'file_number',
-                'length' => 8,
+                'length' => 7,
                 'prefix' => 'B'
             ]);
 
