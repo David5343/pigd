@@ -117,9 +117,9 @@ tr {
 
 <main>
 
-    {{-- <div class="resumen">
-        TOTAL DE ASEGURADOS: {{ $total }}
-    </div> --}}
+    <div class="resumen">
+        1.-TOTAL DE DERECHOHABIENTES: {{ $total }}
+    </div>
 
 <table width="100%" border="1" cellspacing="0" cellpadding="6">
     <thead>
@@ -131,30 +131,94 @@ tr {
     <tbody>
         <tr>
             <td>ASEGURADOS</td>
-            <td style="text-align:right;">{{ $insuredsTotalByDate }}</td>
+            <td style="text-align:right;">{{ $insuredsActiveTotalByDate }}</td>
+        </tr>
+        <tr>
+            <td>ASEGURADOS(PREAFILIADOS)</td>
+            <td style="text-align:right;">{{ $insuredsPreafiliateTotalByDate }}</td>
         </tr>
         <tr>
             <td>FAMILIARES</td>
-            <td style="text-align:right;">20147</td>
+            <td style="text-align:right;">{{ $beneficiariesTotalByDate }}</td>
         </tr>
         <tr>
             <td>PENSIONISTAS</td>
-            <td style="text-align:right;">1658</td>
+            <td style="text-align:right;">{{ $pensionersTotalByDate }}</td>
         </tr>
         <tr>
             <td>FAM. DE PENSIONISTAS</td>
-            <td style="text-align:right;">1254</td>
+            <td style="text-align:right;">{{ $pensionersBTotalByDate }}</td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
             <th style="text-align:left;">TOTAL</th>
-            <th style="text-align:right;">36515</th>
+            <th style="text-align:right;">{{ $total }}</th>
         </tr>
     </tfoot>
 </table>
-
-
+    <div class="resumen">
+        2.-ASEGURADOS POR DEPENDENCIA: {{ $total2 }}
+    </div>
+<table width="100%" border="1" cellspacing="0" cellpadding="6">
+    <thead>
+        <tr>
+            <th style="text-align:left;">DEPENDENCIA</th>
+            <th style="text-align:right;">SUBTOTAL</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>SECRETARIA DE SEGURIDAD DEL PUEBLO</td>
+            <td style="text-align:right;">{{ $insuredsActiveByDateSsp }}</td>
+        </tr>
+        <tr>
+            <td>FISCALIA GENERAL DEL ESTADO</td>
+            <td style="text-align:right;">{{ $insuredsActiveByDateFge }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:left;">TOTAL</th>
+            <th style="text-align:right;">{{ $total2 }}</th>
+        </tr>
+    </tfoot>
+</table>
+    <div class="resumen">
+        3.-ASEGURADOS POR GÉNERO Y DEPENDENCIA: {{ $total2 }}
+    </div>
+<table width="100%" border="1" cellspacing="0" cellpadding="6">
+    <thead>
+        <tr>
+            <th style="text-align:left;">GÉNERO</th>
+            <th style="text-align:center;">SSP</th>
+            <th style="text-align:center;">FGE</th>
+            <th style="text-align:right;">SUBTOTAL</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>HOMBRES</td>
+            <td style="text-align:center;">{{ $insuredsActiveByMaleSsp }}</td>
+            <td style="text-align:center;">{{ $insuredsActiveByMaleFge }}</td>
+            <td style="text-align:right;">{{ $totalInsuredsActiveByMale }}</td>
+        </tr>
+        <tr>
+            <td>MUJERES</td>
+            <td style="text-align:center;">{{ $insuredsActiveByFemaleSsp }}</td>
+            <td style="text-align:center;">{{ $insuredsActiveByFemaleFge }}</td>
+            <td style="text-align:right;">{{ $totalInsuredsActiveByFemale }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:left;">TOTAL</th>
+            <th style="text-align:center;">{{$totalInsuredsActiveBySsp }}</th>
+            <th style="text-align:center;">{{ $totalInsuredsActiveByFge}}</th>
+            <th style="text-align:right;">{{ $totalInsuredsActive }}</th>
+        </tr>
+    </tfoot>
+</table>
 </main>
 
 </body>
