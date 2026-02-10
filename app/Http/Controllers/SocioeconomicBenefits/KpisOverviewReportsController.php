@@ -17,6 +17,7 @@ class KpisOverviewReportsController extends Controller
     {
         $inicio = request('inicio') . ' 00:00:00';
         $fin = request('fin') . ' 23:59:59';
+        $creationDate = now()->format('d-m-Y');
         $insuredsActiveTotalByDate = Insured::whereBetween('created_at', [$inicio, $fin])
             ->whereIn('affiliation_status_id', [2,5])
             ->count();
@@ -118,6 +119,6 @@ class KpisOverviewReportsController extends Controller
             [0, 0, 0]
         );
 
-        return $pdf->download('reporte-kpisoverview.pdf');
+        return $pdf->download('reporte-al-' . $creationDate . '.pdf');
     }
 }
