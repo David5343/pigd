@@ -8,6 +8,7 @@ use App\Http\Controllers\Catalogs\RankController;
 use App\Http\Controllers\Catalogs\WorkRiskController;
 use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\InsuredReportsController;
+use App\Http\Controllers\SocioeconomicBenefits\KpisOverviewReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\ReportsController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,4 +56,5 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/reports/insured_bajas', [InsuredReportsController::class, 'bajas'])->name('reports.insureds-bajas');
     Route::get('/socioeconomic_benefits/reports/beneficiary_altas', [BeneficiaryReportsController::class, 'altas'])->name('reports.beneficiaries-altas');
     Route::get('/socioeconomic_benefits/reports/beneficiary_bajas', [BeneficiaryReportsController::class, 'bajas'])->name('reports.beneficiaries-bajas');
+    Route::get('/socioeconomic_benefits/reports/kpis_overview', [KpisOverviewReportsController::class, 'getInsuredsTotal'])->name('reports.kpis-overview');
         });
