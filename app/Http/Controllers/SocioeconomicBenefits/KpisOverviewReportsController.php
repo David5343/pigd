@@ -10,6 +10,7 @@ use App\Models\SocioeconomicBenefits\PensionerBeneficiary;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class KpisOverviewReportsController extends Controller
 {
@@ -18,6 +19,7 @@ class KpisOverviewReportsController extends Controller
         $inicio = request('inicio') . ' 00:00:00';
         $fin = request('fin') . ' 23:59:59';
         $creationDate = now()->format('d-m-Y');
+        //consultas de indicador 1
         $insuredsActiveTotalByDate = Insured::whereBetween('created_at', [$inicio, $fin])
             ->whereIn('affiliation_status_id', [2,5])
             ->count();
@@ -28,13 +30,13 @@ class KpisOverviewReportsController extends Controller
             ->whereIn('affiliate_status',['Activo','Baja por aplicar'])
             ->count();
         $pensionersTotalByDate = Pensioner::whereBetween('created_at', [$inicio, $fin])
-            ->where('status','Activo')
+            ->where('affiliate_status','Activo')
             ->count();
         $pensionersBTotalByDate = PensionerBeneficiary::whereBetween('created_at', [$inicio, $fin])
             ->where('affiliate_status','Activo')
             ->count();
         $totalGeneral = $insuredsActiveTotalByDate +  $insuredsPreafiliateTotalByDate +$beneficiariesTotalByDate + $pensionersTotalByDate + $pensionersBTotalByDate;
-
+        //consultas de indicador 2
         $insuredsActiveByDateSsp = Insured::with('subdependency.dependency')
             ->whereIn('affiliation_status_id', [1, 2, 5])
             ->whereHas('subdependency.dependency', function ($q) {
@@ -48,6 +50,7 @@ class KpisOverviewReportsController extends Controller
             })
             ->count();
         $total2 = $insuredsActiveByDateSsp + $insuredsActiveByDateFge;
+        //consultas de indicador 3
         $insuredsActiveByMaleSsp = Insured::where('sex', 'Hombre')
             ->whereIn('affiliation_status_id', [1, 2, 5])
             ->whereHas('subdependency.dependency', function ($q) {
@@ -73,6 +76,50 @@ class KpisOverviewReportsController extends Controller
         $totalInsuredsActiveBySsp = $insuredsActiveByMaleSsp + $insuredsActiveByFemaleSsp;
         $totalInsuredsActiveByFge = $insuredsActiveByMaleFge + $insuredsActiveByFemaleFge;
         $totalInsuredsActive = $totalInsuredsActiveBySsp + $totalInsuredsActiveByFge;
+        //consultas de indicador 4
+        $beneficiaryActivosByDateMaleSsp = Beneficiary::with('insured.subdependency.dependency')
+            ->where('sex', 'Hombre')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('insured.subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })
+            ->count();
+        $beneficiaryActivosByDateFemaleSsp = Beneficiary::with('insured.subdependency.dependency')
+            ->where('sex', 'Mujer')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('insured.subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })
+            ->count();
+        $beneficiaryActivosByDateMaleFge = Beneficiary::with('insured.subdependency.dependency')
+            ->where('sex', 'Hombre')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('insured.subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalia General del Estado');
+            })
+            ->count();
+        $beneficiaryActivosByDateFemaleFge = Beneficiary::with('insured.subdependency.dependency')
+            ->where('sex', 'Mujer')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('insured.subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalia General del Estado');
+            })
+            ->count();
+            $totalBeneficiariesActiveByDateMale= $beneficiaryActivosByDateMaleSsp + $beneficiaryActivosByDateMaleFge;
+            $totalBeneficiariesActiveByDateFemale= $beneficiaryActivosByDateFemaleSsp + $beneficiaryActivosByDateFemaleFge;
+            $totalBeneficiariesActiveByDateSsp = $beneficiaryActivosByDateMaleSsp + $beneficiaryActivosByDateFemaleSsp;
+            $totalBeneficiariesActiveByDateFge = $beneficiaryActivosByDateMaleFge + $beneficiaryActivosByDateFemaleFge;
+            $totalBeneficiariesActiveByDate = $totalBeneficiariesActiveByDateSsp + $totalBeneficiariesActiveByDateFge;
+
+        //Consultas de indicador 5
+        $pensionersByDateMale = Pensioner::where('sex', 'Hombre')
+            ->where('status', 'Activo')
+            ->count();
+        $pensionersByDateFemale = Pensioner::where('sex', 'Mujer')
+            ->where('status', 'Activo')
+            ->count();
+        $pensionersTotalByDate = $pensionersByDateMale + $pensionersByDateFemale;
+        // Preparar datos para la vista
         $data = [
             'insuredsActiveTotalByDate' => number_format($insuredsActiveTotalByDate, 0, '.', ','),
             'insuredsPreafiliateTotalByDate' => number_format($insuredsPreafiliateTotalByDate, 0, '.', ','),
@@ -92,6 +139,18 @@ class KpisOverviewReportsController extends Controller
             'totalInsuredsActiveBySsp' => number_format($totalInsuredsActiveBySsp, 0, '.', ','),
             'totalInsuredsActiveByFge' => number_format($totalInsuredsActiveByFge, 0, '.', ','),
             'totalInsuredsActive' => number_format($totalInsuredsActive, 0, '.', ','),
+            'beneficiaryActivosByDateMaleSsp' => number_format($beneficiaryActivosByDateMaleSsp, 0, '.', ','),
+            'beneficiaryActivosByDateMaleFge' => number_format($beneficiaryActivosByDateMaleFge, 0, '.', ','),
+            'beneficiaryActivosByDateFemaleSsp' => number_format($beneficiaryActivosByDateFemaleSsp, 0, '.', ','),
+            'beneficiaryActivosByDateFemaleFge' => number_format($beneficiaryActivosByDateFemaleFge, 0, '.', ','),
+            'totalBeneficiariesActiveByDateMale' => number_format($totalBeneficiariesActiveByDateMale, 0, '.', ','),
+            'totalBeneficiariesActiveByDateFemale' => number_format($totalBeneficiariesActiveByDateFemale, 0, '.', ','),
+            'totalBeneficiariesActiveByDateSsp' => number_format($totalBeneficiariesActiveByDateSsp, 0, '.', ','),
+            'totalBeneficiariesActiveByDateFge' => number_format($totalBeneficiariesActiveByDateFge, 0, '.', ','),
+            'totalBeneficiariesActiveByDate' => number_format($totalBeneficiariesActiveByDate, 0, '.', ','),
+            'pensionersByDateMale' => number_format($pensionersByDateMale, 0, '.', ','),
+            'pensionersByDateFemale' => number_format($pensionersByDateFemale, 0, '.', ','),
+            'pensionersTotalByDate' => number_format($pensionersTotalByDate, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
             'fechaCreacion' => now()->format('d/m/Y'),
@@ -119,6 +178,6 @@ class KpisOverviewReportsController extends Controller
             [0, 0, 0]
         );
 
-        return $pdf->download('reporte-al-' . $creationDate . '.pdf');
+        return $pdf->download('indicadores-al-' . $creationDate . '.pdf');
     }
 }
