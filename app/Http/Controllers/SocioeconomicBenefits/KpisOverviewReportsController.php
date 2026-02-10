@@ -112,10 +112,12 @@ class KpisOverviewReportsController extends Controller
             $totalBeneficiariesActiveByDate = $totalBeneficiariesActiveByDateSsp + $totalBeneficiariesActiveByDateFge;
 
         //Consultas de indicador 5
-        $pensionersByDateMale = Pensioner::where('sex', 'Hombre')
-            ->where('status', 'Activo')
+        $pensionersByDateMale = Pensioner::whereBetween('created_at',[$inicio, $fin])
+            ->where('sex', 'Hombre')
+            ->where('status','Activo')
             ->count();
-        $pensionersByDateFemale = Pensioner::where('sex', 'Mujer')
+        $pensionersByDateFemale = Pensioner::whereBetween('created_at',[$inicio, $fin])
+            ->where('sex', 'Mujer')
             ->where('status', 'Activo')
             ->count();
         $pensionersTotalByDate = $pensionersByDateMale + $pensionersByDateFemale;
