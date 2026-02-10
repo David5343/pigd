@@ -30,7 +30,7 @@ class KpisOverviewReportsController extends Controller
             ->whereIn('affiliate_status',['Activo','Baja por aplicar'])
             ->count();
         $pensionersTotalByDate = Pensioner::whereBetween('created_at', [$inicio, $fin])
-            ->where('affiliate_status','Activo')
+            ->where('status','Activo')
             ->count();
         $pensionersBTotalByDate = PensionerBeneficiary::whereBetween('created_at', [$inicio, $fin])
             ->where('affiliate_status','Activo')
