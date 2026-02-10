@@ -22,7 +22,7 @@ class ReportsMenu extends Component
     public function generar()
     {
         $this->validate([
-            'option' => 'required|in:altas_titulares,bajas_titulares,altas_familiares,bajas_familiares',
+            'option' => 'required|in:altas_titulares,bajas_titulares,altas_familiares,bajas_familiares,resumen_indicadores',
             'date_start' => 'required|date',
             'date_end' => 'required|date|after_or_equal:date_start',
         ]);
@@ -46,6 +46,11 @@ class ReportsMenu extends Component
                 ]));
             case 'bajas_familiares':
                 return $this->redirect(route('reports.beneficiaries-bajas', [
+                    'inicio' => $this->date_start,
+                    'fin' => $this->date_end,
+                ]));
+            case 'resumen_indicadores':
+                return $this->redirect(route('reports.kpis-overview', [
                     'inicio' => $this->date_start,
                     'fin' => $this->date_end,
                 ]));

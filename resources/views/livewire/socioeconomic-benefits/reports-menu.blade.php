@@ -24,6 +24,7 @@
             <option value="bajas_titulares">Baja de titulares</option>
             <option value="altas_familiares">Alta de familiares</option>
             <option value="bajas_familiares">Baja de familiares</option>
+            <option value="resumen_indicadores">Resumen indicadores</option>
         </select>
         @error('option')
             <div class="bg-red-100 text-red-700 p-2 rounded-lg mt-2">{{ $message }}</div>
