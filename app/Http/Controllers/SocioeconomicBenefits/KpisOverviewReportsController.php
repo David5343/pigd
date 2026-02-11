@@ -141,15 +141,30 @@ class KpisOverviewReportsController extends Controller
             ->count();
         $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
         //Consulta de indicadores 8
-        $insuredsPreafiliateByDateByMale = Insured::whereBetween('created_at', [$inicio, $fin])
-            ->where('affiliation_status_id', '1')
-            ->where('sex', 'Hombre')
-            ->count();
-        $insuredsPreafiliateByDateByFemale = Insured::whereBetween('created_at', [$inicio, $fin])
-            ->where('affiliation_status_id', '1')
-            ->where('sex', 'Mujer')
-            ->count();
-        $insuredsPreafiliateTotalByDate = $insuredsPreafiliateByDateByMale + $insuredsPreafiliateByDateByFemale;
+        $insuredsPreafiliateByDateBySspMale = Insured::where('sex', 'Hombre')
+            ->where('affiliation_status_id', 1)
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })->count();
+        $insuredsPreafiliateByDateBySspFemale = Insured::where('sex', 'Mujer')
+            ->where('affiliation_status_id', 1)
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })->count();
+        $insuredsPreafiliateTotalByDateSsp = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateBySspFemale;
+        //FGE
+        $insuredsPreafiliateByDateByFgeMale = Insured::where('sex', 'Hombre')
+            ->where('affiliation_status_id', 1)
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalía General del Estado');
+            })->count();
+        $insuredsPreafiliateByDateByFgeFemale = Insured::where('sex', 'Mujer')
+            ->where('affiliation_status_id', 1)
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalía General del Estado');
+            })->count();
+        $insuredsPreafiliateTotalByDateFge = $insuredsPreafiliateByDateByFgeMale + $insuredsPreafiliateByDateByFgeFemale;
+        $insuredsPreafiliateTotalByDate = $insuredsPreafiliateTotalByDateSsp + $insuredsPreafiliateTotalByDateFge;
         // Preparar datos para la vista
         $data = [
             'insuredsActiveTotalByDate' => number_format($insuredsActiveTotalByDate, 0, '.', ','),
@@ -187,8 +202,12 @@ class KpisOverviewReportsController extends Controller
             'pensionersBeneficiaryByDateMale'=>number_format($pensionersBeneficiaryByDateMale, 0, '.', ','),
             'pensionersBeneficiaryByDateFemale'=>number_format($pensionersBeneficiaryByDateFemale, 0, '.', ','),
             'pensionerBeneficiaryTotal'=> number_format($pensionerBeneficiaryTotal, 0, '.', ','),
-            'insuredsPreafiliateByDateByMale'=>number_format($insuredsPreafiliateByDateByMale, 0, '.', ','),
-            'insuredsPreafiliateByDateByFemale'=>number_format($insuredsPreafiliateByDateByFemale, 0, '.', ','),
+            'insuredsPreafiliateByDateBySspMale'=>number_format($insuredsPreafiliateByDateBySspMale, 0, '.', ','),
+            'insuredsPreafiliateByDateBySspFemale'=>number_format($insuredsPreafiliateByDateBySspFemale, 0, '.', ','),
+            'insuredsPreafiliateByDateByFgeMale'=>number_format($insuredsPreafiliateByDateByFgeMale, 0, '.', ','),
+            'insuredsPreafiliateByDateByFgeFemale'=>number_format($insuredsPreafiliateByDateByFgeFemale, 0, '.', ','),
+            'insuredsPreafiliateTotalByDateSsp'=>number_format($insuredsPreafiliateTotalByDateSsp, 0, '.', ','),
+            'insuredsPreafiliateTotalByDateFge'=>number_format($insuredsPreafiliateTotalByDateFge, 0, '.', ','),
             'insuredsPreafiliateTotalByDate'=>number_format($insuredsPreafiliateTotalByDate, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
