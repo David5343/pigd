@@ -347,6 +347,33 @@ tr {
         </tr>
     </tfoot>
 </table>
+    <div class="resumen_titulo">
+        8.-PREAFILIADOS POR GÉNERO: {{ $insuredsPreafiliateTotalByDate }}
+    </div>
+<table width="100%" border="1" cellspacing="0" cellpadding="6">
+    <thead>
+        <tr>
+            <th style="text-align:left;">GÉNERO</th>
+            <th style="text-align:right;">CANTIDAD</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>HOMBRES</td>
+            <td style="text-align:right;">{{ $insuredsPreafiliateByDateByMale }}</td>
+        </tr>
+        <tr>
+            <td>MUJERES</td>
+            <td style="text-align:right;">{{ $insuredsPreafiliateByDateByFemale }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:left;">TOTAL</th>
+            <th style="text-align:right;">{{ $insuredsPreafiliateTotalByDate }}</th>
+        </tr>
+    </tfoot>
+</table>
 </main>
 
 </body>

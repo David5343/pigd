@@ -140,6 +140,16 @@ class KpisOverviewReportsController extends Controller
             ->whereBetween('created_at',[$inicio, $fin])
             ->count();
         $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
+        //Consulta de indicadores 8
+        $insuredsPreafiliateByDateByMale = Insured::whereBetween('created_at', [$inicio, $fin])
+            ->where('affiliation_status_id', '1')
+            ->where('sex', 'Hombre')
+            ->count();
+        $insuredsPreafiliateByDateByFemale = Insured::whereBetween('created_at', [$inicio, $fin])
+            ->where('affiliation_status_id', '1')
+            ->where('sex', 'Mujer')
+            ->count();
+        $insuredsPreafiliateTotalByDate = $insuredsPreafiliateByDateByMale + $insuredsPreafiliateByDateByFemale;
         // Preparar datos para la vista
         $data = [
             'insuredsActiveTotalByDate' => number_format($insuredsActiveTotalByDate, 0, '.', ','),
@@ -177,6 +187,9 @@ class KpisOverviewReportsController extends Controller
             'pensionersBeneficiaryByDateMale'=>number_format($pensionersBeneficiaryByDateMale, 0, '.', ','),
             'pensionersBeneficiaryByDateFemale'=>number_format($pensionersBeneficiaryByDateFemale, 0, '.', ','),
             'pensionerBeneficiaryTotal'=> number_format($pensionerBeneficiaryTotal, 0, '.', ','),
+            'insuredsPreafiliateByDateByMale'=>number_format($insuredsPreafiliateByDateByMale, 0, '.', ','),
+            'insuredsPreafiliateByDateByFemale'=>number_format($insuredsPreafiliateByDateByFemale, 0, '.', ','),
+            'insuredsPreafiliateTotalByDate'=>number_format($insuredsPreafiliateTotalByDate, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
             'fechaCreacion' => now()->format('d/m/Y'),
