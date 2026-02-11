@@ -165,7 +165,9 @@ class KpisOverviewReportsController extends Controller
                 $q->where('name', 'Fiscalía General del Estado');
             })->count();
         $insuredsPreafiliateTotalByDateFge = $insuredsPreafiliateByDateByFgeMale + $insuredsPreafiliateByDateByFgeFemale;
-        $insuredsPreafiliateTotalByDate = $insuredsPreafiliateTotalByDateSsp + $insuredsPreafiliateTotalByDateFge;
+        $insuredsPreafiliateTotalByDateMale = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateByFgeMale;
+        $insuredsPreafiliateTotalByDateFemale = $insuredsPreafiliateByDateBySspFemale + $insuredsPreafiliateByDateByFgeFemale;
+        $insuredsPreafiliateTotalByDateSspFge = $insuredsPreafiliateTotalByDateSsp + $insuredsPreafiliateTotalByDateFge;
         // Preparar datos para la vista
         $data = [
             'insuredsActiveTotalByDate' => number_format($insuredsActiveTotalByDate, 0, '.', ','),
@@ -205,11 +207,13 @@ class KpisOverviewReportsController extends Controller
             'pensionerBeneficiaryTotal'=> number_format($pensionerBeneficiaryTotal, 0, '.', ','),
             'insuredsPreafiliateByDateBySspMale'=>number_format($insuredsPreafiliateByDateBySspMale, 0, '.', ','),
             'insuredsPreafiliateByDateBySspFemale'=>number_format($insuredsPreafiliateByDateBySspFemale, 0, '.', ','),
-            'insuredsPreafiliateTotalByDate'=>number_format($insuredsPreafiliateTotalByDate, 0, '.', ','),
-            'insuredsPreafiliateTotalByDateSsp'=>number_format($insuredsPreafiliateTotalByDateSsp, 0, '.', ','),
             'insuredsPreafiliateByDateByFgeMale'=>number_format($insuredsPreafiliateByDateByFgeMale, 0, '.', ','),
             'insuredsPreafiliateByDateByFgeFemale'=>number_format($insuredsPreafiliateByDateByFgeFemale, 0, '.', ','),
+            'insuredsPreafiliateTotalByDateMale'=>number_format($insuredsPreafiliateTotalByDateMale, 0, '.', ','),
+            'insuredsPreafiliateTotalByDateFemale'=>number_format($insuredsPreafiliateTotalByDateFemale, 0, '.', ','),
+            'insuredsPreafiliateTotalByDateSsp'=>number_format($insuredsPreafiliateTotalByDateSsp, 0, '.', ','),
             'insuredsPreafiliateTotalByDateFge'=>number_format($insuredsPreafiliateTotalByDateFge, 0, '.', ','),
+            'insuredsPreafiliateTotalByDateSspFge'=>number_format($insuredsPreafiliateTotalByDateSspFge, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
             'fechaCreacion' => now()->format('d/m/Y'),

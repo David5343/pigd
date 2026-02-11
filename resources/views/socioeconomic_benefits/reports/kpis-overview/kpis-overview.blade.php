@@ -364,13 +364,13 @@ tr {
             <td>HOMBRES</td>
             <td style="text-align:center;">{{ $insuredsPreafiliateByDateBySspMale }}</td>
             <td style="text-align:center;">{{ $insuredsPreafiliateByDateByFgeMale }}</td>
-            <td style="text-align:right;">{{ $insuredsPreafiliateTotalByDateSsp }}</td>
+            <td style="text-align:right;">{{ $insuredsPreafiliateTotalByDateMale }}</td>
         </tr>
         <tr>
             <td>MUJERES</td>
             <td style="text-align:center;">{{ $insuredsPreafiliateByDateBySspFemale }}</td>
             <td style="text-align:center;">{{ $insuredsPreafiliateByDateByFgeFemale }}</td>
-            <td style="text-align:right;">{{ $insuredsPreafiliateTotalByDateFge }}</td>
+            <td style="text-align:right;">{{ $insuredsPreafiliateTotalByDateFemale }}</td>
         </tr>
     </tbody>
     <tfoot>
@@ -378,7 +378,7 @@ tr {
             <th style="text-align:left;">TOTAL</th>
             <th style="text-align:center;">{{ $insuredsPreafiliateTotalByDateSsp }}</th>
             <th style="text-align:center;">{{ $insuredsPreafiliateTotalByDateFge }}</th>
-            <th style="text-align:right;">{{ $insuredsPreafiliateTotalByDate }}</th>
+            <th style="text-align:right;">{{ $insuredsPreafiliateTotalByDateSspFge }}</th>
         </tr>
     </tfoot>
 </table>
