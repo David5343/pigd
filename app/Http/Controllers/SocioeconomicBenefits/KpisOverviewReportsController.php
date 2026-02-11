@@ -141,6 +141,7 @@ class KpisOverviewReportsController extends Controller
             ->count();
         $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
         //Consulta de indicadores 8
+        //SSP
         $insuredsPreafiliateByDateBySspMale = Insured::where('sex', 'Hombre')
             ->where('affiliation_status_id', 1)
             ->whereHas('subdependency.dependency', function ($q) {
@@ -204,11 +205,11 @@ class KpisOverviewReportsController extends Controller
             'pensionerBeneficiaryTotal'=> number_format($pensionerBeneficiaryTotal, 0, '.', ','),
             'insuredsPreafiliateByDateBySspMale'=>number_format($insuredsPreafiliateByDateBySspMale, 0, '.', ','),
             'insuredsPreafiliateByDateBySspFemale'=>number_format($insuredsPreafiliateByDateBySspFemale, 0, '.', ','),
+            'insuredsPreafiliateTotalByDate'=>number_format($insuredsPreafiliateTotalByDate, 0, '.', ','),
+            'insuredsPreafiliateTotalByDateSsp'=>number_format($insuredsPreafiliateTotalByDateSsp, 0, '.', ','),
             'insuredsPreafiliateByDateByFgeMale'=>number_format($insuredsPreafiliateByDateByFgeMale, 0, '.', ','),
             'insuredsPreafiliateByDateByFgeFemale'=>number_format($insuredsPreafiliateByDateByFgeFemale, 0, '.', ','),
-            'insuredsPreafiliateTotalByDateSsp'=>number_format($insuredsPreafiliateTotalByDateSsp, 0, '.', ','),
             'insuredsPreafiliateTotalByDateFge'=>number_format($insuredsPreafiliateTotalByDateFge, 0, '.', ','),
-            'insuredsPreafiliateTotalByDate'=>number_format($insuredsPreafiliateTotalByDate, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
             'fechaCreacion' => now()->format('d/m/Y'),
