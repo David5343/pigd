@@ -24,18 +24,18 @@ header {
 /* LOGO IZQUIERDO */
 .logo-left {
     position: fixed;
-    top: -10px;     /* AJUSTA AQUÍ si quieres subir o bajar */
+    top: -5px;     /* AJUSTA AQUÍ si quieres subir o bajar */
     left: 25px;
-    width: 85px;    /* para imagen 417x387 */
+    width: 95px;    /* para imagen 417x387 */
     height: auto;
 }
 
 /* LOGO DERECHO */
 .logo-right {
     position: fixed;
-    top: -10px;      /* AJUSTA AQUÍ también */
+    top: -5px;      /* AJUSTA AQUÍ también */
     right: 25px;
-    width: 85px;     /* para imagen 417x457 */
+    width: 125px;     /* para imagen 417x457 */
     height: auto;
 }
 
@@ -87,8 +87,8 @@ tr {
 
 <body>
 
-<img src="{{ public_path('images/gob_chiapas.png') }}" class="logo-left">
-<img src="{{ public_path('images/logo_fide.png') }}" class="logo-right">
+<img src="{{ public_path('images/logo_chiapas.png') }}" class="logo-left">
+<img src="{{ public_path('images/gob_chiapas.png') }}" class="logo-right">
 
 <header>
     <div style="font-weight:bold; font-size:16px;">
@@ -97,9 +97,9 @@ tr {
         AL SERVICIO DEL PODER EJECUTIVO DEL ESTADO DE CHIAPAS
     </div>
 
-    <div style="margin-top:5px; font-size:12px;">
+    {{-- <div style="margin-top:5px; font-size:12px;">
         "2026, año de Jaime Sabines Gutiérrez."
-    </div>
+    </div> --}}
 
     <div style="margin-top:10px; font-size:14px; font-weight:bold;">
         RESUMEN DE INDICADORES CLAVE.
@@ -107,12 +107,12 @@ tr {
 
     <div style="margin-top:5px; font-size:12px;">
         {{-- DEL {{ $fechaInicio }} AL {{ $fechaFin }} --}}
-        AL DIA {{ $fechaFin }}
+        FECHA DE CORTE: {{ $fechaFin }}
     </div>
 
-    <div style="font-size:12px;">
+    {{-- <div style="font-size:12px;">
         FECHA DE CREACIÓN: {{ $fechaCreacion }}
-    </div>
+    </div> --}}
 </header>
 
 
@@ -132,7 +132,7 @@ tr {
     <thead>
         <tr>
             <th style="text-align:left;">TIPO DE DERECHOHABIENTE</th>
-            <th style="text-align:right;">SUBTOTAL</th>
+            <th style="text-align:right;">CANTIDAD</th>
         </tr>
     </thead>
     <tbody>
@@ -171,7 +171,7 @@ tr {
     <thead>
         <tr>
             <th style="text-align:left;">DEPENDENCIA</th>
-            <th style="text-align:right;">SUBTOTAL</th>
+            <th style="text-align:right;">CANTIDAD</th>
         </tr>
     </thead>
     <tbody>
@@ -201,7 +201,7 @@ tr {
             <th style="text-align:left;">GÉNERO</th>
             <th style="text-align:center;">SSP</th>
             <th style="text-align:center;">FGE</th>
-            <th style="text-align:right;">SUBTOTAL</th>
+            <th style="text-align:right;">CANTIDAD</th>
         </tr>
     </thead>
     <tbody>
@@ -236,7 +236,7 @@ tr {
             <th style="text-align:left;">GÉNERO</th>
             <th style="text-align:center;">SSP</th>
             <th style="text-align:center;">FGE</th>
-            <th style="text-align:right;">SUBTOTAL</th>
+            <th style="text-align:right;">CANTIDAD</th>
         </tr>
     </thead>
     <tbody>
@@ -273,7 +273,7 @@ tr {
     <thead>
         <tr>
             <th style="text-align:left;">GÉNERO</th>
-            <th style="text-align:right;">SUBTOTAL</th>
+            <th style="text-align:right;">CANTIDAD</th>
         </tr>
     </thead>
     <tbody>
@@ -290,6 +290,60 @@ tr {
         <tr>
             <th style="text-align:left;">TOTAL</th>
             <th style="text-align:right;">{{ $pensionersTotalByDate }}</th>
+        </tr>
+    </tfoot>
+</table>
+    <div class="resumen_titulo">
+        6.-PENSIONISTAS POR TIPO DE PENSION: {{ $totalPensioners }}
+    </div>
+<table width="100%" border="1" cellspacing="0" cellpadding="6">
+    <thead>
+        <tr>
+            <th style="text-align:left;">TIPO DE PENSIÓN</th>
+            <th style="text-align:right;">CANTIDAD</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($pensionersByType as $p)
+            <tr>
+                <td style="text-align:left;">{{ $p->pensionType->name }}</td>
+                <td style="text-align:right;">{{ $p->total }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:left;">TOTAL</th>
+            <th style="text-align:right;">{{ $totalPensioners }}</th>
+        </tr>
+    </tfoot>
+</table>
+<br><br>
+<br><br>
+    <div class="resumen_titulo">
+        7.-FAMILIARES DE PENSIONISTAS POR GÉNERO: {{ $pensionerBeneficiaryTotal }}
+    </div>
+<table width="100%" border="1" cellspacing="0" cellpadding="6">
+    <thead>
+        <tr>
+            <th style="text-align:left;">GÉNERO</th>
+            <th style="text-align:right;">CANTIDAD</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>HOMBRES</td>
+            <td style="text-align:right;">{{ $pensionersBeneficiaryByDateMale }}</td>
+        </tr>
+        <tr>
+            <td>MUJERES</td>
+            <td style="text-align:right;">{{ $pensionersBeneficiaryByDateFemale }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:left;">TOTAL</th>
+            <th style="text-align:right;">{{ $pensionerBeneficiaryTotal }}</th>
         </tr>
     </tfoot>
 </table>

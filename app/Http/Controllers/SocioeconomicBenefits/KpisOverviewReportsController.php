@@ -16,8 +16,10 @@ class KpisOverviewReportsController extends Controller
 {
     public function getInsuredsTotal()
     {
-        $inicio = request('inicio') . ' 00:00:00';
-        $fin = request('fin') . ' 23:59:59';
+        // $inicio = request('inicio') . ' 00:00:00';
+        // $fin = request('fin') . ' 23:59:59';
+        $inicio = Carbon::parse(request('inicio').' 00:00:00', 'America/Mexico_City')->setTimezone('UTC');
+        $fin = Carbon::parse(request('fin').' 23:59:59', 'America/Mexico_City')->setTimezone('UTC');
         $creationDate = now()->format('d-m-Y');
         //consultas de indicador 1
         $insuredsActiveTotalByDate = Insured::whereBetween('created_at', [$inicio, $fin])
@@ -112,15 +114,32 @@ class KpisOverviewReportsController extends Controller
             $totalBeneficiariesActiveByDate = $totalBeneficiariesActiveByDateSsp + $totalBeneficiariesActiveByDateFge;
 
         //Consultas de indicador 5
-        $pensionersByDateMale = Pensioner::whereBetween('created_at',[$inicio, $fin])
-            ->where('sex', 'Hombre')
+        $pensionersByDateMale = Pensioner::where('sex', 'Hombre')
             ->where('status','Activo')
+            ->whereBetween('created_at',[$inicio, $fin])
             ->count();
-        $pensionersByDateFemale = Pensioner::whereBetween('created_at',[$inicio, $fin])
-            ->where('sex', 'Mujer')
+        $pensionersByDateFemale = Pensioner::where('sex', 'Mujer')
             ->where('status', 'Activo')
+            ->whereBetween('created_at',[$inicio, $fin])
             ->count();
         $pensionersTotalByDate = $pensionersByDateMale + $pensionersByDateFemale;
+        //Consulta de indicadores 6
+        $pensionersByType = Pensioner::where('status', 'Activo')
+            ->select('pension_types_id', DB::raw('COUNT(*) as total'))
+            ->groupBy('pension_types_id')
+            ->with('pensionType:id,name')
+            ->get();
+        $totalPensioners = $pensionersByType->sum('total');
+        //Consulta de indicadores 7
+        $pensionersBeneficiaryByDateMale = PensionerBeneficiary::where('sex', 'Hombre')
+            ->where('status','Activo')
+            ->whereBetween('created_at',[$inicio, $fin])
+            ->count();
+        $pensionersBeneficiaryByDateFemale = PensionerBeneficiary::where('sex', 'Mujer')
+            ->where('status','Activo')
+            ->whereBetween('created_at',[$inicio, $fin])
+            ->count();
+        $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
         // Preparar datos para la vista
         $data = [
             'insuredsActiveTotalByDate' => number_format($insuredsActiveTotalByDate, 0, '.', ','),
@@ -153,6 +172,11 @@ class KpisOverviewReportsController extends Controller
             'pensionersByDateMale' => number_format($pensionersByDateMale, 0, '.', ','),
             'pensionersByDateFemale' => number_format($pensionersByDateFemale, 0, '.', ','),
             'pensionersTotalByDate' => number_format($pensionersTotalByDate, 0, '.', ','),
+            'pensionersByType' => $pensionersByType,
+            'totalPensioners' => number_format($totalPensioners, 0, '.', ','),
+            'pensionersBeneficiaryByDateMale'=>number_format($pensionersBeneficiaryByDateMale, 0, '.', ','),
+            'pensionersBeneficiaryByDateFemale'=>number_format($pensionersBeneficiaryByDateFemale, 0, '.', ','),
+            'pensionerBeneficiaryTotal'=> number_format($pensionerBeneficiaryTotal, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
             'fechaCreacion' => now()->format('d/m/Y'),
