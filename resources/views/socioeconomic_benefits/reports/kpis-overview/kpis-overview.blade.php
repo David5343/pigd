@@ -150,7 +150,7 @@ tr {
         </tr>
         <tr>
             <td>PENSIONISTAS</td>
-            <td style="text-align:right;">{{ $pensionersTotalByDate }}</td>
+            <td style="text-align:right;">{{ $totalPensioners }}</td>
         </tr>
         <tr>
             <td>FAM. DE PENSIONISTAS</td>

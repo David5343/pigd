@@ -44,12 +44,14 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
+            ->whereBetween('created_at', [$inicio, $fin])
             ->count();
         $insuredsActiveByDateFge = Insured::with('subdependency.dependency')
             ->whereIn('affiliation_status_id', [1, 2, 5])
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
+            ->whereBetween('created_at', [$inicio, $fin])
             ->count();
         $total2 = $insuredsActiveByDateSsp + $insuredsActiveByDateFge;
         //consultas de indicador 3
