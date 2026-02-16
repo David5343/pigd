@@ -147,11 +147,11 @@ class KpisOverviewReportsController extends Controller
         $totalPensioners = $pensionersByType->sum('total');
         //Consulta de indicadores 7
         $pensionersBeneficiaryByDateMale = PensionerBeneficiary::where('sex', 'Hombre')
-            ->where('status','Activo')
+            ->where('affiliate_status','Activo')
             ->whereBetween('created_at',[$inicio, $fin])
             ->count();
         $pensionersBeneficiaryByDateFemale = PensionerBeneficiary::where('sex', 'Mujer')
-            ->where('status','Activo')
+            ->where('affiliate_status','Activo')
             ->whereBetween('created_at',[$inicio, $fin])
             ->count();
         $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
