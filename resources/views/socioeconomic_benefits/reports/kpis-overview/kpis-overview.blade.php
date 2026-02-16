@@ -267,7 +267,7 @@ tr {
 <br><br>
 <br><br>
     <div class="resumen_titulo">
-        5.-PENSIONISTAS POR GÉNERO: {{ $pensionersTotalByDate }}
+        5.-PENSIONISTAS POR GÉNERO: {{ $pensionersTotalByDateMaleFemale }}
     </div>
 <table width="100%" border="1" cellspacing="0" cellpadding="6">
     <thead>
@@ -289,7 +289,7 @@ tr {
     <tfoot>
         <tr>
             <th style="text-align:left;">TOTAL</th>
-            <th style="text-align:right;">{{ $pensionersTotalByDate }}</th>
+            <th style="text-align:right;">{{ $pensionersTotalByDateMaleFemale }}</th>
         </tr>
     </tfoot>
 </table>
