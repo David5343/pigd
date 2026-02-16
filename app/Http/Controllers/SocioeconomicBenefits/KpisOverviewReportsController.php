@@ -124,7 +124,7 @@ class KpisOverviewReportsController extends Controller
             ->where('status', 'Activo')
             ->whereBetween('created_at',[$inicio, $fin])
             ->count();
-        $pensionersTotalByDate = $pensionersByDateMale + $pensionersByDateFemale;
+        $pensionersTotalByDateMaleFemale = $pensionersByDateMale + $pensionersByDateFemale;
         //Consulta de indicadores 6
         $pensionersByType = Pensioner::where('status', 'Activo')
             ->select('pension_types_id', DB::raw('COUNT(*) as total'))
@@ -201,7 +201,7 @@ class KpisOverviewReportsController extends Controller
             'totalBeneficiariesActiveByDate' => number_format($totalBeneficiariesActiveByDate, 0, '.', ','),
             'pensionersByDateMale' => number_format($pensionersByDateMale, 0, '.', ','),
             'pensionersByDateFemale' => number_format($pensionersByDateFemale, 0, '.', ','),
-            'pensionersTotalByDate' => number_format($pensionersTotalByDate, 0, '.', ','),
+            'pensionersTotalByDateMaleFemale' => number_format($pensionersTotalByDateMaleFemale, 0, '.', ','),
             'pensionersByType' => $pensionersByType,
             'totalPensioners' => number_format($totalPensioners, 0, '.', ','),
             'pensionersBeneficiaryByDateMale'=>number_format($pensionersBeneficiaryByDateMale, 0, '.', ','),
