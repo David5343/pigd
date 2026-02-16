@@ -59,23 +59,31 @@ class KpisOverviewReportsController extends Controller
             ->whereIn('affiliation_status_id', [1, 2, 5])
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $insuredsActiveByMaleFge = Insured::where('sex', 'Hombre')
             ->whereIn('affiliation_status_id', [1, 2, 5])
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $totalInsuredsActiveByMale = $insuredsActiveByMaleSsp + $insuredsActiveByMaleFge;
         $insuredsActiveByFemaleSsp = Insured::where('sex', 'Mujer')
             ->whereIn('affiliation_status_id', [1, 2, 5])
                         ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $insuredsActiveByFemaleFge = Insured::where('sex', 'Mujer')
             ->whereIn('affiliation_status_id', [1, 2, 5])
                         ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $totalInsuredsActiveByFemale = $insuredsActiveByFemaleSsp + $insuredsActiveByFemaleFge;
         $totalInsuredsActiveBySsp = $insuredsActiveByMaleSsp + $insuredsActiveByFemaleSsp;
         $totalInsuredsActiveByFge = $insuredsActiveByMaleFge + $insuredsActiveByFemaleFge;
@@ -87,6 +95,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
+            ->whereBetween('created_at', [$inicio, $fin])
             ->count();
         $beneficiaryActivosByDateFemaleSsp = Beneficiary::with('insured.subdependency.dependency')
             ->where('sex', 'Mujer')
@@ -94,6 +103,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
+            ->whereBetween('created_at', [$inicio, $fin])
             ->count();
         $beneficiaryActivosByDateMaleFge = Beneficiary::with('insured.subdependency.dependency')
             ->where('sex', 'Hombre')
@@ -101,6 +111,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
+            ->whereBetween('created_at', [$inicio, $fin])
             ->count();
         $beneficiaryActivosByDateFemaleFge = Beneficiary::with('insured.subdependency.dependency')
             ->where('sex', 'Mujer')
@@ -108,6 +119,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
+            ->whereBetween('created_at', [$inicio, $fin])
             ->count();
             $totalBeneficiariesActiveByDateMale= $beneficiaryActivosByDateMaleSsp + $beneficiaryActivosByDateMaleFge;
             $totalBeneficiariesActiveByDateFemale= $beneficiaryActivosByDateFemaleSsp + $beneficiaryActivosByDateFemaleFge;
@@ -130,6 +142,7 @@ class KpisOverviewReportsController extends Controller
             ->select('pension_types_id', DB::raw('COUNT(*) as total'))
             ->groupBy('pension_types_id')
             ->with('pensionType:id,name')
+            ->whereBetween('created_at', [$inicio, $fin])
             ->get();
         $totalPensioners = $pensionersByType->sum('total');
         //Consulta de indicadores 7
@@ -148,24 +161,32 @@ class KpisOverviewReportsController extends Controller
             ->where('affiliation_status_id', 1)
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $insuredsPreafiliateByDateBySspFemale = Insured::where('sex', 'Mujer')
             ->where('affiliation_status_id', 1)
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $insuredsPreafiliateTotalByDateSsp = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateBySspFemale;
         //FGE
         $insuredsPreafiliateByDateByFgeMale = Insured::where('sex', 'Hombre')
             ->where('affiliation_status_id', 1)
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalía General del Estado');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $insuredsPreafiliateByDateByFgeFemale = Insured::where('sex', 'Mujer')
             ->where('affiliation_status_id', 1)
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalía General del Estado');
-            })->count();
+            })
+            ->whereBetween('created_at', [$inicio, $fin])
+            ->count();
         $insuredsPreafiliateTotalByDateFge = $insuredsPreafiliateByDateByFgeMale + $insuredsPreafiliateByDateByFgeFemale;
         $insuredsPreafiliateTotalByDateMale = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateByFgeMale;
         $insuredsPreafiliateTotalByDateFemale = $insuredsPreafiliateByDateBySspFemale + $insuredsPreafiliateByDateByFgeFemale;
