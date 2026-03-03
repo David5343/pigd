@@ -382,6 +382,42 @@ tr {
         </tr>
     </tfoot>
 </table>
+    <div class="resumen_titulo">
+        1.-TOTAL DE CREDENCIALES GENERADAS: {{ $total }}
+    </div>
+
+<table width="100%" border="1" cellspacing="0" cellpadding="6">
+    <thead>
+        <tr>
+            <th style="text-align:left;">TIPO DE DERECHOHABIENTE</th>
+            <th style="text-align:right;">CANTIDAD</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ASEGURADOS</td>
+            <td style="text-align:right;">{{ $credential_insureds }}</td>
+        </tr>
+        <tr>
+            <td>FAMILIARES</td>
+            <td style="text-align:right;">{{ $credential_beneficiaries }}</td>
+        </tr>
+        <tr>
+            <td>PENSIONISTAS</td>
+            <td style="text-align:right;">{{ $credential_pensioners }}</td>
+        </tr>
+        <tr>
+            <td>FAM. DE PENSIONISTAS</td>
+            <td style="text-align:right;">{{ $credential_pensioner_beneficiaries }}</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align:left;">TOTAL</th>
+            <th style="text-align:right;">{{ $credential_total }}</th>
+        </tr>
+    </tfoot>
+</table>
 </main>
 
 </body>

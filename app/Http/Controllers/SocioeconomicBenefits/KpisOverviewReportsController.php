@@ -4,6 +4,10 @@ namespace App\Http\Controllers\SocioeconomicBenefits;
 
 use App\Http\Controllers\Controller;
 use App\Models\SocioeconomicBenefits\Beneficiary;
+use App\Models\SocioeconomicBenefits\CredentialBeneficiary;
+use App\Models\SocioeconomicBenefits\CredentialInsured;
+use App\Models\SocioeconomicBenefits\CredentialPensioner;
+use App\Models\SocioeconomicBenefits\CredentialPensionerBeneficiary;
 use App\Models\SocioeconomicBenefits\Insured;
 use App\Models\SocioeconomicBenefits\Pensioner;
 use App\Models\SocioeconomicBenefits\PensionerBeneficiary;
@@ -191,6 +195,18 @@ class KpisOverviewReportsController extends Controller
         $insuredsPreafiliateTotalByDateMale = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateByFgeMale;
         $insuredsPreafiliateTotalByDateFemale = $insuredsPreafiliateByDateBySspFemale + $insuredsPreafiliateByDateByFgeFemale;
         $insuredsPreafiliateTotalByDateSspFge = $insuredsPreafiliateTotalByDateSsp + $insuredsPreafiliateTotalByDateFge;
+        //Consulta de indicadores 9
+        $credential_insureds = CredentialInsured::whereBetween('created_at', [$inicio, $fin])
+            ->with(['insured.subdependency.dependency'])
+            ->count();
+        $credential_beneficiaries = CredentialBeneficiary::whereBetween('created_at', [$inicio, $fin])
+            ->with(['beneficiary.insured.subdependency.dependency'])
+            ->count();
+        $credential_pensioners = CredentialPensioner::whereBetween('created_at', [$inicio, $fin])
+            ->count();
+        $credential_pensioner_beneficiaries = CredentialPensionerBeneficiary::whereBetween('created_at', [$inicio, $fin])
+            ->count();
+        $credential_total = $credential_insureds + $credential_beneficiaries + $credential_pensioners + $credential_pensioner_beneficiaries;
         // Preparar datos para la vista
         $data = [
             'insuredsActiveTotalByDate' => number_format($insuredsActiveTotalByDate, 0, '.', ','),
@@ -237,6 +253,11 @@ class KpisOverviewReportsController extends Controller
             'insuredsPreafiliateTotalByDateSsp'=>number_format($insuredsPreafiliateTotalByDateSsp, 0, '.', ','),
             'insuredsPreafiliateTotalByDateFge'=>number_format($insuredsPreafiliateTotalByDateFge, 0, '.', ','),
             'insuredsPreafiliateTotalByDateSspFge'=>number_format($insuredsPreafiliateTotalByDateSspFge, 0, '.', ','),
+            'credential_insureds' => number_format($credential_insureds, 0, '.', ','),
+            'credential_beneficiaries' => number_format($credential_beneficiaries, 0, '.', ','),
+            'credential_pensioners' => number_format($credential_pensioners, 0, '.', ','),
+            'credential_pensioner_beneficiaries' => number_format($credential_pensioner_beneficiaries, 0, '.', ','),
+            'credential_total' => number_format($credential_total, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
             'fechaCreacion' => now()->format('d/m/Y'),
