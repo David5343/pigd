@@ -387,7 +387,7 @@ tr {
 <br><br>
 <br><br>
     <div class="resumen_titulo">
-        9.-TOTAL DE CREDENCIALES GENERADAS: {{ $total }}
+        9.-TOTAL DE CREDENCIALES GENERADAS: {{ $credential_total }}
     </div>
 
 <table width="100%" border="1" cellspacing="0" cellpadding="6">
