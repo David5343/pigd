@@ -20,25 +20,23 @@ class KpisOverviewReportsController extends Controller
 {
     public function getInsuredsTotal()
     {
-        // $inicio = request('inicio') . ' 00:00:00';
-        // $fin = request('fin') . ' 23:59:59';
-        $inicio = Carbon::parse(request('inicio').' 00:00:00', 'America/Mexico_City')->setTimezone('UTC');
-        $fin = Carbon::parse(request('fin').' 23:59:59', 'America/Mexico_City')->setTimezone('UTC');
+        $inicio = Carbon::parse(request('inicio'))->format('Y-m-d');
+        $fin = Carbon::parse(request('fin'))->format('Y-m-d');
         $creationDate = now()->format('d-m-Y');
         //consultas de indicador 1
-        $insuredsActiveTotalByDate = Insured::whereBetween('created_at', [$inicio, $fin])
+        $insuredsActiveTotalByDate = Insured::whereBetween('start_date', [$inicio, $fin])
             ->whereIn('affiliation_status_id', [2,5])
             ->count();
-        $insuredsPreafiliateTotalByDate = Insured::whereBetween('created_at', [$inicio, $fin])
+        $insuredsPreafiliateTotalByDate = Insured::whereBetween('start_date', [$inicio, $fin])
             ->where('affiliation_status_id', '1')
             ->count();
-        $beneficiariesTotalByDate = Beneficiary::whereBetween('created_at',[$inicio, $fin])
+        $beneficiariesTotalByDate = Beneficiary::whereBetween('start_date',[$inicio, $fin])
             ->whereIn('affiliate_status',['Activo','Baja por aplicar'])
             ->count();
-        $pensionersTotalByDate = Pensioner::whereBetween('created_at', [$inicio, $fin])
+        $pensionersTotalByDate = Pensioner::whereBetween('start_date', [$inicio, $fin])
             ->where('status','Activo')
             ->count();
-        $pensionersBTotalByDate = PensionerBeneficiary::whereBetween('created_at', [$inicio, $fin])
+        $pensionersBTotalByDate = PensionerBeneficiary::whereBetween('start_date', [$inicio, $fin])
             ->where('affiliate_status','Activo')
             ->count();
         $totalGeneral = $insuredsActiveTotalByDate +  $insuredsPreafiliateTotalByDate +$beneficiariesTotalByDate + $pensionersTotalByDate + $pensionersBTotalByDate;
@@ -48,14 +46,14 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $insuredsActiveByDateFge = Insured::with('subdependency.dependency')
             ->whereIn('affiliation_status_id', [1, 2, 5])
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $total2 = $insuredsActiveByDateSsp + $insuredsActiveByDateFge;
         //consultas de indicador 3
@@ -64,14 +62,14 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $insuredsActiveByMaleFge = Insured::where('sex', 'Hombre')
             ->whereIn('affiliation_status_id', [1, 2, 5])
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $totalInsuredsActiveByMale = $insuredsActiveByMaleSsp + $insuredsActiveByMaleFge;
         $insuredsActiveByFemaleSsp = Insured::where('sex', 'Mujer')
@@ -79,14 +77,14 @@ class KpisOverviewReportsController extends Controller
                         ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $insuredsActiveByFemaleFge = Insured::where('sex', 'Mujer')
             ->whereIn('affiliation_status_id', [1, 2, 5])
                         ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $totalInsuredsActiveByFemale = $insuredsActiveByFemaleSsp + $insuredsActiveByFemaleFge;
         $totalInsuredsActiveBySsp = $insuredsActiveByMaleSsp + $insuredsActiveByFemaleSsp;
@@ -99,7 +97,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $beneficiaryActivosByDateFemaleSsp = Beneficiary::with('insured.subdependency.dependency')
             ->where('sex', 'Mujer')
@@ -107,7 +105,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $beneficiaryActivosByDateMaleFge = Beneficiary::with('insured.subdependency.dependency')
             ->where('sex', 'Hombre')
@@ -115,7 +113,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $beneficiaryActivosByDateFemaleFge = Beneficiary::with('insured.subdependency.dependency')
             ->where('sex', 'Mujer')
@@ -123,7 +121,7 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('insured.subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalia General del Estado');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
             $totalBeneficiariesActiveByDateMale= $beneficiaryActivosByDateMaleSsp + $beneficiaryActivosByDateMaleFge;
             $totalBeneficiariesActiveByDateFemale= $beneficiaryActivosByDateFemaleSsp + $beneficiaryActivosByDateFemaleFge;
@@ -134,11 +132,11 @@ class KpisOverviewReportsController extends Controller
         //Consultas de indicador 5
         $pensionersByDateMale = Pensioner::where('sex', 'Hombre')
             ->where('status','Activo')
-            ->whereBetween('created_at',[$inicio, $fin])
+            ->whereBetween('start_date',[$inicio, $fin])
             ->count();
         $pensionersByDateFemale = Pensioner::where('sex', 'Mujer')
             ->where('status', 'Activo')
-            ->whereBetween('created_at',[$inicio, $fin])
+            ->whereBetween('start_date',[$inicio, $fin])
             ->count();
         $pensionersTotalByDateMaleFemale = $pensionersByDateMale + $pensionersByDateFemale;
         //Consulta de indicadores 6
@@ -146,17 +144,17 @@ class KpisOverviewReportsController extends Controller
             ->select('pension_types_id', DB::raw('COUNT(*) as total'))
             ->groupBy('pension_types_id')
             ->with('pensionType:id,name')
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->get();
         $totalPensioners = $pensionersByType->sum('total');
         //Consulta de indicadores 7
         $pensionersBeneficiaryByDateMale = PensionerBeneficiary::where('sex', 'Hombre')
             ->where('affiliate_status','Activo')
-            ->whereBetween('created_at',[$inicio, $fin])
+            ->whereBetween('start_date',[$inicio, $fin])
             ->count();
         $pensionersBeneficiaryByDateFemale = PensionerBeneficiary::where('sex', 'Mujer')
             ->where('affiliate_status','Activo')
-            ->whereBetween('created_at',[$inicio, $fin])
+            ->whereBetween('start_date',[$inicio, $fin])
             ->count();
         $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
         //Consulta de indicadores 8
@@ -166,14 +164,14 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $insuredsPreafiliateByDateBySspFemale = Insured::where('sex', 'Mujer')
             ->where('affiliation_status_id', 1)
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Secretaría de Seguridad del Pueblo');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $insuredsPreafiliateTotalByDateSsp = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateBySspFemale;
         //FGE
@@ -182,14 +180,14 @@ class KpisOverviewReportsController extends Controller
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalía General del Estado');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $insuredsPreafiliateByDateByFgeFemale = Insured::where('sex', 'Mujer')
             ->where('affiliation_status_id', 1)
             ->whereHas('subdependency.dependency', function ($q) {
                 $q->where('name', 'Fiscalía General del Estado');
             })
-            ->whereBetween('created_at', [$inicio, $fin])
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
         $insuredsPreafiliateTotalByDateFge = $insuredsPreafiliateByDateByFgeMale + $insuredsPreafiliateByDateByFgeFemale;
         $insuredsPreafiliateTotalByDateMale = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateByFgeMale;
