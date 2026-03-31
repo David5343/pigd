@@ -93,4 +93,79 @@ class InsuredReportsController extends Controller
 
         return $pdf->download('reporte-bajas-titulares.pdf');
     }
+    public function byAdscripcion()
+    {
+    // 🔥 AUMENTAR RECURSOS (AQUÍ)
+    ini_set('memory_limit', '512M');
+    set_time_limit(300);
+        $inicio = Carbon::parse(request('inicio'))->format('Y-m-d');
+        $fin = Carbon::parse(request('fin'))->format('Y-m-d');
+
+    $registros = Insured::with([
+        'subdependency:id,name',
+        'affiliationStatus:id,name'
+    ])
+    ->select([
+        'id',
+        'file_number',
+        'employee_number',
+        'subdependency_id',
+        'last_name_1',
+        'last_name_2',
+        'name',
+        'rfc',
+        'sex',
+        'start_date',
+        'created_at',
+        'affiliation_status_id'
+    ])
+    ->whereIn('affiliation_status_id', [1,2])
+    ->whereBetween('start_date', [$inicio, $fin])
+    ->orderBy('subdependency_id')
+    ->get()
+    ->groupBy(function ($item) {
+        return $item->subdependency ? $item->subdependency->name : 'Sin adscripción';
+    })
+    ->map(function ($group, $key) {
+        return [
+            'adscripcion' => $key,
+            'total' => $group->count(),
+            'registros' => $group->values()
+        ];
+    })->values();
+        $data = [
+            'registros' => $registros,
+            'total' => $registros->sum('total'),
+            'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
+            'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
+            'fechaCreacion' => now()->format('d/m/Y'),
+        ];
+
+        $pdf = Pdf::setOption([
+            'defaultFont' => 'DejaVu Sans',
+            'isPhpEnabled' => true,
+            'margin-top' => 170,
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'dpi' => 96,
+        ])
+            ->loadView('socioeconomic_benefits.reports.insureds.reporte-adscripcion', $data)
+            ->setPaper('letter', 'landscape');
+
+        // footer
+        $dompdf = $pdf->getDomPDF();
+        $canvas = $dompdf->get_canvas();
+        $font = $dompdf->getFontMetrics()->get_font('DejaVu Sans', 'normal');
+
+        $canvas->page_text(
+            $canvas->get_width() / 2,
+            $canvas->get_height() - 35,
+            'Página {PAGE_NUM} de {PAGE_COUNT}',
+            $font,
+            10,
+            [0, 0, 0]
+        );
+
+        return $pdf->download('reporte-asegurados-por-adscripcion.pdf');
+    }
 }

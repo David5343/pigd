@@ -57,4 +57,5 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/reports/beneficiary_altas', [BeneficiaryReportsController::class, 'altas'])->name('reports.beneficiaries-altas');
     Route::get('/socioeconomic_benefits/reports/beneficiary_bajas', [BeneficiaryReportsController::class, 'bajas'])->name('reports.beneficiaries-bajas');
     Route::get('/socioeconomic_benefits/reports/kpis_overview', [KpisOverviewReportsController::class, 'getInsuredsTotal'])->name('reports.kpis-overview');
+    Route::get('/socioeconomic_benefits/reports/insureds_by_adscription', [InsuredReportsController::class, 'byAdscripcion'])->name('reports.insureds-by-adscription');
         });
