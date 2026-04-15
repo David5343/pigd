@@ -26,7 +26,7 @@ header {
     position: fixed;
     top: -5px;     /* AJUSTA AQUÍ si quieres subir o bajar */
     left: 25px;
-    width: 95px;    /* para imagen 417x387 */
+    width: 80px;    /* para imagen 417x387 */
     height: auto;
 }
 
