@@ -138,7 +138,7 @@ tr {
     <tbody>
         <tr>
             <td>ASEGURADOS</td>
-            <td style="text-align:right;">{{ insuredsFullTotal}}</td>
+            <td style="text-align:right;">{{ $insuredsFullTotal}}</td>
         </tr>
         {{-- <tr>
             <td>ASEGURADOS(PREAFILIADOS)</td>
