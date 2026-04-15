@@ -226,6 +226,10 @@ tr {
         </tr>
     </tfoot>
 </table>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
     {{-- <div class="resumen_titulo">
         2.-PREAFILIADOS POR GÉNERO Y DEPENDENCIA: {{ $insuredsPreafiliateTotalByDate }}
     </div>
@@ -296,10 +300,6 @@ tr {
         </tr>
     </tfoot>
 </table>
-<br><br>
-<br><br>
-<br><br>
-<br><br>
     <div class="resumen_titulo">
         3.-PENSIONISTAS POR GÉNERO: {{ $pensionersTotalByDateMaleFemale }}
     </div>
