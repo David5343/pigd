@@ -296,6 +296,10 @@ tr {
         </tr>
     </tfoot>
 </table>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
     <div class="resumen_titulo">
         3.-PENSIONISTAS POR GÉNERO: {{ $pensionersTotalByDateMaleFemale }}
     </div>
