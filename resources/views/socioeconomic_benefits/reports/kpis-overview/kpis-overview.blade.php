@@ -379,8 +379,8 @@ tr {
         </tr>
     </tfoot>
 </table>
-    {{-- <div class="resumen_titulo">
-        6.-TOTAL DE CREDENCIALES GENERADAS: {{ $credential_total }}
+    <div class="resumen_titulo">
+    TOTAL DE CREDENCIALES GENERADAS: {{ $credential_total }}
     </div>
 
 <table width="100%" border="1" cellspacing="0" cellpadding="6">
@@ -414,7 +414,7 @@ tr {
             <th style="text-align:right;">{{ $credential_total }}</th>
         </tr>
     </tfoot>
-</table> --}}
+</table>
 </main>
 
 </body>
