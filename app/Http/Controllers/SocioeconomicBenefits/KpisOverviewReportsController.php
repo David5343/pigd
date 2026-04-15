@@ -205,10 +205,12 @@ class KpisOverviewReportsController extends Controller
         $credential_pensioner_beneficiaries = CredentialPensionerBeneficiary::whereBetween('created_at', [$inicio, $fin])
             ->count();
         $credential_total = $credential_insureds + $credential_beneficiaries + $credential_pensioners + $credential_pensioner_beneficiaries;
+        $insuredsFullTotal = $insuredsActiveTotalByDate + $insuredsPreafiliateTotalByDate;
         // Preparar datos para la vista
         $data = [
             'insuredsActiveTotalByDate' => number_format($insuredsActiveTotalByDate, 0, '.', ','),
             'insuredsPreafiliateTotalByDate' => number_format($insuredsPreafiliateTotalByDate, 0, '.', ','),
+            'insuredsFullTotal' => number_format($insuredsFullTotal, 0, '.', ','),
             'beneficiariesTotalByDate' => number_format($beneficiariesTotalByDate, 0, '.', ','),
             'pensionersTotalByDate' => number_format($pensionersTotalByDate, 0, '.', ','),
             'pensionersBTotalByDate' => number_format($pensionersBTotalByDate, 0, '.', ','),
