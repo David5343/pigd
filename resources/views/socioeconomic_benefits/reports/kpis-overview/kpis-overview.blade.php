@@ -53,7 +53,7 @@ footer {
 
 .resumen_titulo {
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 10px;
     font-size: 14px;
 
