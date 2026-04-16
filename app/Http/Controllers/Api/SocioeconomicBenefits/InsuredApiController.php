@@ -571,7 +571,7 @@ class InsuredApiController extends Controller
                 $msj = ($affectedRows === 0) ?
                     'El registro ' . $insured->file_number . ' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                     'El registro ' . $insured->file_number . ' y sus familiares fueron dados de baja con éxito!';
-            } elseif ($motivo_baja == 'Defunsión') {
+            } elseif ($motivo_baja == 'Defunción') {
                 $insured->inactive_date = $fecha_baja;
                 $insured->inactive_date_dependency = $baja_dependencia;
                 $insured->inactive_motive = $motivo_baja;
