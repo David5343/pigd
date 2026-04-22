@@ -59,3 +59,13 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/reports/kpis_overview', [KpisOverviewReportsController::class, 'getInsuredsTotal'])->name('reports.kpis-overview');
     Route::get('/socioeconomic_benefits/reports/insureds_by_adscription', [InsuredReportsController::class, 'byAdscripcion'])->name('reports.insureds-by-adscription');
         });
+
+Route::get('/foto/{filename}', function ($filename) {
+    $path = "/mnt/nas/pigd/prestaciones/fotos_titular/" . $filename;
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+});

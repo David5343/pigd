@@ -20,11 +20,9 @@
                 </div>
                 <div class="flex justify-center mt-5">
                     <figure class="mb-4 inline-block max-w-sm">
-                        <img src="{{ empty($titular->photo) ? asset('images/icono_no_imagen.png') : 'http:'.$titular->photo }}"
-                        class="mb-4 h-auto max-w-full max-h-full rounded-lg align-middle leading-none shadow-lg"
-                            alt="Hollywood Sign on The Hill">
-
-                        {{-- <img src="{{ empty($titular->photo) ? asset('images/icono_no_imagen.png') : url($titular->photo) }}"
+                        <img src="{{ empty($titular->photo) ? asset('images/icono_no_imagen.png') : url('/foto/' . $titular->file_number.'.jpg') }}"
+                        class="mb-4 h-auto max-w-full max-h-full rounded-lg align-middle leading-none shadow-lg">
+                                                {{-- <img src="{{ empty($titular->photo) ? asset('images/icono_no_imagen.png') : url($titular->photo) }}"
                             class="mb-4 h-auto max-w-full max-h-full rounded-lg align-middle leading-none shadow-lg"
                             alt="Hollywood Sign on The Hill" /> --}}
                         <figcaption class="text-center text-sm text-neutral-600 dark:text-neutral-400">
