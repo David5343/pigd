@@ -77,15 +77,19 @@ class Beneficiaries extends Component
     }
     public function render()
     {
-        $lista = Beneficiary::where(function($query) {
-            $query->where('file_number', 'like', '%'.$this->search.'%')
-                  ->orWhere('name', 'like', '%'.$this->search.'%')
-                  ->orWhere('last_name_1', 'like', '%'.$this->search.'%')
-                  ->orWhere('last_name_2', 'like', '%'.$this->search.'%')
-                  ->orWhere('curp', 'like', '%'.$this->search.'%');
-        })
-        ->orderBy('file_number', 'asc')
-        ->paginate($this->numberRows);
+        $lista = Beneficiary::where(function ($query) {
+                $search = "%{$this->search}%";
+
+                // Buscar por nombre completo o parte de él
+                $query->where('last_name_1', 'like', $search)
+                    ->orWhere('last_name_2', 'like', $search)
+                    ->orWhere('name', 'like', $search)
+                    ->orWhere('rfc', 'like', $search)
+                    ->orWhere('curp', 'like', $search)
+                    ->orWhere('file_number', 'like', $search);
+            })
+            ->orderBy('file_number', 'asc')
+            ->paginate($this->numberRows);
         return view('livewire.socioeconomic-benefits.beneficiaries',['lista'=>$lista]);
     }
 }
