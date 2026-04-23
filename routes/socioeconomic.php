@@ -70,7 +70,7 @@ Route::get('/photo/insureds/{filename}', function ($filename) {
     return response()->file($path);
 });
 Route::get('/photo/beneficiaries/{filename}', function ($filename) {
-    $path = "/mnt/nas/pigd/prestaciones/fotos_familiares/" . $filename;
+    $path = "/mnt/nas/pigd/prestaciones/fotos_familiar/" . $filename;
 
     if (!file_exists($path)) {
         abort(404);
