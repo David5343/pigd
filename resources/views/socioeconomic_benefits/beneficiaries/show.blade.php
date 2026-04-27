@@ -21,7 +21,12 @@
                 </div>
                 <div class="flex justify-center mt-5">
                     <figure class="mb-4 inline-block max-w-sm">
-                        <img src="{{ empty($familiar->photo) ? asset('images/icono_no_imagen.png') : url('/photo/beneficiaries/'. $familiar->file_number.'.jpg') }}"
+                        @php
+                        $imagePath = public_path('photo/beneficiaries/' . $familiar->file_number . '.jpg');
+                        @endphp
+                        <img src="{{ (empty($familiar->photo) || !file_exists($imagePath)) 
+                        ? asset('images/icono_no_imagen.png') 
+                        : asset('photo/beneficiaries/' . $familiar->file_number . '.jpg') }}"
                         class="mb-4 h-auto max-w-full max-h-full rounded-lg align-middle leading-none shadow-lg">
                         <figcaption class="text-center text-sm text-neutral-600 dark:text-neutral-400">
                             <p><span>ESTATUS DE AFILIACIÓN</span></p>
