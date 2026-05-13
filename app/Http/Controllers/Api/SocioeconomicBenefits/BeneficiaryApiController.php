@@ -383,7 +383,7 @@ class BeneficiaryApiController extends Controller
             // Lista de motivos válidos
             $motivosValidos = [
                 'Acta de divorcio',
-                'Defunsión',
+                'Defunción',
                 'Solicitud del titular',
                 'Terminación de concubinato'
             ];
