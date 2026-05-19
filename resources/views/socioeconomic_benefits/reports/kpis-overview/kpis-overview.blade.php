@@ -164,33 +164,6 @@ tr {
         </tr>
     </tfoot>
 </table>
-    {{-- <div class="resumen_titulo">
-        3.-ASEGURADOS POR DEPENDENCIA: {{ $total2 }}
-    </div>
-<table width="100%" border="1" cellspacing="0" cellpadding="6">
-    <thead>
-        <tr>
-            <th style="text-align:left;">DEPENDENCIA</th>
-            <th style="text-align:right;">CANTIDAD</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>SECRETARIA DE SEGURIDAD DEL PUEBLO</td>
-            <td style="text-align:right;">{{ $insuredsActiveByDateSsp }}</td>
-        </tr>
-        <tr>
-            <td>FISCALIA GENERAL DEL ESTADO</td>
-            <td style="text-align:right;">{{ $insuredsActiveByDateFge }}</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <th style="text-align:left;">TOTAL</th>
-            <th style="text-align:right;">{{ $total2 }}</th>
-        </tr>
-    </tfoot>
-</table> --}}
     <div class="resumen_titulo">
         1.-ASEGURADOS POR GÉNERO Y DEPENDENCIA: {{ $total2 }}
     </div>
@@ -230,41 +203,7 @@ tr {
 <br><br>
 <br><br>
 <br><br>
-    {{-- <div class="resumen_titulo">
-        2.-PREAFILIADOS POR GÉNERO Y DEPENDENCIA: {{ $insuredsPreafiliateTotalByDate }}
-    </div>
-<table width="100%" border="1" cellspacing="0" cellpadding="6">
-    <thead>
-        <tr>
-            <th style="text-align:left;">GÉNERO</th>
-            <th style="text-align:center;">SSP</th>
-            <th style="text-align:center;">FGE</th>
-            <th style="text-align:right;">CANTIDAD</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>HOMBRES</td>
-            <td style="text-align:center;">{{ $insuredsPreafiliateByDateBySspMale }}</td>
-            <td style="text-align:center;">{{ $insuredsPreafiliateByDateByFgeMale }}</td>
-            <td style="text-align:right;">{{ $insuredsPreafiliateTotalByDateMale }}</td>
-        </tr>
-        <tr>
-            <td>MUJERES</td>
-            <td style="text-align:center;">{{ $insuredsPreafiliateByDateBySspFemale }}</td>
-            <td style="text-align:center;">{{ $insuredsPreafiliateByDateByFgeFemale }}</td>
-            <td style="text-align:right;">{{ $insuredsPreafiliateTotalByDateFemale }}</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <th style="text-align:left;">TOTAL</th>
-            <th style="text-align:center;">{{ $insuredsPreafiliateTotalByDateSsp }}</th>
-            <th style="text-align:center;">{{ $insuredsPreafiliateTotalByDateFge }}</th>
-            <th style="text-align:right;">{{ $insuredsPreafiliateTotalByDateSspFge }}</th>
-        </tr>
-    </tfoot>
-</table> --}}
+
     <div class="resumen_titulo">
         2.-FAMILIARES POR GÉNERO Y DEPENDENCIA: {{ $totalBeneficiariesActiveByDate }}
     </div>
@@ -301,120 +240,76 @@ tr {
     </tfoot>
 </table>
     <div class="resumen_titulo">
-        3.-PENSIONISTAS POR GÉNERO: {{ $pensionersTotalByDateMaleFemale }}
+        3.-PENSIONISTAS POR GÉNERO Y DEPENDENCIA: {{ $pensionersTotalByDateMaleFemale }}
     </div>
 <table width="100%" border="1" cellspacing="0" cellpadding="6">
     <thead>
         <tr>
             <th style="text-align:left;">GÉNERO</th>
+            <th style="text-align:center;">SSP</th>
+            <th style="text-align:center;">FGE</th>
             <th style="text-align:right;">CANTIDAD</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>HOMBRES</td>
-            <td style="text-align:right;">{{ $pensionersByDateMale }}</td>
+            <td style="text-align:center;">{{ $pensionersTotalByDateMaleSsp }}</td>
+            <td style="text-align:center;">{{ $pensionersTotalByDateMaleFge }}</td>
+            <td style="text-align:right;">{{ $pensionersTotalByDateMale }}</td>
         </tr>
         <tr>
             <td>MUJERES</td>
-            <td style="text-align:right;">{{ $pensionersByDateFemale }}</td>
+            <td style="text-align:center;">{{ $pensionersTotalByDateFemaleSsp }}</td>
+            <td style="text-align:center;">{{ $pensionersTotalByDateFemaleFge }}</td>
+            <td style="text-align:right;">{{ $pensionersTotalByDateFemale }}</td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
             <th style="text-align:left;">TOTAL</th>
+            <th style="text-align:center;">{{$pensionersTotalByDateSsp }}</th>
+            <th style="text-align:center;">{{ $pensionersTotalByDateFge }}</th>
             <th style="text-align:right;">{{ $pensionersTotalByDateMaleFemale }}</th>
         </tr>
     </tfoot>
 </table>
-    {{-- <div class="resumen_titulo">
-        4.1.-PENSIONISTAS POR TIPO DE PENSION: {{ $totalPensioners }}
-    </div>
-<table width="100%" border="1" cellspacing="0" cellpadding="6">
-    <thead>
-        <tr>
-            <th style="text-align:left;">TIPO DE PENSIÓN</th>
-            <th style="text-align:right;">CANTIDAD</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($pensionersByType as $p)
-            <tr>
-                <td style="text-align:left;">{{ $p->pensionType->name }}</td>
-                <td style="text-align:right;">{{ $p->total }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-    <tfoot>
-        <tr>
-            <th style="text-align:left;">TOTAL</th>
-            <th style="text-align:right;">{{ $totalPensioners }}</th>
-        </tr>
-    </tfoot>
-</table> --}}
     <div class="resumen_titulo">
-        4.-FAMILIARES DE PENSIONISTAS POR GÉNERO: {{ $pensionerBeneficiaryTotal }}
+        4.-FAMILIARES DE PENSIONISTAS POR GÉNERO: {{ $pensionerBeneficiaryTotalMaleFemale }}
     </div>
 <table width="100%" border="1" cellspacing="0" cellpadding="6">
     <thead>
         <tr>
             <th style="text-align:left;">GÉNERO</th>
+            <th style="text-align:center;">SSP</th>
+            <th style="text-align:center;">FGE</th>
             <th style="text-align:right;">CANTIDAD</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>HOMBRES</td>
-            <td style="text-align:right;">{{ $pensionersBeneficiaryByDateMale }}</td>
+            <td style="text-align:center;">{{ $pensionerBeneficiaryByDateMaleSsp }}</td>
+            <td style="text-align:center;">{{ $pensionerBeneficiaryByDateMaleFge }}</td>
+            <td style="text-align:right;">{{ $pensionersBeneficiaryTotalByDateMale }}</td>
         </tr>
         <tr>
             <td>MUJERES</td>
-            <td style="text-align:right;">{{ $pensionersBeneficiaryByDateFemale }}</td>
+            <td style="text-align:center;">{{ $pensionerBeneficiaryByDateFemaleSsp }}</td>
+            <td style="text-align:center;">{{ $pensionerBeneficiaryByDateFemaleFge }}</td>
+            <td style="text-align:right;">{{ $pensionersBeneficiaryTotalByDateFemale }}</td>
         </tr>
     </tbody>
     <tfoot>
         <tr>
             <th style="text-align:left;">TOTAL</th>
-            <th style="text-align:right;">{{ $pensionerBeneficiaryTotal }}</th>
+            <th style="text-align:center;">{{ $pensionerBeneficiaryTotalByDateSsp }}</th>
+            <th style="text-align:center;">{{ $pensionerBeneficiaryTotalByDateFge }}</th>
+            <th style="text-align:right;">{{ $pensionerBeneficiaryTotalMaleFemale }}</th>
         </tr>
     </tfoot>
 </table>
-    <div class="resumen_titulo">
-    TOTAL DE CREDENCIALES GENERADAS: {{ $credential_total }}
-    </div>
 
-<table width="100%" border="1" cellspacing="0" cellpadding="6">
-    <thead>
-        <tr>
-            <th style="text-align:left;">TIPO DE DERECHOHABIENTE</th>
-            <th style="text-align:right;">CANTIDAD</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>ASEGURADOS</td>
-            <td style="text-align:right;">{{ $credential_insureds }}</td>
-        </tr>
-        <tr>
-            <td>FAMILIARES</td>
-            <td style="text-align:right;">{{ $credential_beneficiaries }}</td>
-        </tr>
-        <tr>
-            <td>PENSIONISTAS</td>
-            <td style="text-align:right;">{{ $credential_pensioners }}</td>
-        </tr>
-        <tr>
-            <td>FAM. DE PENSIONISTAS</td>
-            <td style="text-align:right;">{{ $credential_pensioner_beneficiaries }}</td>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <th style="text-align:left;">TOTAL</th>
-            <th style="text-align:right;">{{ $credential_total }}</th>
-        </tr>
-    </tfoot>
-</table>
 </main>
 
 </body>

@@ -129,16 +129,43 @@ class KpisOverviewReportsController extends Controller
             $totalBeneficiariesActiveByDateFge = $beneficiaryActivosByDateMaleFge + $beneficiaryActivosByDateFemaleFge;
             $totalBeneficiariesActiveByDate = $totalBeneficiariesActiveByDateSsp + $totalBeneficiariesActiveByDateFge;
 
-        //Consultas de indicador 5
-        $pensionersByDateMale = Pensioner::where('sex', 'Hombre')
+        // Pensionados Hombres SSP
+         $pensionersTotalByDateMaleSsp = Pensioner::where('sex', 'Hombre')
             ->where('status','Activo')
-            ->whereBetween('start_date',[$inicio, $fin])
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
-        $pensionersByDateFemale = Pensioner::where('sex', 'Mujer')
-            ->where('status', 'Activo')
-            ->whereBetween('start_date',[$inicio, $fin])
+        // Pensionados Hombres FGE
+         $pensionersTotalByDateMaleFge = Pensioner::where('sex', 'Hombre')
+            ->where('status','Activo')
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalia General del Estado');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
-        $pensionersTotalByDateMaleFemale = $pensionersByDateMale + $pensionersByDateFemale;
+          $pensionersTotalByDateMale = $pensionersTotalByDateMaleSsp + $pensionersTotalByDateMaleFge;
+          //Pensionados Mujeres SSP
+         $pensionersTotalByDateFemaleSsp = Pensioner::where('sex', 'Mujer')
+            ->where('status','Activo')
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
+            ->count();
+            //Pensionados Mujeres FGE
+         $pensionersTotalByDateFemaleFge = Pensioner::where('sex', 'Mujer')
+            ->where('status','Activo')
+            ->whereHas('subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalia General del Estado');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
+            ->count();
+            $pensionersTotalByDateFemale = $pensionersTotalByDateFemaleSsp + $pensionersTotalByDateFemaleFge;
+            $pensionersTotalByDateMaleFemale = $pensionersTotalByDateMale + $pensionersTotalByDateFemale;
+            $pensionersTotalByDateSsp = $pensionersTotalByDateMaleSsp + $pensionersTotalByDateFemaleSsp;
+            $pensionersTotalByDateFge = $pensionersTotalByDateMaleFge + $pensionersTotalByDateFemaleFge;           
         //Consulta de indicadores 6
         $pensionersByType = Pensioner::where('status', 'Activo')
             ->select('pension_types_id', DB::raw('COUNT(*) as total'))
@@ -148,63 +175,54 @@ class KpisOverviewReportsController extends Controller
             ->get();
         $totalPensioners = $pensionersByType->sum('total');
         //Consulta de indicadores 7
-        $pensionersBeneficiaryByDateMale = PensionerBeneficiary::where('sex', 'Hombre')
-            ->where('affiliate_status','Activo')
-            ->whereBetween('start_date',[$inicio, $fin])
+        // $pensionersBeneficiaryByDateMale = PensionerBeneficiary::where('sex', 'Hombre')
+        //     ->where('affiliate_status','Activo')
+        //     ->whereBetween('start_date',[$inicio, $fin])
+        //     ->count();
+        // $pensionersBeneficiaryByDateFemale = PensionerBeneficiary::where('sex', 'Mujer')
+        //     ->where('affiliate_status','Activo')
+        //     ->whereBetween('start_date',[$inicio, $fin])
+        //     ->count();
+        // $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
+        $pensionerBeneficiaryByDateMaleSsp = PensionerBeneficiary::with('pensioner.subdependency.dependency')
+            ->where('sex', 'Hombre')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('pensioner.subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
-        $pensionersBeneficiaryByDateFemale = PensionerBeneficiary::where('sex', 'Mujer')
-            ->where('affiliate_status','Activo')
-            ->whereBetween('start_date',[$inicio, $fin])
+        $pensionerBeneficiaryByDateFemaleSsp = PensionerBeneficiary::with('pensioner.subdependency.dependency')
+            ->where('sex', 'Mujer')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('pensioner.subdependency.dependency', function ($q) {
+                $q->where('name', 'Secretaría de Seguridad del Pueblo');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
             ->count();
-        $pensionerBeneficiaryTotal= $pensionersBeneficiaryByDateMale+$pensionersBeneficiaryByDateFemale;
+        $pensionerBeneficiaryByDateMaleFge = PensionerBeneficiary::with('pensioner.subdependency.dependency')
+            ->where('sex', 'Hombre')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('pensioner.subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalia General del Estado');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
+            ->count();
+        $pensionerBeneficiaryByDateFemaleFge = PensionerBeneficiary::with('pensioner.subdependency.dependency')
+            ->where('sex', 'Mujer')
+            ->whereIn('affiliate_status', ['Activo','Baja por aplicar'])
+            ->whereHas('pensioner.subdependency.dependency', function ($q) {
+                $q->where('name', 'Fiscalia General del Estado');
+            })
+            ->whereBetween('start_date', [$inicio, $fin])
+            ->count();
+        $pensionersBeneficiaryTotalByDateMale = $pensionerBeneficiaryByDateMaleSsp + $pensionerBeneficiaryByDateMaleFge;
+        $pensionersBeneficiaryTotalByDateFemale = $pensionerBeneficiaryByDateFemaleSsp + $pensionerBeneficiaryByDateFemaleFge;
+        $pensionerBeneficiaryTotalByDateSsp = $pensionerBeneficiaryByDateMaleSsp + $pensionerBeneficiaryByDateFemaleSsp;
+        $pensionerBeneficiaryTotalByDateFge = $pensionerBeneficiaryByDateMaleFge + $pensionerBeneficiaryByDateFemaleFge;
+        $pensionerBeneficiaryTotalMaleFemale = $pensionersBeneficiaryTotalByDateMale + $pensionersBeneficiaryTotalByDateFemale;
         //Consulta de indicadores 8
-        //SSP
-        $insuredsPreafiliateByDateBySspMale = Insured::where('sex', 'Hombre')
-            ->where('affiliation_status_id', 1)
-            ->whereHas('subdependency.dependency', function ($q) {
-                $q->where('name', 'Secretaría de Seguridad del Pueblo');
-            })
-            ->whereBetween('start_date', [$inicio, $fin])
-            ->count();
-        $insuredsPreafiliateByDateBySspFemale = Insured::where('sex', 'Mujer')
-            ->where('affiliation_status_id', 1)
-            ->whereHas('subdependency.dependency', function ($q) {
-                $q->where('name', 'Secretaría de Seguridad del Pueblo');
-            })
-            ->whereBetween('start_date', [$inicio, $fin])
-            ->count();
-        $insuredsPreafiliateTotalByDateSsp = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateBySspFemale;
-        //FGE
-        $insuredsPreafiliateByDateByFgeMale = Insured::where('sex', 'Hombre')
-            ->where('affiliation_status_id', 1)
-            ->whereHas('subdependency.dependency', function ($q) {
-                $q->where('name', 'Fiscalía General del Estado');
-            })
-            ->whereBetween('start_date', [$inicio, $fin])
-            ->count();
-        $insuredsPreafiliateByDateByFgeFemale = Insured::where('sex', 'Mujer')
-            ->where('affiliation_status_id', 1)
-            ->whereHas('subdependency.dependency', function ($q) {
-                $q->where('name', 'Fiscalía General del Estado');
-            })
-            ->whereBetween('start_date', [$inicio, $fin])
-            ->count();
-        $insuredsPreafiliateTotalByDateFge = $insuredsPreafiliateByDateByFgeMale + $insuredsPreafiliateByDateByFgeFemale;
-        $insuredsPreafiliateTotalByDateMale = $insuredsPreafiliateByDateBySspMale + $insuredsPreafiliateByDateByFgeMale;
-        $insuredsPreafiliateTotalByDateFemale = $insuredsPreafiliateByDateBySspFemale + $insuredsPreafiliateByDateByFgeFemale;
-        $insuredsPreafiliateTotalByDateSspFge = $insuredsPreafiliateTotalByDateSsp + $insuredsPreafiliateTotalByDateFge;
-        //Consulta de indicadores 9
-        $credential_insureds = CredentialInsured::whereBetween('created_at', [$inicio, $fin])
-            ->with(['insured.subdependency.dependency'])
-            ->count();
-        $credential_beneficiaries = CredentialBeneficiary::whereBetween('created_at', [$inicio, $fin])
-            ->with(['beneficiary.insured.subdependency.dependency'])
-            ->count();
-        $credential_pensioners = CredentialPensioner::whereBetween('created_at', [$inicio, $fin])
-            ->count();
-        $credential_pensioner_beneficiaries = CredentialPensionerBeneficiary::whereBetween('created_at', [$inicio, $fin])
-            ->count();
-        $credential_total = $credential_insureds + $credential_beneficiaries + $credential_pensioners + $credential_pensioner_beneficiaries;
+
         $insuredsFullTotal = $insuredsActiveTotalByDate + $insuredsPreafiliateTotalByDate;
         // Preparar datos para la vista
         $data = [
@@ -236,28 +254,26 @@ class KpisOverviewReportsController extends Controller
             'totalBeneficiariesActiveByDateSsp' => number_format($totalBeneficiariesActiveByDateSsp, 0, '.', ','),
             'totalBeneficiariesActiveByDateFge' => number_format($totalBeneficiariesActiveByDateFge, 0, '.', ','),
             'totalBeneficiariesActiveByDate' => number_format($totalBeneficiariesActiveByDate, 0, '.', ','),
-            'pensionersByDateMale' => number_format($pensionersByDateMale, 0, '.', ','),
-            'pensionersByDateFemale' => number_format($pensionersByDateFemale, 0, '.', ','),
+            'pensionersTotalByDateMaleSsp' => number_format($pensionersTotalByDateMaleSsp, 0, '.', ','),
+            'pensionersTotalByDateMaleFge' => number_format($pensionersTotalByDateMaleFge, 0, '.', ','),
+            'pensionersTotalByDateMale' => number_format($pensionersTotalByDateMale, 0, '.', ','),
+            'pensionersTotalByDateFemaleSsp' => number_format($pensionersTotalByDateFemaleSsp, 0, '.', ','),
+            'pensionersTotalByDateFemaleFge' => number_format($pensionersTotalByDateFemaleFge, 0, '.', ','),
+            'pensionersTotalByDateFemale' => number_format($pensionersTotalByDateFemale, 0, '.', ','),
             'pensionersTotalByDateMaleFemale' => number_format($pensionersTotalByDateMaleFemale, 0, '.', ','),
+            'pensionersTotalByDateSsp' => number_format($pensionersTotalByDateSsp, 0, '.', ','),
+            'pensionersTotalByDateFge' => number_format($pensionersTotalByDateFge, 0, '.', ','),
             'pensionersByType' => $pensionersByType,
             'totalPensioners' => number_format($totalPensioners, 0, '.', ','),
-            'pensionersBeneficiaryByDateMale'=>number_format($pensionersBeneficiaryByDateMale, 0, '.', ','),
-            'pensionersBeneficiaryByDateFemale'=>number_format($pensionersBeneficiaryByDateFemale, 0, '.', ','),
-            'pensionerBeneficiaryTotal'=> number_format($pensionerBeneficiaryTotal, 0, '.', ','),
-            'insuredsPreafiliateByDateBySspMale'=>number_format($insuredsPreafiliateByDateBySspMale, 0, '.', ','),
-            'insuredsPreafiliateByDateBySspFemale'=>number_format($insuredsPreafiliateByDateBySspFemale, 0, '.', ','),
-            'insuredsPreafiliateByDateByFgeMale'=>number_format($insuredsPreafiliateByDateByFgeMale, 0, '.', ','),
-            'insuredsPreafiliateByDateByFgeFemale'=>number_format($insuredsPreafiliateByDateByFgeFemale, 0, '.', ','),
-            'insuredsPreafiliateTotalByDateMale'=>number_format($insuredsPreafiliateTotalByDateMale, 0, '.', ','),
-            'insuredsPreafiliateTotalByDateFemale'=>number_format($insuredsPreafiliateTotalByDateFemale, 0, '.', ','),
-            'insuredsPreafiliateTotalByDateSsp'=>number_format($insuredsPreafiliateTotalByDateSsp, 0, '.', ','),
-            'insuredsPreafiliateTotalByDateFge'=>number_format($insuredsPreafiliateTotalByDateFge, 0, '.', ','),
-            'insuredsPreafiliateTotalByDateSspFge'=>number_format($insuredsPreafiliateTotalByDateSspFge, 0, '.', ','),
-            'credential_insureds' => number_format($credential_insureds, 0, '.', ','),
-            'credential_beneficiaries' => number_format($credential_beneficiaries, 0, '.', ','),
-            'credential_pensioners' => number_format($credential_pensioners, 0, '.', ','),
-            'credential_pensioner_beneficiaries' => number_format($credential_pensioner_beneficiaries, 0, '.', ','),
-            'credential_total' => number_format($credential_total, 0, '.', ','),
+            'pensionerBeneficiaryByDateMaleSsp'=>number_format($pensionerBeneficiaryByDateMaleSsp, 0, '.', ','),
+            'pensionerBeneficiaryByDateMaleFge'=>number_format($pensionerBeneficiaryByDateMaleFge, 0, '.', ','),
+            'pensionerBeneficiaryByDateFemaleSsp'=> number_format($pensionerBeneficiaryByDateFemaleSsp, 0, '.', ','),
+            'pensionerBeneficiaryByDateFemaleFge'=> number_format($pensionerBeneficiaryByDateFemaleFge, 0, '.', ','),
+            'pensionerBeneficiaryTotalByDateSsp'=> number_format($pensionerBeneficiaryTotalByDateSsp, 0, '.', ','),
+            'pensionerBeneficiaryTotalByDateFge'=> number_format($pensionerBeneficiaryTotalByDateFge, 0, '.', ','),
+            'pensionerBeneficiaryTotalMaleFemale'=> number_format($pensionerBeneficiaryTotalMaleFemale, 0, '.', ','),
+            'pensionersBeneficiaryTotalByDateMale'=> number_format($pensionersBeneficiaryTotalByDateMale, 0, '.', ','),
+            'pensionersBeneficiaryTotalByDateFemale'=> number_format($pensionersBeneficiaryTotalByDateFemale, 0, '.', ','),
             'fechaInicio' => Carbon::parse(request('inicio'))->format('d/m/Y'),
             'fechaFin' => Carbon::parse(request('fin'))->format('d/m/Y'),
             'fechaCreacion' => now()->format('d/m/Y'),
