@@ -63,7 +63,7 @@ class InsuredApiController extends Controller
             $relations = [
                 'subdependency',
                 'rank',
-                'workplaceCounty',
+                'workplaceCounty.state',
                 'birthplaceCounty',
                 'county.state',
                 'affiliationStatus',
@@ -340,7 +340,7 @@ class InsuredApiController extends Controller
             $relations = [
                 'subdependency',
                 'rank',
-                'workplaceCounty',
+                'workplaceCounty.state',
                 'birthplaceCounty',
                 'affiliationStatus',
                 'county.state',
@@ -383,7 +383,7 @@ class InsuredApiController extends Controller
             $relations = [
                 'subdependency',
                 'rank',
-                'workplaceCounty',
+                'workplaceCounty.state',
                 'birthplaceCounty',
                 'county',
                 'affiliationStatus',
@@ -429,7 +429,7 @@ class InsuredApiController extends Controller
             $relations = [
                 'subdependency',
                 'rank',
-                'workplaceCounty',
+                'workplaceCounty.state',
                 'birthplaceCounty',
                 'county',
                 'affiliationStatus',
@@ -475,7 +475,7 @@ class InsuredApiController extends Controller
             $relations = [
                 'subdependency',
                 'rank',
-                'workplaceCounty',
+                'workplaceCounty.state',
                 'birthplaceCounty',
                 'county',
                 'affiliationStatus',
