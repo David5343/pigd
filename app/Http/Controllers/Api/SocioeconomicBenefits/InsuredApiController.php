@@ -552,26 +552,26 @@ class InsuredApiController extends Controller
                 ], 422);
             }
             $msj = '';
-            if ($motivo_baja == 'Acta administrativa') {
+            if ($motivo_baja == 'Acta administrativa' || $motivo_baja == 'Renuncia voluntaria') {
                 //$insured->inactive_date = $fecha_baja;
                 $insured->inactive_date_dependency = $baja_dependencia;
                 $insured->inactive_motive = $motivo_baja;
                 $insured->inactive_reference = $referencia;
                 //$insured->affiliate_status = 'Baja por aplicar';
-                $insured->affiliation_status_id = 5;
+                $insured->affiliation_status_id = 4;
                 $insured->modified_by = Auth::user()->email;
                 $insured->save();
                 $affectedRows = Beneficiary::where('insured_id', $insured->id)->update([
                     //'inactive_date' => $fecha_baja,
                     'inactive_motive' => $motivo_baja . ' del titular',
-                    'affiliate_status' => 'Baja por aplicar',
+                    'affiliate_status' => 'Baja',
                     'modified_by' => Auth::user()->email,
                 ]);
 
                 $msj = ($affectedRows === 0) ?
                     'El registro ' . $insured->file_number . ' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                     'El registro ' . $insured->file_number . ' y sus familiares fueron dados de baja con éxito!';
-            } elseif ($motivo_baja == 'Defunción') {
+            } elseif ($motivo_baja == 'Defunción' || $motivo_baja == 'Pensión') {
                 $insured->inactive_date = $fecha_baja;
                 $insured->inactive_date_dependency = $baja_dependencia;
                 $insured->inactive_motive = $motivo_baja;
@@ -583,14 +583,14 @@ class InsuredApiController extends Controller
                 $affectedRows = Beneficiary::where('insured_id', $insured->id)->update([
                     'inactive_date' => $fecha_baja,
                     'inactive_motive' => $motivo_baja . ' del titular',
-                    'affiliate_status' => 'Baja por aplicar',
+                    'affiliate_status' => 'Bloqueado',
                     'modified_by' => Auth::user()->email,
                 ]);
 
                 $msj = ($affectedRows === 0) ?
                     'El registro ' . $insured->file_number . ' fue dado de baja con éxito, pero no se encontraron familiares para actualizar.' :
                     'El registro ' . $insured->file_number . ' y sus familiares fueron dados de baja con éxito!';
-            } elseif ($motivo_baja == 'Pensión' || $motivo_baja == 'Renuncia voluntaria' || $motivo_baja == 'Cambio de cotización al IMSS') {
+            } elseif ( $motivo_baja == 'Cambio de cotización al IMSS') {
                 $insured->inactive_date = $fecha_baja;
                 $insured->inactive_date_dependency = $baja_dependencia;
                 $insured->inactive_motive = $motivo_baja;
