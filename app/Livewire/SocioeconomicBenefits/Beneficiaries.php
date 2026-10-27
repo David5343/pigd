@@ -45,7 +45,7 @@ class Beneficiaries extends Component
     {
         return Beneficiary::where('relationship','Esposo')
                             ->where('sex','Hombre')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->first();
+                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
     }
     public function getBeneficiaryTotalWivesProperty()
     {
