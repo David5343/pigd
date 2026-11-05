@@ -602,7 +602,7 @@ class InsuredApiController extends Controller
                 $affectedRows = Beneficiary::where('insured_id', $insured->id)->update([
                     'inactive_date' => $fecha_baja,
                     'inactive_motive' => $motivo_baja . ' del titular',
-                    'affiliate_status' => 'Baja por aplicar',
+                    'affiliate_status' => 'Baja',
                     'modified_by' => Auth::user()->email,
                 ]);
 
