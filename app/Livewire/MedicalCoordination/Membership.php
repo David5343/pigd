@@ -21,18 +21,31 @@ class Membership extends Component
     }
     public function render()
     {
-        $lista = Insured::where('status', 'active')
-        ->where(function($query) {
-            $query->where('file_number', 'like', '%'.$this->search.'%')
-                  ->orWhere('name', 'like', '%'.$this->search.'%')
-                  ->orWhere('last_name_1', 'like', '%'.$this->search.'%')
-                  ->orWhere('last_name_2', 'like', '%'.$this->search.'%')
-                  ->orWhere('rfc', 'like', '%'.$this->search.'%')
-                  ->orWhere('curp', 'like', '%'.$this->search.'%');
-        })
-        ->latest() // Equivalente a orderBy('created_at', 'desc')
-        ->take(50) // Tomar solo los últimos 50 registros
-        ->paginate($this->numberRows);
+        $terms = array_filter(explode(' ', trim($this->search)));
+
+        $lista = Insured::with('affiliationStatus')
+            ->where(function ($query) use ($terms) {
+
+                foreach ($terms as $term) {
+                    $term = "%{$term}%";
+
+                    $query->where(function ($q) use ($term) {
+                        $q->where('last_name_1', 'like', $term)
+                        ->orWhere('last_name_2', 'like', $term)
+                        ->orWhere('name', 'like', $term)
+                        ->orWhere('rfc', 'like', $term)
+                        ->orWhere('curp', 'like', $term)
+                        ->orWhere('file_number', 'like', $term)
+                        ->orWhereRaw(
+                            "CONCAT(name, ' ', last_name_1, ' ', last_name_2) LIKE ?",
+                            [$term]
+                        );
+                    });
+                }
+
+            })
+            ->orderBy('file_number', 'asc')
+            ->paginate($this->numberRows);
         return view('livewire.medical-coordination.membership',['lista'=>$lista]);
     }
 }
