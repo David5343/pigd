@@ -79,6 +79,8 @@ Los procedimientos actuales no están suficientemente establecidos ni descritos 
 
 `routes/api.php` muestra operaciones de titulares, familiares, pensionados, credenciales y catálogos. Se debe revisar el cliente C# para distinguir operaciones efectivamente usadas, el flujo de credencialización y los cuatro listados exportados. El objetivo es trasladar tareas y resultados de negocio a la web; no necesariamente conservar la forma técnica de cada endpoint.
 
+Como antecedente verificado, el sistema sucesor desarrollado en Laravel 13 ya captura fotografías desde la webcam y firmas con la tableta Topaz T-LBK460-HSB-R mediante SigWeb. Debe tomarse como referencia para los criterios de aceptación y evaluar qué componentes pueden reutilizarse; no se asume que el código sea directamente portable a PIGD ni que la captura constituya por sí sola una firma electrónica avanzada.
+
 Antes de construir, se debe verificar si el esquema actual puede representar las reglas de elegibilidad nuevas. El responsable del producto ya identifica limitaciones del diseño de datos; cualquier solución transitoria deberá tener alcance, riesgo y vida útil explícitos y no confundirse con el modelo del sistema sucesor.
 
 ## 9. Datos y controles
