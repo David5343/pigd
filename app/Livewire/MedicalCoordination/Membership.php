@@ -21,28 +21,23 @@ class Membership extends Component
     }
     public function render()
     {
-        $terms = array_filter(explode(' ', trim($this->search)));
+        $terms = preg_split('/\s+/', trim($this->search), -1, PREG_SPLIT_NO_EMPTY);
 
         $lista = Insured::with('affiliationStatus')
             ->where(function ($query) use ($terms) {
-
                 foreach ($terms as $term) {
                     $term = "%{$term}%";
 
                     $query->where(function ($q) use ($term) {
                         $q->where('last_name_1', 'like', $term)
-                        ->orWhere('last_name_2', 'like', $term)
-                        ->orWhere('name', 'like', $term)
-                        ->orWhere('rfc', 'like', $term)
-                        ->orWhere('curp', 'like', $term)
-                        ->orWhere('file_number', 'like', $term)
-                        ->orWhereRaw(
-                            "CONCAT(name, ' ', last_name_1, ' ', last_name_2) LIKE ?",
-                            [$term]
-                        );
+                            ->orWhere('last_name_2', 'like', $term)
+                            ->orWhere('name', 'like', $term)
+                            ->orWhere('employee_number', 'like', $term)
+                            ->orWhere('rfc', 'like', $term)
+                            ->orWhere('curp', 'like', $term)
+                            ->orWhere('file_number', 'like', $term);
                     });
                 }
-
             })
             ->orderBy('file_number', 'asc')
             ->paginate($this->numberRows);
