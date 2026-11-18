@@ -17,8 +17,8 @@
                                     <th scope="col" class="px-6 py-4">Folio</th>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
                                     <th scope="col" class="px-6 py-4">RFC</th>
-                                    <th scope="col" class="px-6 py-4">Estatus</th>
-                                    <th scope="col" class="px-6 py-4">Ver</th>
+                                    <th scope="col" class="px-6 py-4 text-center">Estatus</th>
+                                    <th scope="col" class="px-6 py-4 text-center">Expediente electrónico</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -30,18 +30,59 @@
                                             {{ $item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name }}
                                         </td>
                                         <td class="whitespace-nowrap px-6 py-4">{{ $item->rfc }}</td>
-                                        <td class="whitespace-nowrap px-6 py-4">
-                                            {{ $item->affiliationStatus?->name ?? 'Sin estatus de afiliación' }}
+                                        <td class="whitespace-nowrap px-6 py-4 text-center">
+                                            @php
+                                                $estatus = trim($item->affiliationStatus?->name ?? '');
+                                                $estiloEstatus = match (mb_strtolower($estatus)) {
+                                                    'preafiliado' => [
+                                                        'badge' => 'border-amber-200 bg-amber-50 text-amber-800',
+                                                        'dot' => 'bg-amber-500',
+                                                    ],
+                                                    'activo' => [
+                                                        'badge' => 'border-green-200 bg-green-50 text-green-800',
+                                                        'dot' => 'bg-green-500',
+                                                    ],
+                                                    'bloqueado' => [
+                                                        'badge' => 'border-gray-200 bg-gray-100 text-gray-700',
+                                                        'dot' => 'bg-gray-500',
+                                                    ],
+                                                    'baja' => [
+                                                        'badge' => 'border-red-200 bg-red-50 text-red-800',
+                                                        'dot' => 'bg-red-500',
+                                                    ],
+                                                    'baja por aplicar' => [
+                                                        'badge' => 'border-orange-200 bg-orange-50 text-orange-800',
+                                                        'dot' => 'bg-orange-500',
+                                                    ],
+                                                    default => [
+                                                        'badge' => 'border-slate-200 bg-slate-50 text-slate-700',
+                                                        'dot' => 'bg-slate-400',
+                                                    ],
+                                                };
+                                            @endphp
+                                            <span
+                                                class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold shadow-sm {{ $estiloEstatus['badge'] }}">
+                                                <span class="h-2 w-2 rounded-full ring-2 ring-white {{ $estiloEstatus['dot'] }}"
+                                                    aria-hidden="true"></span>
+                                                {{ $estatus ?: 'Sin estatus de afiliación' }}
+                                            </span>
                                         </td>
-                                        <td class="whitespace-nowrap px-6 py-4">
-
-                                            <a href="{{ url('medical_coordination/membership/' . $item->id) }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="size-6">
+                                        <td class="whitespace-nowrap px-6 py-4 text-center">
+                                            <a href="{{ route('membership_medical.show', $item->id) }}"
+                                                title="Abrir expediente electrónico"
+                                                aria-label="Abrir expediente electrónico de {{ trim($item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name) }}"
+                                                class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="h-5 w-5"
+                                                    aria-hidden="true">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776" />
+                                                        d="M3.25 8V6.75A1.75 1.75 0 0 1 5 5h5l2 2h7A1.75 1.75 0 0 1 20.75 8.75V10" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M3.25 9.75h17.5v8.5A1.75 1.75 0 0 1 19 20H5a1.75 1.75 0 0 1-1.75-1.75z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M7 13.25h10m-10 3h6" />
                                                 </svg>
+                                                <span class="sr-only">Abrir expediente</span>
                                             </a>
                                         </td>
                                     </tr>
@@ -56,7 +97,7 @@
                         </table>
                     </div>
                 </div>
-                {{ $lista->links() }}
+                {{ $lista->links('livewire.medical-coordination.pagination') }}
             </div>
         </div>
     </div>
