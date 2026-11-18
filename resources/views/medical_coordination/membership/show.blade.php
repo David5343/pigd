@@ -23,31 +23,60 @@
 
     <main class="min-h-screen bg-[#F7F3EC] py-8">
         <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
-            <section class="overflow-hidden rounded-xl border border-[#E7DFD9] bg-white shadow-sm">
-                <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
-                    <img src="{{ $fotoUrl }}"
-                        onerror="this.onerror=null;this.src='{{ asset('images/icono_no_imagen.png') }}';"
-                        alt="Fotografía de {{ $nombreTitular ?: 'titular' }}"
-                        class="h-32 w-24 shrink-0 self-center rounded-md border border-[#E7DFD9] object-cover sm:self-auto">
+            <div x-data="{ fotoAbierta: false }">
+                <section class="overflow-hidden rounded-xl border border-[#E7DFD9] bg-white shadow-sm">
+                    <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+                        <button type="button" @click="fotoAbierta = true"
+                            :aria-expanded="fotoAbierta.toString()"
+                            aria-haspopup="dialog"
+                            aria-label="Ampliar fotografía de {{ $nombreTitular ?: 'titular' }}"
+                            class="cursor-zoom-in self-center rounded-md focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-2 sm:self-auto">
+                            <img src="{{ $fotoUrl }}"
+                                onerror="this.onerror=null;this.src='{{ asset('images/icono_no_imagen.png') }}';"
+                                alt="Fotografía de {{ $nombreTitular ?: 'titular' }}"
+                                class="h-32 w-24 rounded-md border border-[#E7DFD9] object-cover">
+                        </button>
 
-                    <div class="min-w-0 flex-1 text-center sm:text-left">
-                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#8A6670]">Expediente electrónico</p>
-                        <h1 class="mt-1 text-2xl font-bold text-[#651F34] sm:text-3xl">
-                            {{ $nombreTitular ?: 'Nombre no disponible' }}
-                        </h1>
-                        <div class="mt-3 flex flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:flex-wrap sm:gap-x-6">
-                            <p><span class="font-semibold text-gray-900">Folio de afiliación:</span> {{ $folioAfiliacion ?: 'No disponible' }}</p>
-                            <p><span class="font-semibold text-gray-900">Tipo de derechohabiente:</span> {{ $tipoDerechohabiente }}</p>
+                        <div class="min-w-0 flex-1 text-center sm:text-left">
+                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#8A6670]">Expediente electrónico</p>
+                            <h1 class="mt-1 text-2xl font-bold text-[#651F34] sm:text-3xl">
+                                {{ $nombreTitular ?: 'Nombre no disponible' }}
+                            </h1>
+                            <div class="mt-3 flex flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:flex-wrap sm:gap-x-6">
+                                <p><span class="font-semibold text-gray-900">Folio de afiliación:</span> {{ $folioAfiliacion ?: 'No disponible' }}</p>
+                                <p><span class="font-semibold text-gray-900">Tipo de derechohabiente:</span> {{ $tipoDerechohabiente }}</p>
+                            </div>
+                        </div>
+
+                        <div class="shrink-0 self-center sm:self-start">
+                            <span class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold ring-1 ring-inset {{ $claseEstatus }}">
+                                {{ $estatus }}
+                            </span>
                         </div>
                     </div>
+                </section>
 
-                    <div class="shrink-0 self-center sm:self-start">
-                        <span class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold ring-1 ring-inset {{ $claseEstatus }}">
-                            {{ $estatus }}
-                        </span>
+                <div x-cloak x-show="fotoAbierta" x-transition.opacity
+                    @click.self="fotoAbierta = false"
+                    @keydown.escape.window="fotoAbierta = false"
+                    role="dialog" aria-modal="true" aria-label="Fotografía ampliada"
+                    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4">
+                    <div class="relative">
+                        <button type="button" @click="fotoAbierta = false"
+                            aria-label="Cerrar fotografía ampliada"
+                            class="absolute -right-3 -top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#075e56]">
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path
+                                    d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 0 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                            </svg>
+                        </button>
+                        <img src="{{ $fotoUrl }}"
+                            onerror="this.onerror=null;this.src='{{ asset('images/icono_no_imagen.png') }}';"
+                            alt="Fotografía ampliada de {{ $nombreTitular ?: 'titular' }}"
+                            class="block h-auto max-h-[90vh] w-auto max-w-[90vw] rounded-lg bg-white object-contain shadow-2xl">
                     </div>
                 </div>
-            </section>
+            </div>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
