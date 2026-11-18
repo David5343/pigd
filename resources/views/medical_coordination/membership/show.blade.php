@@ -1,203 +1,176 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-wrap items-center justify-between gap-3">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Coordinación Médica / Titulares / Ficha
+            <h2 class="font-semibold text-xl leading-tight text-[#651F34]">
+                Coordinación Médica / Titulares / Expediente electrónico
             </h2>
             <a href="{{ route('membership_medical.index') }}"
-                class="inline-flex items-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                class="inline-flex items-center rounded-md border border-[#E7DFD9] bg-white px-4 py-2 text-sm font-medium text-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34]">
                 Volver al listado
             </a>
         </div>
     </x-slot>
 
     @php
-        $nombreTitular = collect([$titular->last_name_1, $titular->last_name_2, $titular->name])
-            ->filter()
-            ->implode(' ');
-        $estatusAfiliacion = $titular->affiliationStatus?->name ?? 'Sin estatus de afiliación';
-        $claseEstatus = match ($estatusAfiliacion) {
+        $estatus = $estatusAfiliacion ?: 'Sin estatus de afiliación';
+        $claseEstatus = match ($estatus) {
             'Activo' => 'bg-green-100 text-green-800 ring-green-600/20',
             'Preafiliado' => 'bg-yellow-100 text-yellow-800 ring-yellow-600/20',
             'Baja', 'Baja por Aplicar' => 'bg-red-100 text-red-800 ring-red-600/20',
             default => 'bg-gray-100 text-gray-700 ring-gray-500/20',
         };
-
-        $datosAfiliacion = [
-            'Folio de afiliación' => $titular->file_number,
-            'Número de empleado' => $titular->employee_number,
-            'Dependencia' => $titular->subdependency?->dependency?->name,
-            'Subdependencia' => $titular->subdependency?->name,
-            'Categoría' => $titular->rank?->name,
-            'Fecha de ingreso' => $titular->start_date,
-            'Lugar de trabajo' => $titular->workplaceCounty?->name,
-            'Motivo de registro' => $titular->register_motive,
-            'Observaciones' => $titular->observations,
-        ];
-
-        $datosPersonales = [
-            'Fecha de nacimiento' => $titular->birthday,
-            'Lugar de nacimiento' => $titular->birthplaceCounty?->name,
-            'Sexo' => $titular->sex,
-            'Estado civil' => $titular->marital_status,
-            'RFC' => $titular->rfc,
-            'CURP' => $titular->curp,
-            'Teléfono' => $titular->phone,
-            'Correo electrónico' => $titular->email,
-            'Tipo de sangre' => $titular->blood_type,
-        ];
-
-        $datosDomicilio = [
-            'Estado' => $titular->county?->state?->name,
-            'Municipio' => $titular->county?->name,
-            'Colonia' => $titular->neighborhood,
-            'Tipo de vialidad' => $titular->roadway_type,
-            'Calle' => $titular->street,
-            'Número exterior' => $titular->outdoor_number,
-            'Número interior' => $titular->interior_number,
-            'Código postal' => $titular->cp,
-            'Localidad' => $titular->locality,
-        ];
-
-        $datosHistorial = [
-            'Fecha de baja en dependencia' => $titular->inactive_date_dependency,
-            'Fecha de baja en sistema' => $titular->inactive_date,
-            'Motivo de baja' => $titular->inactive_motive,
-            'Fecha de reingreso' => $titular->reentry_date,
-        ];
-        $mostrarHistorial = collect($datosHistorial)->contains(fn ($valor) => filled($valor));
     @endphp
 
-    <div class="py-8">
+    <main class="min-h-screen bg-[#F7F3EC] py-8">
         <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
-            <section class="overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-gray-200">
-                <div class="flex flex-col gap-5 p-6 sm:flex-row sm:items-center">
-                    <img
-                        src="{{ $titular->photo ? asset('photo/insureds/' . $titular->file_number . '.jpg') : asset('images/icono_no_imagen.png') }}"
+            <section class="overflow-hidden rounded-xl border border-[#E7DFD9] bg-white shadow-sm">
+                <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+                    <img src="{{ $fotoUrl }}"
                         onerror="this.onerror=null;this.src='{{ asset('images/icono_no_imagen.png') }}';"
                         alt="Fotografía de {{ $nombreTitular ?: 'titular' }}"
-                        class="h-28 w-28 shrink-0 rounded-full object-cover ring-2 ring-gray-100">
+                        class="h-32 w-24 shrink-0 self-center rounded-md border border-[#E7DFD9] object-cover sm:self-auto">
 
-                    <div class="min-w-0 flex-1">
-                        <p class="text-sm font-medium uppercase tracking-wide text-gray-500">Ficha de titular</p>
-                        <h1 class="mt-1 text-2xl font-semibold text-gray-900">
+                    <div class="min-w-0 flex-1 text-center sm:text-left">
+                        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#8A6670]">Expediente electrónico</p>
+                        <h1 class="mt-1 text-2xl font-bold text-[#651F34] sm:text-3xl">
                             {{ $nombreTitular ?: 'Nombre no disponible' }}
                         </h1>
-                        <div class="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-600">
-                            <span><strong>Folio:</strong> {{ $titular->file_number ?: 'No disponible' }}</span>
-                            <span><strong>Número de empleado:</strong> {{ $titular->employee_number ?: 'No disponible' }}</span>
+                        <div class="mt-3 flex flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:flex-wrap sm:gap-x-6">
+                            <p><span class="font-semibold text-gray-900">Folio de afiliación:</span> {{ $folioAfiliacion ?: 'No disponible' }}</p>
+                            <p><span class="font-semibold text-gray-900">Tipo de derechohabiente:</span> {{ $tipoDerechohabiente }}</p>
                         </div>
                     </div>
 
-                    <div class="shrink-0">
-                        <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ring-1 ring-inset {{ $claseEstatus }}">
-                            {{ $estatusAfiliacion }}
+                    <div class="shrink-0 self-center sm:self-start">
+                        <span class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold ring-1 ring-inset {{ $claseEstatus }}">
+                            {{ $estatus }}
                         </span>
                     </div>
                 </div>
             </section>
 
-            <section class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">Adscripción y afiliación</h2>
-                <dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    @foreach ($datosAfiliacion as $etiqueta => $valor)
-                        <div class="rounded-lg bg-gray-50 p-4">
-                            <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $etiqueta }}</dt>
-                            <dd class="mt-1 break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
-                        </div>
-                    @endforeach
-                </dl>
-            </section>
-
-            <section class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">Datos personales y contacto</h2>
-                <dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    @foreach ($datosPersonales as $etiqueta => $valor)
-                        <div class="rounded-lg bg-gray-50 p-4">
-                            <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $etiqueta }}</dt>
-                            <dd class="mt-1 break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
-                        </div>
-                    @endforeach
-                </dl>
-            </section>
-
-            <section class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                <h2 class="text-lg font-semibold text-gray-900">Domicilio</h2>
-                <dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    @foreach ($datosDomicilio as $etiqueta => $valor)
-                        <div class="rounded-lg bg-gray-50 p-4">
-                            <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $etiqueta }}</dt>
-                            <dd class="mt-1 break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
-                        </div>
-                    @endforeach
-                </dl>
-            </section>
-
-            @if ($mostrarHistorial)
-                <section class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                    <h2 class="text-lg font-semibold text-gray-900">Bajas y reingreso</h2>
-                    <dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        @foreach ($datosHistorial as $etiqueta => $valor)
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $etiqueta }}</dt>
-                                <dd class="mt-1 break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                    <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Datos personales y contacto</h2>
+                    <dl class="mt-4 space-y-4">
+                        @foreach ($datosPersonales as $etiqueta => $valor)
+                            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
+                                <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
+                                <dd class="break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
                             </div>
                         @endforeach
                     </dl>
                 </section>
-            @endif
 
-            <section class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200">
-                <div class="flex flex-wrap items-baseline justify-between gap-2">
-                    <h2 class="text-lg font-semibold text-gray-900">Familiares vinculados</h2>
-                    <span class="text-sm text-gray-500">{{ $titular->beneficiaries->count() }} registrados</span>
+                <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                    <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Domicilio</h2>
+                    <dl class="mt-4 space-y-4">
+                        @foreach ($datosDomicilio as $etiqueta => $valor)
+                            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
+                                <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
+                                <dd class="break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
+                            </div>
+                        @endforeach
+                    </dl>
+                </section>
+
+                <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                    <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Adscripción y afiliación</h2>
+                    <dl class="mt-4 space-y-4">
+                        @foreach ($datosAdscripcion as $etiqueta => $valor)
+                            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
+                                <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
+                                <dd class="break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
+                            </div>
+                        @endforeach
+                    </dl>
+                </section>
+
+                <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                    <div class="flex items-baseline justify-between gap-3 border-b border-[#E7DFD9] pb-3">
+                        <h2 class="text-lg font-semibold text-[#651F34]">Familiares vinculados</h2>
+                        <span class="text-sm text-gray-500">{{ $familiares->count() }} registrados</span>
+                    </div>
+
+                    @if ($familiares->isNotEmpty())
+                        <div class="mt-4 overflow-x-auto">
+                            <table class="min-w-full divide-y divide-[#E7DFD9] text-left text-sm">
+                                <thead class="bg-[#F7F3EC] text-xs uppercase tracking-wide text-gray-600">
+                                    <tr>
+                                        <th scope="col" class="px-3 py-3 font-semibold">Nombre completo</th>
+                                        <th scope="col" class="px-3 py-3 font-semibold">Parentesco</th>
+                                        <th scope="col" class="px-3 py-3 font-semibold">Folio</th>
+                                        <th scope="col" class="px-3 py-3 font-semibold">Estatus</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-[#E7DFD9]">
+                                    @foreach ($familiares as $familiar)
+                                        <tr>
+                                            <td class="whitespace-nowrap px-3 py-3 font-medium text-gray-900">{{ $familiar['nombre'] ?: 'No disponible' }}</td>
+                                            <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['parentesco'] ?: 'No disponible' }}</td>
+                                            <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['folio'] ?: 'No disponible' }}</td>
+                                            <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['estatus'] ?: 'No disponible' }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <p class="mt-4 rounded-lg bg-[#F7F3EC] px-4 py-5 text-center text-sm text-gray-600">
+                            Este titular no tiene familiares registrados.
+                        </p>
+                    @endif
+                </section>
+            </div>
+
+            <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-[#E7DFD9] pb-3">
+                    <h2 class="text-lg font-semibold text-[#651F34]">Historial de credenciales</h2>
+                    <span class="text-sm text-gray-500">{{ $credenciales->count() }} registros</span>
                 </div>
 
-                @if ($titular->beneficiaries->isNotEmpty())
+                @if ($credenciales->isNotEmpty())
                     <div class="mt-4 overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 text-left text-sm">
-                            <thead class="bg-gray-50 text-xs uppercase tracking-wide text-gray-500">
+                        <table class="min-w-full divide-y divide-[#E7DFD9] text-left text-sm">
+                            <thead class="bg-[#F7F3EC] text-xs uppercase tracking-wide text-gray-600">
                                 <tr>
-                                    <th scope="col" class="px-4 py-3">Familiar</th>
-                                    <th scope="col" class="px-4 py-3">Parentesco</th>
-                                    <th scope="col" class="px-4 py-3">Fecha de ingreso</th>
-                                    <th scope="col" class="px-4 py-3">Fecha de nacimiento</th>
-                                    <th scope="col" class="px-4 py-3">CURP</th>
-                                    <th scope="col" class="px-4 py-3">Estado de afiliación</th>
-                                    <th scope="col" class="px-4 py-3">Sexo</th>
-                                    <th scope="col" class="px-4 py-3">Capacidades diferentes</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Número de credencial</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Fecha de emisión</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Vigente hasta</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Motivo de emisión</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Estatus de credencial</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
-                                @foreach ($titular->beneficiaries as $familiar)
+                            <tbody class="divide-y divide-[#E7DFD9]">
+                                @foreach ($credenciales as $credencial)
                                     @php
-                                        $nombreFamiliar = collect([$familiar->last_name_1, $familiar->last_name_2, $familiar->name])
-                                            ->filter()
-                                            ->implode(' ');
+                                        $claseEstatusCredencial = match (strtoupper($credencial['estatus'] ?? '')) {
+                                            'VIGENTE' => 'bg-green-100 text-green-800',
+                                            'VENCIDA' => 'bg-gray-100 text-gray-700',
+                                            default => 'bg-yellow-100 text-yellow-800',
+                                        };
                                     @endphp
-                                    <tr class="align-top">
+                                    <tr>
+                                        <td class="whitespace-nowrap px-4 py-3 font-medium text-gray-900">{{ $credencial['numero'] }}</td>
+                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['emitida'] ?: 'No disponible' }}</td>
+                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['vigente_hasta'] ?: 'No disponible' }}</td>
+                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['motivo'] }}</td>
                                         <td class="whitespace-nowrap px-4 py-3">
-                                            <div class="font-medium text-gray-900">{{ $nombreFamiliar ?: 'Nombre no disponible' }}</div>
-                                            <div class="mt-1 text-xs text-gray-500">Folio: {{ $familiar->file_number ?: 'No disponible' }}</div>
+                                            <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold {{ $claseEstatusCredencial }}">
+                                                {{ $credencial['estatus'] ?: 'Sin estatus' }}
+                                            </span>
                                         </td>
-                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $familiar->relationship ?: 'No disponible' }}</td>
-                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $familiar->start_date ?: 'No disponible' }}</td>
-                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $familiar->birthday ?: 'No disponible' }}</td>
-                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $familiar->curp ?: 'No disponible' }}</td>
-                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $familiar->affiliate_status ?: 'No disponible' }}</td>
-                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $familiar->sex ?: 'No disponible' }}</td>
-                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $familiar->disabled_person ?: 'No disponible' }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 @else
-                    <p class="mt-4 rounded-lg bg-gray-50 px-4 py-6 text-center text-sm text-gray-600">
-                        Este titular no tiene familiares registrados.
+                    <p class="mt-4 rounded-lg bg-[#F7F3EC] px-4 py-5 text-center text-sm text-gray-600">
+                        Este titular no tiene credenciales registradas.
                     </p>
                 @endif
             </section>
         </div>
-    </div>
+    </main>
 </x-app-layout>
