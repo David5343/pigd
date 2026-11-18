@@ -1,11 +1,8 @@
 <div>
-    <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
-        <h1 class="mt-8 text-2xl font-medium text-gray-900">
-            PIGD
-        </h1>
+    <div class="p-4 lg:p-5 bg-white border-b border-gray-200">
         <div class="flex flex-col">
-            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+            <div class="overflow-x-auto sm:-mx-4 lg:-mx-5">
+                <div class="inline-block min-w-full py-2 sm:px-4 lg:px-5">
                     <div class="relative">
                         <input wire:model.live="search" type="search"
                             class="relative m-0 block w-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
@@ -63,5 +60,4 @@
             </div>
         </div>
     </div>
-    <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8"></div>
 </div>

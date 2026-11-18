@@ -1,922 +1,399 @@
-<nav x-data="{ open: false }" class="bg-[#009887] border-b-4 border-[#AE1922] rounded-lg">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-17">
-            <div class="flex">
-                <!-- Logo -->
-                {{-- <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                    </a>
-                </div> --}}
+@php
+    $menuSections = [
+        [
+            'label' => 'Coordinación',
+            'icon' => 'coordination',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['heading' => 'Transparencia'],
+                ['label' => 'Ubicación', 'route' => 'dashboard'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['heading' => 'Tecnologías'],
+                ['label' => 'Permisos', 'route' => 'permissions.index'],
+                ['label' => 'Roles', 'route' => 'roles.index'],
+                ['label' => 'Roles vs. permisos', 'route' => 'roles.manage'],
+                ['label' => 'Usuarios', 'route' => 'users.index'],
+                ['label' => 'Tickets', 'route' => 'dashboard'],
+                ['label' => 'Diagnósticos', 'route' => 'dashboard'],
+            ],
+        ],
+        [
+            'label' => 'Administración',
+            'icon' => 'administration',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['heading' => 'Finanzas'],
+                ['label' => 'Fondo Revolvente', 'route' => 'dashboard'],
+            ],
+        ],
+        [
+            'label' => 'Jurídico',
+            'icon' => 'legal',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['label' => 'Circulares', 'route' => 'dashboard'],
+                ['heading' => 'Gestión'],
+                ['label' => 'Dictámenes', 'route' => 'dashboard'],
+                ['label' => 'Reportes', 'route' => 'dashboard'],
+            ],
+        ],
+        [
+            'label' => 'Médica',
+            'icon' => 'medical',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['label' => 'Circulares', 'route' => 'dashboard'],
+                ['heading' => 'Catálogos'],
+                ['label' => 'Unidades de medida', 'route' => 'medication_unit.index'],
+                ['label' => 'Años de catálogo', 'route' => 'catalog_year.index'],
+                ['label' => 'Medicamentos', 'route' => 'medication.index'],
+                ['heading' => 'Afiliación'],
+                ['label' => 'Titulares', 'route' => 'membership_medical.index'],
+                ['label' => 'Familiares', 'route' => 'beneficiaries_medical.index'],
+                ['heading' => 'Gestión'],
+                ['label' => 'Facturas', 'route' => 'dashboard'],
+                ['label' => 'Reembolsos', 'route' => 'dashboard'],
+                ['label' => 'Reportes', 'route' => 'dashboard'],
+            ],
+        ],
+        [
+            'label' => 'Humanos',
+            'icon' => 'human-resources',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'categories.index'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['label' => 'Circulares', 'route' => 'dashboard'],
+                ['heading' => 'Catálogos'],
+                ['label' => 'Áreas', 'route' => 'areas.index'],
+                ['label' => 'Bancos', 'route' => 'banks.index'],
+                ['label' => 'Categorías', 'route' => 'categories.index'],
+                ['label' => 'Puestos', 'route' => 'positions.index'],
+                ['label' => 'Estados', 'route' => 'states.index'],
+                ['label' => 'Municipios', 'route' => 'counties.index'],
+                ['label' => 'Tipos de movimiento', 'route' => 'procedure-type.index'],
+                ['label' => 'Tipos de contrato', 'route' => 'contract-type.index'],
+                ['label' => 'Grados de estudio', 'route' => 'degrees.index'],
+                ['heading' => 'Personal'],
+                ['label' => 'Movimiento nominal', 'route' => 'employee-procedure.index'],
+                ['label' => 'Empleados', 'route' => 'employees.index'],
+                ['label' => 'Credenciales', 'route' => 'dashboard'],
+                ['label' => 'Permisos', 'route' => 'dashboard'],
+                ['label' => 'Vacaciones', 'route' => 'dashboard'],
+                ['label' => 'Reportes', 'route' => 'dashboard'],
+            ],
+        ],
+        [
+            'label' => 'Financieros',
+            'icon' => 'finance',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['label' => 'Circulares', 'route' => 'dashboard'],
+                ['heading' => 'Reportes'],
+                ['label' => 'Medicamentos', 'route' => 'dashboard'],
+                ['label' => 'Proveedores', 'route' => 'dashboard'],
+                ['label' => 'Productos', 'route' => 'dashboard'],
+                ['label' => 'Servicios', 'route' => 'dashboard'],
+                ['heading' => 'Administración'],
+                ['label' => 'Pago de credenciales', 'route' => 'dashboard'],
+                ['label' => 'Partidas', 'route' => 'dashboard'],
+            ],
+        ],
+        [
+            'label' => 'Materiales',
+            'icon' => 'materials',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['label' => 'Circulares', 'route' => 'dashboard'],
+                ['heading' => 'Catálogos'],
+                ['label' => 'Categorías de proveedores', 'route' => 'supplier-category.index'],
+                ['label' => 'Proveedores', 'route' => 'supplier.index'],
+                ['label' => 'Productos', 'route' => 'dashboard'],
+                ['heading' => 'Adquisiciones'],
+                ['label' => 'Licitaciones', 'route' => 'dashboard'],
+                ['label' => 'Inventario', 'route' => 'dashboard'],
+                ['label' => 'Resguardos', 'route' => 'dashboard'],
+            ],
+        ],
+        [
+            'label' => 'Prestaciones',
+            'icon' => 'benefits',
+            'items' => [
+                ['heading' => 'Documentos'],
+                ['label' => 'Oficios', 'route' => 'dashboard'],
+                ['label' => 'Memorándums', 'route' => 'dashboard'],
+                ['label' => 'Circulares', 'route' => 'dashboard'],
+                ['heading' => 'Catálogos'],
+                ['label' => 'Categorías', 'route' => 'ranks.index'],
+                ['label' => 'Dependencias', 'route' => 'dependencies.index'],
+                ['label' => 'Subdependencias', 'route' => 'subdependencies.index'],
+                ['label' => 'Tipos de pensión', 'route' => 'pension_types.index'],
+                ['label' => 'Riesgos de trabajo', 'route' => 'work_risks.index'],
+                ['heading' => 'Afiliación'],
+                ['label' => 'Titulares', 'route' => 'membership.index'],
+                ['label' => 'Familiares', 'route' => 'beneficiaries.index'],
+                ['label' => 'Pensionados', 'route' => 'dashboard'],
+                ['label' => 'Beneficiarios de pensión', 'route' => 'dashboard'],
+                ['heading' => 'Consulta'],
+                ['label' => 'Reportes', 'route' => 'reports.index'],
+            ],
+        ],
+    ];
+@endphp
 
-                <!-- Navigation Links -->
-                {{-- <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex"> --}}
-                {{-- <div>
-                    <x-dropdown-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Inicio') }}
-                    </x-dropdown-link>
-                </div> --}}
-                <div class="hidden space-x-2 sm:-my-px sm:ms-6 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Coordinación') }}
-                                <svg class="ms-2 -me-0.5 h-6 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Documentos') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
+<nav x-data="{ open: false }" class="bg-[#075e56] text-white shadow-lg shadow-slate-900/10">
+    <div class="mx-auto flex max-w-[1440px] items-center gap-3 px-4 sm:px-6 lg:px-8">
+        <div class="hidden min-w-0 flex-1 items-center gap-1 lg:flex">
+            @foreach ($menuSections as $section)
+                <x-dropdown align="left" width="60"
+                    dropdownClasses="mt-2.5"
+                    contentClasses="max-h-[70vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/15">
+                    <x-slot name="trigger">
+                        <button type="button"
+                            class="group inline-flex min-h-16 items-center gap-2 whitespace-nowrap rounded-xl px-3 text-sm font-medium text-teal-50 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+                            <x-module-icon :name="$section['icon']"
+                                class="h-[1.125rem] w-[1.125rem] shrink-0 text-teal-200 transition group-hover:text-white" />
+                            {{ $section['label'] }}
+                            <svg class="h-4 w-4 text-teal-200 transition group-hover:text-white" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        @foreach ($section['items'] as $item)
+                            @if (isset($item['heading']))
+                                <div class="{{ $loop->first ? '' : 'mt-2 border-t border-slate-100 pt-2' }} px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                                    {{ $item['heading'] }}
                                 </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Oficios') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Memorandums') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Transparencia') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Ubicación') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Oficios') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Memorandums') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Tecnologías') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('permissions.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Permisos') }}
-                                    </a>
-                                    <a href="{{ route('roles.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Roles') }}
-                                    </a>
-                                    <a href="{{ route('roles.manage') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Roles vs Permisos') }}
-                                    </a>
-                                    <a href="{{ route('users.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Usuarios') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Tickets') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Diagnosticos') }}
-                                    </a>
-                                </div>
-                            </div>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Administración') }}
-                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Documentos') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Oficios') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Memorandums') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Fondo Revolvente') }}
-                            </x-dropdown-link>
-                            <!-- Opciones del Dropdown -->
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Jurídico') }}
-                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Documentos') }}
-                            </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Circulares') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Dictamenes') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Reportes') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Médica') }}
-                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Documentos') }}
-                            </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Circulares') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Catalogos') }}
-                            </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('medication_unit.index') }}">
-                                {{ __('Unidades de Medida') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('catalog_year.index') }}">
-                                {{ __('Años de Catálogo') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('medication.index') }}">
-                                {{ __('Medicamentos') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('membership_medical.index') }}">
-                                {{ __('Titulares') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('beneficiaries_medical.index') }}">
-                                {{ __('Familiares') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Facturas') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Reembolsos') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Reportes') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Humanos') }}
-                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Documentos') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('categories.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Oficios') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Memorandums') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Circulares') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Catalogos') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('areas.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Áreas') }}
-                                    </a>
-                                    <a href="{{ route('banks.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Bancos') }}
-                                    </a>
-                                    <a href="{{ route('categories.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Categorias') }}
-                                    </a>
-                                    <a href="{{ route('positions.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Puestos') }}
-                                    </a>
-                                    <a href="{{ route('states.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Estados') }}
-                                    </a>
-                                    <a href="{{ route('counties.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Municipios') }}
-                                    </a>
-                                    <a href="{{ route('procedure-type.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Tipos de movimiento') }}
-                                    </a>
-                                    <a href="{{ route('contract-type.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Tipos de contrato') }}
-                                    </a>
-                                    <a href="{{ route('degrees.index') }}"
-                                        class="block px-4 py-2 text-sm  text-gray-700  hover:bg-[#AE1922] hover:text-white">
-                                        {{ __('Grados de estudio') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('employee-procedure.index') }}">
-                                {{ __('Movimiento Nominal') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            {{-- <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Mas...') }}
-                            </div> --}}
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('employees.index') }}">
-                                {{ __('Empleados') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Credenciales') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Permisos') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Vacaciones') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Reportes') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Financieros') }}
-                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Documentos') }}
-                            </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Circulares') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Reportes') }}
-                            </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Medicamentos') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Proveedores') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Productos') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Servicios') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Pago de Credenciales') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Partidas') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Materiales') }}
-                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Documentos') }}
-                            </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Oficios') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Memorandums') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Circulares') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Título de la segunda sección -->
-                            <div class="px-4 py-2 text-sm text-white bg-[#009887]">
-                                {{ __('Catalogos') }}
-                            </div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('supplier-category.index') }}">
-                                {{ __('Categoría de proveedores') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('supplier.index') }}">
-                                {{ __('Proveedores') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Productos') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Opciones del Dropdown -->
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Licitaciones') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Inventario') }}
-                            </x-dropdown-link>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('dashboard') }}">
-                                {{ __('Resguardos') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                <div class="hidden space-x-2 sm:-my-px sm:ms-7 sm:flex">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button
-                                class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                {{ __('Prestaciones') }}
-                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Documentos') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Oficios') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Memorandums') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Circulares') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Título de la segunda sección -->
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Catalogos') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('ranks.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Categorias') }}
-                                    </a>
-                                    <a href="{{ route('dependencies.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Dependencias') }}
-                                    </a>
-                                    <a href="{{ route('subdependencies.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Subdependencias') }}
-                                    </a>
-                                    <a href="{{ route('pension_types.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Tipos de pensión') }}
-                                    </a>
-                                    <a href="{{ route('work_risks.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Tipos de riesgo de trabajo') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <!-- Título de la segunda sección -->
-                            <div class="relative group">
-                                <div
-                                    class="flex items-center justify-between px-4 py-2 text-sm text-white bg-[#009887] hover:bg-[#AE1922] hover:text-white cursor-pointer w-full">
-                                    {{-- class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer w-full"> --}}
-                                    {{ __('Afiliación') }}
-                                    <svg class="w-4 h-4 ms-2" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-
-                                <!-- Submenú -->
-                                <div
-                                    class="absolute left-full top-0 mt-0 hidden group-hover:block bg-white border border-gray-200 shadow-md rounded-md w-48 z-50">
-                                    <a href="{{ route('membership.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Titulares') }}
-                                    </a>
-                                    <a href="{{ route('beneficiaries.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Familiares') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Pensionados') }}
-                                    </a>
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        {{ __('Beneficiarios de pensión') }}
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- Separador -->
-                            <div class="border-t border-gray-200"></div>
-                            <x-dropdown-link href="{{ route('reports.index') }}">
-                                {{ __('Reportes') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-            </div>
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Teams Dropdown -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="ms-3 relative">
-                        <x-dropdown align="right" width="60">
-                            <x-slot name="trigger">
-                                <span class="inline-flex rounded-md">
-                                    <button type="button"
-                                        class="inline-flex items-center px-1 py-6 border border-transparent text-sm leading-4 font-medium rounded-md text-black hover:text-white focus:outline-none focus:bg-tail-200 active:bg-tail-200 transition">
-                                        {{ Auth::user()->currentTeam->name }}
-
-                                        <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                        </svg>
-                                    </button>
-                                </span>
-                            </x-slot>
-
-                            <x-slot name="content">
-                                <div class="w-60">
-                                    <!-- Team Management -->
-                                    <div class="block px-4 py-2 text-xs text-gray-400">
-                                        {{ __('Manage Team') }}
-                                    </div>
-
-                                    <!-- Team Settings -->
-                                    <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                        {{ __('Team Settings') }}
-                                    </x-dropdown-link>
-
-                                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                        <x-dropdown-link href="{{ route('teams.create') }}">
-                                            {{ __('Create New Team') }}
-                                        </x-dropdown-link>
-                                    @endcan
-
-                                    <!-- Team Switcher -->
-                                    @if (Auth::user()->allTeams()->count() > 1)
-                                        <div class="border-t border-gray-200"></div>
-
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
-                                            {{ __('Switch Teams') }}
-                                        </div>
-
-                                        @foreach (Auth::user()->allTeams() as $team)
-                                            <x-switchable-team :team="$team" />
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </x-slot>
-                        </x-dropdown>
-                    </div>
-                @endif
-
-                <!-- Settings Dropdown -->
-                <div class="ms-3 relative">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button
-                                    class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                    <img class="h-8 w-8 rounded-full object-cover"
-                                        src="{{ Auth::user()->profile_photo_url }}"
-                                        alt="{{ Auth::user()->name }}" />
-                                </button>
                             @else
-                                <span class="inline-flex rounded-md">
-                                    <button type="button"
-                                        class="inline-flex items-center px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-[#009887] hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                        {{ Auth::user()->name }}
+                                <a href="{{ route($item['route']) }}"
+                                    class="block rounded-xl px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-teal-50 hover:text-teal-800 focus:bg-teal-50 focus:text-teal-800 focus:outline-none">
+                                    {{ $item['label'] }}
+                                </a>
+                            @endif
+                        @endforeach
+                    </x-slot>
+                </x-dropdown>
+            @endforeach
+        </div>
 
-                                        <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                        </svg>
-                                    </button>
-                                </span>
+        <div class="ms-auto hidden shrink-0 items-center py-2 lg:flex">
+            @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                <div class="me-2">
+                    <x-dropdown align="right" width="60"
+                        contentClasses="rounded-2xl border border-slate-200 bg-white py-1 shadow-xl">
+                        <x-slot name="trigger">
+                            <button type="button"
+                                class="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-teal-50 transition hover:bg-white/10 hover:text-white">
+                                {{ Auth::user()->currentTeam->name }}
+                                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </x-slot>
+                        <x-slot name="content">
+                            <div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                {{ __('Administrar equipo') }}
+                            </div>
+                            <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
+                                {{ __('Configuración del equipo') }}
+                            </x-dropdown-link>
+                            @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                                <x-dropdown-link href="{{ route('teams.create') }}">
+                                    {{ __('Crear equipo') }}
+                                </x-dropdown-link>
+                            @endcan
+                            @if (Auth::user()->allTeams()->count() > 1)
+                                <div class="my-1 border-t border-slate-100"></div>
+                                @foreach (Auth::user()->allTeams() as $team)
+                                    <x-switchable-team :team="$team" />
+                                @endforeach
                             @endif
                         </x-slot>
-
-                        <x-slot name="content">
-                            <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
-                                {{ __('Administrar cuenta') }}
-                            </div>
-
-                            {{-- <x-dropdown-link href="{{ route('profile.show') }}"> --}}
-                            <x-dropdown-link>
-                                {{ Auth::user()->name }}
-                            </x-dropdown-link>
-                            {{--
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                                <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                    {{ __('API Tokens') }}
-                                </x-dropdown-link>
-                            @endif --}}
-
-                            <div class="border-t border-gray-200"></div>
-
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}" x-data>
-                                @csrf
-
-                                <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                                    {{ __('Salir') }}
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
                     </x-dropdown>
                 </div>
-            </div>
+            @endif
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+            <x-dropdown align="right" width="60"
+                contentClasses="rounded-2xl border border-slate-200 bg-white py-1 shadow-xl">
+                <x-slot name="trigger">
+                    <button type="button"
+                        class="inline-flex max-w-56 items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+                        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                            <img class="h-8 w-8 rounded-full object-cover ring-2 ring-white/30"
+                                src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                        @else
+                            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-teal-800">
+                                {{ str(mb_substr(Auth::user()->name, 0, 1))->upper() }}
+                            </span>
+                        @endif
+                        <span class="truncate">{{ Auth::user()->name }}</span>
+                        <svg class="h-4 w-4 shrink-0 text-teal-100" viewBox="0 0 20 20" fill="currentColor"
+                            aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </x-slot>
+                <x-slot name="content">
+                    <div class="px-4 py-3">
+                        <p class="text-sm font-semibold text-slate-800">{{ Auth::user()->name }}</p>
+                        <p class="mt-0.5 truncate text-xs text-slate-500">{{ Auth::user()->email }}</p>
+                    </div>
+                    <div class="border-t border-slate-100"></div>
+                    <a href="{{ route('profile.show') }}"
+                        class="block px-4 py-2.5 text-sm text-slate-700 transition hover:bg-teal-50 hover:text-teal-800">
+                        {{ __('Perfil y seguridad') }}
+                    </a>
+                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                        <a href="{{ route('api-tokens.index') }}"
+                            class="block px-4 py-2.5 text-sm text-slate-700 transition hover:bg-teal-50 hover:text-teal-800">
+                            {{ __('API Tokens') }}
+                        </a>
+                    @endif
+                    <div class="border-t border-slate-100"></div>
+                    <form method="POST" action="{{ route('logout') }}" x-data>
+                        @csrf
+                        <button type="submit"
+                            class="block w-full px-4 py-2.5 text-left text-sm font-medium text-rose-700 transition hover:bg-rose-50">
+                            {{ __('Cerrar sesión') }}
+                        </button>
+                    </form>
+                </x-slot>
+            </x-dropdown>
+        </div>
+
+        <div class="flex min-h-14 flex-1 items-center justify-between lg:hidden">
+            <a href="{{ route('dashboard') }}" class="flex items-center gap-2 text-sm font-semibold tracking-wide">
+                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-sm">P</span>
+                PIGD
+            </a>
+            <button type="button" @click="open = !open" :aria-expanded="open.toString()"
+                aria-label="{{ __('Abrir menú de navegación') }}"
+                class="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+                <svg x-show="!open" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                        d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <svg x-show="open" x-cloak class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                        d="m6 6 12 12M18 6 6 18" />
+                </svg>
+            </button>
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Coordinación General') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Administración General') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Área Jurídica') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Coordinación Médica') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Recursos Humanos') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Recursos Financieros') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Recursos Materiales') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Prestaciones') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="flex items-center px-4">
-                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="shrink-0 me-3">
-                        <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
-                            alt="{{ Auth::user()->name }}" />
-                    </div>
-                @endif
-
-                <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <!-- Account Management -->
-                <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
-                    {{ __('Perfil') }}
-                </x-responsive-nav-link>
-
-                @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                    <x-responsive-nav-link href="{{ route('api-tokens.index') }}" :active="request()->routeIs('api-tokens.index')">
-                        {{ __('API Tokens') }}
-                    </x-responsive-nav-link>
-                @endif
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}" x-data>
-                    @csrf
-
-                    <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-
-                <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="border-t border-gray-200"></div>
-
-                    <div class="block px-4 py-2 text-xs text-gray-400">
-                        {{ __('Manage Team') }}
-                    </div>
-
-                    <!-- Team Settings -->
-                    <x-responsive-nav-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
-                        :active="request()->routeIs('teams.show')">
-                        {{ __('Team Settings') }}
-                    </x-responsive-nav-link>
-
-                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                        <x-responsive-nav-link href="{{ route('teams.create') }}" :active="request()->routeIs('teams.create')">
-                            {{ __('Create New Team') }}
-                        </x-responsive-nav-link>
-                    @endcan
-
-                    <!-- Team Switcher -->
-                    @if (Auth::user()->allTeams()->count() > 1)
-                        <div class="border-t border-gray-200"></div>
-
-                        <div class="block px-4 py-2 text-xs text-gray-400">
-                            {{ __('Switch Teams') }}
-                        </div>
-
-                        @foreach (Auth::user()->allTeams() as $team)
-                            <x-switchable-team :team="$team" component="responsive-nav-link" />
+    <div x-show="open" x-cloak x-transition class="border-t border-white/10 bg-[#064f49] lg:hidden">
+        <div class="mx-auto max-h-[calc(100vh-4rem)] max-w-[1440px] space-y-1 overflow-y-auto px-4 py-3 sm:px-6">
+            @foreach ($menuSections as $section)
+                <div x-data="{ expanded: false }" class="overflow-hidden rounded-xl">
+                    <button type="button" @click="expanded = !expanded" :aria-expanded="expanded.toString()"
+                        class="flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold text-white transition hover:bg-white/10">
+                        <span class="flex items-center gap-2.5">
+                            <x-module-icon :name="$section['icon']" class="h-5 w-5 text-teal-200" />
+                            {{ $section['label'] }}
+                        </span>
+                        <svg class="h-4 w-4 text-teal-200 transition-transform" :class="{ 'rotate-180': expanded }"
+                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div x-show="expanded" x-cloak x-transition class="space-y-1 bg-black/10 px-2 py-2">
+                        @foreach ($section['items'] as $item)
+                            @if (isset($item['heading']))
+                                <p class="px-3 pt-2 text-[10px] font-bold uppercase tracking-[0.16em] text-teal-200/70">
+                                    {{ $item['heading'] }}
+                                </p>
+                            @else
+                                <a href="{{ route($item['route']) }}"
+                                    class="block rounded-lg px-3 py-2 text-sm text-teal-50 transition hover:bg-white/10 hover:text-white">
+                                    {{ $item['label'] }}
+                                </a>
+                            @endif
                         @endforeach
+                    </div>
+                </div>
+            @endforeach
+
+            <div class="mt-3 border-t border-white/10 px-3 py-4">
+                <div class="flex items-center gap-3">
+                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                        <img class="h-10 w-10 rounded-full object-cover ring-2 ring-white/20"
+                            src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                    @else
+                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-teal-800">
+                            {{ str(mb_substr(Auth::user()->name, 0, 1))->upper() }}
+                        </span>
                     @endif
+                    <div class="min-w-0">
+                        <p class="truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</p>
+                        <p class="truncate text-xs text-teal-100/70">{{ Auth::user()->email }}</p>
+                    </div>
+                </div>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    <a href="{{ route('profile.show') }}"
+                        class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition hover:bg-white/15">
+                        {{ __('Perfil') }}
+                    </a>
+                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+                        <a href="{{ route('api-tokens.index') }}"
+                            class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition hover:bg-white/15">
+                            {{ __('API Tokens') }}
+                        </a>
+                    @endif
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit"
+                            class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition hover:bg-rose-500/80">
+                            {{ __('Cerrar sesión') }}
+                        </button>
+                    </form>
+                </div>
+                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                    <div class="mt-4 border-t border-white/10 pt-3">
+                        <p class="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-teal-200/70">
+                            {{ __('Equipo') }}
+                        </p>
+                        <a href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
+                            class="block rounded-lg px-3 py-2 text-sm text-teal-50 transition hover:bg-white/10">
+                            {{ __('Configuración del equipo') }}
+                        </a>
+                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                            <a href="{{ route('teams.create') }}"
+                                class="block rounded-lg px-3 py-2 text-sm text-teal-50 transition hover:bg-white/10">
+                                {{ __('Crear equipo') }}
+                            </a>
+                        @endcan
+                        @if (Auth::user()->allTeams()->count() > 1)
+                            @foreach (Auth::user()->allTeams() as $team)
+                                <x-switchable-team :team="$team" component="responsive-nav-link" />
+                            @endforeach
+                        @endif
+                    </div>
                 @endif
             </div>
         </div>
