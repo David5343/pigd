@@ -1,21 +1,21 @@
-<div class="relative w-full max-w-4xl mx-auto">
+<div wire:poll.visible.5s="next" class="relative w-full">
     <!-- Contenedor del Slider -->
-    <div class="relative overflow-hidden rounded-lg h-96">
+    <div class="relative h-[clamp(16rem,36vw,32rem)] overflow-hidden">
         @foreach ($images as $index => $image)
             <div class="absolute inset-0 transition-opacity duration-700 ease-in-out"
                 style="opacity: {{ $index == $currentIndex ? '1' : '0' }}">
-                <img src="{{ $image }}" alt="Slide {{ $index + 1 }}" class="w-full h-96 object-cover">
+                <img src="{{ $image }}" alt="Slide {{ $index + 1 }}" class="h-full w-full object-cover">
             </div>
         @endforeach
     </div>
 
     <!-- Botones de Navegación -->
     <button wire:click="prev"
-        class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full">
+        class="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-slate-900/60 p-3 text-white transition hover:bg-slate-900/80">
         ❮
     </button>
     <button wire:click="next"
-        class="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full">
+        class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-slate-900/60 p-3 text-white transition hover:bg-slate-900/80">
         ❯
     </button>
 
