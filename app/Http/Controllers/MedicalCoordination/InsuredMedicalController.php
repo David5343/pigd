@@ -4,7 +4,6 @@ namespace App\Http\Controllers\MedicalCoordination;
 
 use App\Http\Controllers\Controller;
 use App\Models\SocioeconomicBenefits\Insured;
-use Illuminate\Http\Request;
 
 class InsuredMedicalController extends Controller
 {
@@ -15,20 +14,19 @@ class InsuredMedicalController extends Controller
     }
     public function show(string $id)
     {
-            $relations = [
-                'subdependency',
-                'rank',
-                'workplaceCounty',
-                'birthplaceCounty',
-                'county.state',
-                'affiliationStatus',
-                'beneficiaries'
-            ];
+        $relations = [
+            'subdependency.dependency',
+            'rank',
+            'workplaceCounty',
+            'birthplaceCounty',
+            'county.state',
+            'affiliationStatus',
+            'beneficiaries',
+        ];
 
-            $row = Insured::with($relations)
-                ->where('id', $id)
-                ->first();
-        return view('medical_coordination.membership.show',['titular'=> $row]);
+        $titular = Insured::with($relations)->findOrFail($id);
+
+        return view('medical_coordination.membership.show', compact('titular'));
 
     }
 }
