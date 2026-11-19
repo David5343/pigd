@@ -77,6 +77,9 @@ class InsuredMedicalController extends Controller
 
         $datosPersonales = [
             'Fecha de nacimiento' => $this->formatDate($titular->birthday),
+            'Edad' => filled($titular->birthday)
+                ? Carbon::parse($titular->birthday)->age . ' años'
+                : null,
             'Lugar de nacimiento' => $titular->birthplaceCounty?->name,
             'Sexo' => $titular->sex,
             'Estado civil' => $titular->marital_status,
