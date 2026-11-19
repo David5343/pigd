@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight text-[#651F34]">
-            Prestaciones Socioeconómicas
+            Prestaciones Socioeconómicas / Dashboard
         </h2>
     </x-slot>
 
@@ -29,7 +29,7 @@
         <section class="space-y-4 py-3" aria-labelledby="estadisticas-prestaciones">
             <div>
                 <h3 id="estadisticas-prestaciones" class="text-lg font-semibold text-[#651F34]">
-                    Estadísticas generales
+                    Dashboard
                 </h3>
                 <p class="mt-1 text-sm text-slate-500">
                     Selecciona un tipo de derechohabiente en la leyenda para explorar sus gráficas.
@@ -41,6 +41,19 @@
                 'accionable' => true,
                 'graficasPorTipo' => $graficasPorTipo,
             ])
+        </section>
+
+        <section class="pb-3" aria-label="Titulares activos por sexo en Secretaría y Fiscalía">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                @include('socioeconomic_benefits.partials.pie-chart', [
+                    'grafica' => $graficaTitularesSecretariaSexo,
+                    'accionable' => false,
+                ])
+                @include('socioeconomic_benefits.partials.pie-chart', [
+                    'grafica' => $graficaTitularesFiscaliaSexo,
+                    'accionable' => false,
+                ])
+            </div>
         </section>
 
         <div x-cloak x-show="modalAbierto" x-transition.opacity @click.self="cerrarModal()"

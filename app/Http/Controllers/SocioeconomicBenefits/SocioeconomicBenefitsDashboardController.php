@@ -17,6 +17,26 @@ class SocioeconomicBenefitsDashboardController extends Controller
             'tipo de derechohabiente',
             'Para titulares y familiares incluye Preafiliado y Baja por aplicar como activos.',
         );
+        $registrosTitularesDependenciaSexo = $this->activosTitularesPorDependenciaYSexo();
+        $graficaTitularesDependenciaSexo = $this->crearGrafica(
+            'Titulares activos por dependencia y sexo',
+            $registrosTitularesDependenciaSexo,
+            'dependencia y sexo',
+            'Incluye Activo, Preafiliado y Baja por aplicar.',
+        );
+        $graficaTitularesDependenciaSexo['resumen'] = $this->totalesPrincipalesPorDependencia($registrosTitularesDependenciaSexo);
+        $graficaTitularesSecretariaSexo = $this->crearGrafica(
+            'Titulares activos de la Secretaría por sexo',
+            $this->activosTitularesPorSexoEnDependencia('Secretaría de Seguridad del Pueblo'),
+            'sexo',
+            'Secretaría de Seguridad del Pueblo. Incluye Activo, Preafiliado y Baja por aplicar.',
+        );
+        $graficaTitularesFiscaliaSexo = $this->crearGrafica(
+            'Titulares activos de la Fiscalía por sexo',
+            $this->activosTitularesPorSexoEnDependencia('Fiscalia General del Estado'),
+            'sexo',
+            'Fiscalía General del Estado. Incluye Activo, Preafiliado y Baja por aplicar.',
+        );
 
         $graficasPorTipo = [
             'titular' => [
@@ -41,12 +61,7 @@ class SocioeconomicBenefitsDashboardController extends Controller
                         'sexo',
                         'Incluye Activo, Preafiliado y Baja por aplicar.',
                     ),
-                    'dependencia-sexo' => $this->crearGrafica(
-                        'Titulares activos por dependencia y sexo',
-                        $this->activosTitularesPorDependenciaYSexo(),
-                        'dependencia y sexo',
-                        'Incluye Activo, Preafiliado y Baja por aplicar.',
-                    ),
+                    'dependencia-sexo' => $graficaTitularesDependenciaSexo,
                 ],
             ],
             'familiar' => [
@@ -98,7 +113,12 @@ class SocioeconomicBenefitsDashboardController extends Controller
             ],
         ];
 
-        return view('socioeconomic_benefits.index', compact('graficaGeneral', 'graficasPorTipo'));
+        return view('socioeconomic_benefits.index', compact(
+            'graficaGeneral',
+            'graficaTitularesSecretariaSexo',
+            'graficaTitularesFiscaliaSexo',
+            'graficasPorTipo',
+        ));
     }
 
     private function activosPorTipoDeDerechohabiente(): Collection
@@ -225,6 +245,26 @@ class SocioeconomicBenefitsDashboardController extends Controller
             ->get();
     }
 
+    private function activosTitularesPorSexoEnDependencia(string $nombreDependencia): Collection
+    {
+        $sexo = "CASE
+            WHEN LOWER(TRIM(COALESCE(insureds.sex, ''))) = 'hombre' THEN 'Hombre'
+            WHEN LOWER(TRIM(COALESCE(insureds.sex, ''))) = 'mujer' THEN 'Mujer'
+            ELSE 'Sin especificar'
+        END";
+
+        return DB::table('insureds')
+            ->join('subdependencies', 'insureds.subdependency_id', '=', 'subdependencies.id')
+            ->join('dependencies', 'subdependencies.dependency_id', '=', 'dependencies.id')
+            ->where('dependencies.name', $nombreDependencia)
+            ->whereIn('insureds.affiliation_status_id', [1, 2, 5])
+            ->selectRaw("{$sexo} as label")
+            ->selectRaw('COUNT(insureds.id) as total')
+            ->groupByRaw($sexo)
+            ->orderBy('label')
+            ->get();
+    }
+
     private function activosTitularesPorDependenciaYSexo(): Collection
     {
         $dependencia = "COALESCE(NULLIF(TRIM(dependencies.name), ''), 'Sin dependencia')";
@@ -247,8 +287,30 @@ class SocioeconomicBenefitsDashboardController extends Controller
             ->get()
             ->map(fn ($registro) => (object) [
                 'label' => "{$registro->dependencia} · {$registro->sexo}",
+                'dependencia' => $registro->dependencia,
+                'sexo' => $registro->sexo,
                 'total' => (int) $registro->total,
             ]);
+    }
+
+    private function totalesPrincipalesPorDependencia(Collection $registros): array
+    {
+        $totalDe = fn (string $nombreDependencia): int => (int) $registros
+            ->filter(fn ($registro) => Str::ascii(mb_strtolower(trim($registro->dependencia)))
+                    === Str::ascii(mb_strtolower($nombreDependencia))
+                && in_array($registro->sexo, ['Hombre', 'Mujer'], true))
+            ->sum('total');
+
+        return [
+            [
+                'etiqueta' => 'Fiscalía General del Estado',
+                'total' => $totalDe('Fiscalia General del Estado'),
+            ],
+            [
+                'etiqueta' => 'Secretaría de Seguridad del Pueblo',
+                'total' => $totalDe('Secretaría de Seguridad del Pueblo'),
+            ],
+        ];
     }
 
     private function familiaresActivosPorParentesco(): Collection
@@ -439,6 +501,7 @@ class SocioeconomicBenefitsDashboardController extends Controller
             'total' => $total,
             'distribucion' => $distribucion,
             'segmentos' => $segmentos,
+            'resumen' => [],
         ];
     }
 }

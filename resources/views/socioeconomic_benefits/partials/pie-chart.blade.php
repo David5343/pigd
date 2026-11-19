@@ -115,9 +115,25 @@
                         @endif
                     </li>
                 @endforeach
+                @if (! empty($grafica['resumen']))
+                    <li class="mt-3 border-t border-[#E7DFD9] pt-2">
+                        <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            Totales (hombres + mujeres)
+                        </p>
+                        @foreach ($grafica['resumen'] as $totalDependencia)
+                            <div class="flex items-center justify-between gap-3 py-1">
+                                <span class="text-slate-600">{{ $totalDependencia['etiqueta'] }}</span>
+                                <span class="font-semibold tabular-nums text-[#651F34]">
+                                    {{ number_format($totalDependencia['total']) }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </li>
+                @endif
             </ul>
         @else
             <p class="text-sm text-slate-500">Sin registros para mostrar.</p>
         @endif
     </div>
+
 </article>
