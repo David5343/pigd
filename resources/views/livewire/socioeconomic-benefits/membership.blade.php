@@ -1,60 +1,6 @@
 <div>
-    <div class="border-b border-gray-200 bg-white p-6 lg:p-8">
-        <h1 class="text-2xl font-medium text-gray-900">Estadísticas rápidas</h1>
-        <p class="mt-3 text-gray-500 leading-relaxed">Titulares</p>
-
-        <div wire:poll.5s class="overflow-x-auto rounded-lg border border-neutral-200 dark:border-neutral-700">
-            <table class="w-full text-left text-sm text-neutral-700 dark:text-neutral-300">
-                <thead class="bg-neutral-100 text-xs uppercase text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
-                    <tr>
-                        <th scope="col" class="px-4 py-3">Estadística</th>
-                        <th scope="col" class="px-4 py-3 text-right">Total</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-neutral-200 dark:divide-neutral-700">
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Preafiliados</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->insuredPreafiliados }}</td>
-                    </tr>
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Bajas</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->insuredBajas }}</td>
-                    </tr>
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Bajas por aplicar</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->insuredBajasPendientes }}</td>
-                    </tr>
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Total de hombres</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->insuredTotalHombres }}</td>
-                    </tr>
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Total de mujeres</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->insuredTotalMujeres }}</td>
-                    </tr>
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Fiscalía General del Estado</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->InsuredTotalFGE }}</td>
-                    </tr>
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Secretaría de Seguridad del Pueblo</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->InsuredTotalSSP }}</td>
-                    </tr>
-                    <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800">
-                        <td class="px-4 py-3">Activos</td>
-                        <td class="px-4 py-3 text-right font-semibold tabular-nums">{{ $this->insuredActivos }}</td>
-                    </tr>
-                </tbody>
-                <tfoot class="border-t-2 border-neutral-300 bg-neutral-100 font-bold text-neutral-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white">
-                    <tr>
-                        <td class="px-4 py-3">Total de registros</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ $this->insuredTotal }}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-
-        <div class="mt-5 flex justify-end">
+    <section class="mt-5" aria-label="Listado de titulares">
+        <div class="mb-4 flex justify-end">
             <a href="{{ route('membership.create') }}"
                 class="inline-flex items-center gap-2 rounded bg-neutral-100 px-6 py-2.5 text-xs font-medium uppercase text-neutral-700 transition hover:bg-blue-300 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:hover:bg-neutral-700">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
@@ -63,28 +9,50 @@
                 Nuevo titular
             </a>
         </div>
+            <div class="mb-5 rounded-xl border border-[#E7DFD9] bg-[#F7F3EC] p-4 sm:p-5"
+                aria-labelledby="insured-search-heading">
+                <div class="mb-3 flex items-center gap-3">
+                    <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-[#651F34] shadow-sm">
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M9 3.5a5.5 5.5 0 1 0 3.46 9.78l3.63 3.63a.75.75 0 1 0 1.06-1.06l-3.63-3.63A5.5 5.5 0 0 0 9 3.5ZM5 9a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 id="insured-search-heading" class="text-sm font-semibold text-[#651F34]">
+                            Buscar titulares
+                        </h2>
+                        <p class="mt-0.5 text-xs text-slate-600">
+                            Filtra por folio, número de empleado, nombre, RFC o CURP.
+                        </p>
+                    </div>
+                </div>
 
-        <section class="mt-5" aria-label="Listado de titulares">
-            <div class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <label for="insured-search" class="sr-only">Buscar titulares</label>
-                <input wire:model.live="search" id="insured-search" type="search"
-                    class="block w-full rounded border border-neutral-200 bg-transparent px-3 py-2 text-base text-surface outline-none transition placeholder:text-neutral-500 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 sm:min-w-0 sm:flex-1"
-                    placeholder="Buscar por folio, número de empleado, nombre, RFC o CURP"
-                    aria-label="Buscar titulares por folio, número de empleado, nombre, RFC o CURP" />
-                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-                    <label for="insured-rows">Mostrar</label>
-                    <select wire:model.live="numberRows" id="insured-rows"
-                        class="rounded border border-neutral-200 bg-white px-2 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:bg-neutral-800 dark:text-white">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                    <span>por página</span>
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                    <label for="insured-search" class="sr-only">Buscar titulares</label>
+                    <input wire:model.live="search" id="insured-search" type="search"
+                        class="block w-full min-w-0 flex-1 rounded-lg border border-[#D9CBC5] bg-white px-3 py-2.5 text-base text-surface outline-none transition placeholder:text-neutral-500 focus:border-[#651F34] focus:ring-2 focus:ring-[#651F34]/20"
+                        placeholder="Escribe un criterio de búsqueda"
+                        aria-label="Buscar titulares por folio, número de empleado, nombre, RFC o CURP" />
+                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                        <label for="insured-rows" class="font-medium">Mostrar</label>
+                        <select wire:model.live="numberRows" id="insured-rows"
+                            class="rounded-lg border border-[#D9CBC5] bg-white px-3 py-2.5 text-sm focus:border-[#651F34] focus:outline-none focus:ring-2 focus:ring-[#651F34]/20">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span>por página</span>
+                    </div>
+                </div>
+
+                <div wire:loading.delay class="mt-3 text-sm text-slate-500" role="status">
+                    Actualizando búsqueda…
                 </div>
             </div>
 
-            <div wire:loading.delay class="mb-2 text-sm text-neutral-500" role="status">Actualizando listado…</div>
             <div class="overflow-x-auto rounded-lg border border-neutral-200 dark:border-white/10">
                 <table class="min-w-full text-left text-sm text-surface dark:text-white">
                     <thead class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:bg-neutral-800">
