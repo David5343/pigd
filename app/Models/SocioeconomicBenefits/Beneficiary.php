@@ -5,6 +5,7 @@ namespace App\Models\SocioeconomicBenefits;
 use App\Models\Catalogs\Bank;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Beneficiary extends Model
 {
@@ -14,6 +15,11 @@ class Beneficiary extends Model
     public function insured(): BelongsTo
     {
         return $this->belongsTo(Insured::class);
+    }
+
+    public function credentials(): HasMany
+    {
+        return $this->hasMany(CredentialBeneficiary::class);
     }
 
     public function bank(): BelongsTo
