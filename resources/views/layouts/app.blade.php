@@ -58,6 +58,8 @@
         <main class="mx-auto max-w-[1440px] px-4 py-4 sm:px-6 lg:px-8">
             {{ $slot }}
         </main>
+
+        <x-floating-user-menu />
     </div>
 
     @stack('modals')

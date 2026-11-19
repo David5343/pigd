@@ -255,54 +255,6 @@
                 </div>
             @endif
 
-            <x-dropdown align="right" width="60"
-                contentClasses="rounded-2xl border border-slate-200 bg-white py-1 shadow-xl">
-                <x-slot name="trigger">
-                    <button type="button"
-                        class="inline-flex max-w-56 items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-sm font-medium text-white transition hover:bg-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
-                        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                            <img class="h-8 w-8 rounded-full object-cover ring-2 ring-white/30"
-                                src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                        @else
-                            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white text-xs font-bold text-teal-800">
-                                {{ str(mb_substr(Auth::user()->name, 0, 1))->upper() }}
-                            </span>
-                        @endif
-                        <span class="truncate">{{ Auth::user()->name }}</span>
-                        <svg class="h-4 w-4 shrink-0 text-teal-100" viewBox="0 0 20 20" fill="currentColor"
-                            aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
-                </x-slot>
-                <x-slot name="content">
-                    <div class="px-4 py-3">
-                        <p class="text-sm font-semibold text-slate-800">{{ Auth::user()->name }}</p>
-                        <p class="mt-0.5 truncate text-xs text-slate-500">{{ Auth::user()->email }}</p>
-                    </div>
-                    <div class="border-t border-slate-100"></div>
-                    <a href="{{ route('profile.show') }}"
-                        class="block px-4 py-2.5 text-sm text-slate-700 transition hover:bg-teal-50 hover:text-teal-800">
-                        {{ __('Perfil y seguridad') }}
-                    </a>
-                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                        <a href="{{ route('api-tokens.index') }}"
-                            class="block px-4 py-2.5 text-sm text-slate-700 transition hover:bg-teal-50 hover:text-teal-800">
-                            {{ __('API Tokens') }}
-                        </a>
-                    @endif
-                    <div class="border-t border-slate-100"></div>
-                    <form method="POST" action="{{ route('logout') }}" x-data>
-                        @csrf
-                        <button type="submit"
-                            class="block w-full px-4 py-2.5 text-left text-sm font-medium text-rose-700 transition hover:bg-rose-50">
-                            {{ __('Cerrar sesión') }}
-                        </button>
-                    </form>
-                </x-slot>
-            </x-dropdown>
         </div>
 
         <div class="flex min-h-14 flex-1 items-center justify-between lg:hidden">
@@ -380,63 +332,28 @@
                 </div>
             @endforeach
 
-            <div class="mt-3 border-t border-white/10 px-3 py-4">
-                <div class="flex items-center gap-3">
-                    @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                        <img class="h-10 w-10 rounded-full object-cover ring-2 ring-white/20"
-                            src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                    @else
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-bold text-teal-800">
-                            {{ str(mb_substr(Auth::user()->name, 0, 1))->upper() }}
-                        </span>
-                    @endif
-                    <div class="min-w-0">
-                        <p class="truncate text-sm font-semibold text-white">{{ Auth::user()->name }}</p>
-                        <p class="truncate text-xs text-teal-100/70">{{ Auth::user()->email }}</p>
-                    </div>
-                </div>
-                <div class="mt-3 flex flex-wrap gap-2">
-                    <a href="{{ route('profile.show') }}"
-                        class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition hover:bg-white/15">
-                        {{ __('Perfil') }}
+            @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                <div class="mt-3 border-t border-white/10 px-3 py-4">
+                    <p class="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-teal-200/70">
+                        {{ __('Equipo') }}
+                    </p>
+                    <a href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
+                        class="block rounded-lg px-3 py-2 text-sm text-teal-50 transition hover:bg-white/10">
+                        {{ __('Configuración del equipo') }}
                     </a>
-                    @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                        <a href="{{ route('api-tokens.index') }}"
-                            class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition hover:bg-white/15">
-                            {{ __('API Tokens') }}
-                        </a>
-                    @endif
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="rounded-lg bg-white/10 px-3 py-2 text-xs font-medium text-white transition hover:bg-rose-500/80">
-                            {{ __('Cerrar sesión') }}
-                        </button>
-                    </form>
-                </div>
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="mt-4 border-t border-white/10 pt-3">
-                        <p class="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-teal-200/70">
-                            {{ __('Equipo') }}
-                        </p>
-                        <a href="{{ route('teams.show', Auth::user()->currentTeam->id) }}"
+                    @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                        <a href="{{ route('teams.create') }}"
                             class="block rounded-lg px-3 py-2 text-sm text-teal-50 transition hover:bg-white/10">
-                            {{ __('Configuración del equipo') }}
+                            {{ __('Crear equipo') }}
                         </a>
-                        @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                            <a href="{{ route('teams.create') }}"
-                                class="block rounded-lg px-3 py-2 text-sm text-teal-50 transition hover:bg-white/10">
-                                {{ __('Crear equipo') }}
-                            </a>
-                        @endcan
-                        @if (Auth::user()->allTeams()->count() > 1)
-                            @foreach (Auth::user()->allTeams() as $team)
-                                <x-switchable-team :team="$team" component="responsive-nav-link" />
-                            @endforeach
-                        @endif
-                    </div>
-                @endif
-            </div>
+                    @endcan
+                    @if (Auth::user()->allTeams()->count() > 1)
+                        @foreach (Auth::user()->allTeams() as $team)
+                            <x-switchable-team :team="$team" component="responsive-nav-link" />
+                        @endforeach
+                    @endif
+                </div>
+            @endif
         </div>
     </div>
 </nav>
