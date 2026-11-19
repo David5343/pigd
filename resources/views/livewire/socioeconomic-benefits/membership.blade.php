@@ -1,5 +1,5 @@
-<div>
-    <section class="mt-5" aria-label="Listado de titulares">
+<div class="bg-white p-4 lg:p-5">
+    <section aria-label="Listado de titulares">
         <div class="mb-4 flex justify-end">
             <a href="{{ route('membership.create') }}"
                 class="inline-flex items-center gap-2 rounded bg-neutral-100 px-6 py-2.5 text-xs font-medium uppercase text-neutral-700 transition hover:bg-blue-300 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:hover:bg-neutral-700">
@@ -68,23 +68,26 @@
                     </thead>
                     <tbody class="divide-y divide-neutral-200 dark:divide-white/10">
                         @forelse ($lista as $item)
+                            @php
+                                $nombreTitular = collect([$item->last_name_1, $item->last_name_2, $item->name])
+                                    ->filter(fn ($parte) => filled($parte))
+                                    ->implode(' ');
+                                $estatus = trim($item->affiliationStatus?->name ?? '');
+                                $estiloEstatus = match (mb_strtolower($estatus)) {
+                                    'preafiliado' => ['badge' => 'border-amber-200 bg-amber-50 text-amber-800', 'dot' => 'bg-amber-500'],
+                                    'activo' => ['badge' => 'border-green-200 bg-green-50 text-green-800', 'dot' => 'bg-green-500'],
+                                    'bloqueado' => ['badge' => 'border-gray-200 bg-gray-100 text-gray-700', 'dot' => 'bg-gray-500'],
+                                    'baja' => ['badge' => 'border-red-200 bg-red-50 text-red-800', 'dot' => 'bg-red-500'],
+                                    'baja por aplicar' => ['badge' => 'border-orange-200 bg-orange-50 text-orange-800', 'dot' => 'bg-orange-500'],
+                                    default => ['badge' => 'border-slate-200 bg-slate-50 text-slate-700', 'dot' => 'bg-slate-400'],
+                                };
+                            @endphp
                             <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800/60">
                                 <td class="whitespace-nowrap px-4 py-3 font-medium">{{ $item->id }}</td>
                                 <td class="whitespace-nowrap px-4 py-3">{{ $item->file_number }}</td>
-                                <td class="px-4 py-3">{{ trim($item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name) }}</td>
+                                <td class="max-w-xs break-words px-4 py-3">{{ $nombreTitular ?: 'Nombre no disponible' }}</td>
                                 <td class="whitespace-nowrap px-4 py-3">{{ $item->rfc }}</td>
                                 <td class="whitespace-nowrap px-4 py-3 text-center">
-                                    @php
-                                        $estatus = trim($item->affiliationStatus?->name ?? '');
-                                        $estiloEstatus = match (mb_strtolower($estatus)) {
-                                            'preafiliado' => ['badge' => 'border-amber-200 bg-amber-50 text-amber-800', 'dot' => 'bg-amber-500'],
-                                            'activo' => ['badge' => 'border-green-200 bg-green-50 text-green-800', 'dot' => 'bg-green-500'],
-                                            'bloqueado' => ['badge' => 'border-gray-200 bg-gray-100 text-gray-700', 'dot' => 'bg-gray-500'],
-                                            'baja' => ['badge' => 'border-red-200 bg-red-50 text-red-800', 'dot' => 'bg-red-500'],
-                                            'baja por aplicar' => ['badge' => 'border-orange-200 bg-orange-50 text-orange-800', 'dot' => 'bg-orange-500'],
-                                            default => ['badge' => 'border-slate-200 bg-slate-50 text-slate-700', 'dot' => 'bg-slate-400'],
-                                        };
-                                    @endphp
                                     <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold shadow-sm {{ $estiloEstatus['badge'] }}">
                                         <span class="h-2 w-2 rounded-full ring-2 ring-white {{ $estiloEstatus['dot'] }}" aria-hidden="true"></span>
                                         {{ $estatus ?: 'Sin estatus de afiliación' }}
@@ -92,7 +95,7 @@
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 text-center">
                                     <a href="{{ url('socioeconomic_benefits/membership/' . $item->id . '/edit') }}"
-                                        aria-label="Editar titular {{ trim($item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name) }}"
+                                        aria-label="Editar titular {{ $nombreTitular ?: 'sin nombre' }}"
                                         class="inline-flex items-center justify-center rounded-lg p-2 text-neutral-600 transition hover:bg-neutral-100 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-neutral-300 dark:hover:bg-neutral-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -103,7 +106,7 @@
                                 <td class="whitespace-nowrap px-4 py-3 text-center">
                                     <a href="{{ route('membership.show', $item->id) }}"
                                         title="Abrir expediente"
-                                        aria-label="Abrir expediente de {{ trim($item->last_name_1 . ' ' . $item->last_name_2 . ' ' . $item->name) }}"
+                                        aria-label="Abrir expediente de {{ $nombreTitular ?: 'titular sin nombre' }}"
                                         class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M3.25 8V6.75A1.75 1.75 0 0 1 5 5h5l2 2h7A1.75 1.75 0 0 1 20.75 8.75V10" />

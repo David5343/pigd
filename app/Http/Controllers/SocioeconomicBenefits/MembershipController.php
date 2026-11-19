@@ -58,6 +58,7 @@ class MembershipController extends Controller
 
         $datosPersonales = [
             'Fecha de nacimiento' => $this->formatDate($titular->birthday),
+            'Edad' => $this->formatAge($titular->birthday),
             'Lugar de nacimiento' => $titular->birthplaceCounty?->name,
             'Sexo' => $titular->sex,
             'Estado civil' => $titular->marital_status,
@@ -143,6 +144,26 @@ class MembershipController extends Controller
             return $date;
         }
     }
+
+    private function formatAge(?string $date): ?string
+    {
+        if (blank($date)) {
+            return null;
+        }
+
+        try {
+            $fechaNacimiento = Carbon::parse($date);
+
+            if ($fechaNacimiento->isFuture()) {
+                return null;
+            }
+
+            return $fechaNacimiento->age . ' años';
+        } catch (Exception) {
+            return null;
+        }
+    }
+
     public function edit(string $id)
     {
         $select1 = Subdependency::where('status', 'active')->get();
