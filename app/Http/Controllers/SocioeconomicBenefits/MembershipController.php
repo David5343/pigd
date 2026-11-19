@@ -9,6 +9,7 @@ use App\Models\Catalogs\State;
 use App\Models\Catalogs\Subdependency;
 use App\Models\SocioeconomicBenefits\Insured;
 use App\Models\SocioeconomicBenefits\Rank;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,21 +29,119 @@ class MembershipController extends Controller
     }
     public function show(string $id)
     {
-            $relations = [
-                'subdependency',
-                'rank',
-                'workplaceCounty',
-                'birthplaceCounty',
-                'county.state',
-                'affiliationStatus',
-                'beneficiaries'
+        $titular = Insured::with([
+            'subdependency.dependency',
+            'rank',
+            'workplaceCounty',
+            'birthplaceCounty',
+            'county.state',
+            'affiliationStatus',
+            'beneficiaries',
+            'credencialInsured' => fn ($query) => $query->orderByDesc('issued_at'),
+        ])->findOrFail($id);
+
+        $nombreTitular = collect([$titular->last_name_1, $titular->last_name_2, $titular->name])
+            ->filter(fn ($parte) => filled($parte))
+            ->implode(' ');
+
+        $datosGenerales = [
+            'Folio de afiliación' => $titular->file_number,
+            'Fecha de ingreso' => $this->formatDate($titular->start_date),
+            'Motivo de registro' => $titular->register_motive,
+            'Observaciones' => $titular->observations,
+            'Fecha de baja en la dependencia' => $this->formatDate($titular->inactive_date_dependency),
+            'Fecha de baja en el sistema' => $this->formatDate($titular->inactive_date),
+            'Motivo de baja' => $titular->inactive_motive,
+            'Fecha de reingreso' => $this->formatDate($titular->reentry_date),
+            'Estatus del registro' => $titular->status,
+        ];
+
+        $datosPersonales = [
+            'Fecha de nacimiento' => $this->formatDate($titular->birthday),
+            'Lugar de nacimiento' => $titular->birthplaceCounty?->name,
+            'Sexo' => $titular->sex,
+            'Estado civil' => $titular->marital_status,
+            'RFC' => $titular->rfc,
+            'CURP' => $titular->curp,
+            'Teléfono' => $titular->phone,
+            'Correo electrónico' => $titular->email,
+            'Tipo de sangre' => $titular->blood_type,
+        ];
+
+        $datosDomicilio = [
+            'Tipo de vialidad' => $titular->roadway_type,
+            'Calle' => $titular->street,
+            'Número exterior' => $titular->outdoor_number,
+            'Número interior' => $titular->interior_number,
+            'Colonia' => $titular->neighborhood,
+            'Código postal' => $titular->cp,
+            'Localidad' => $titular->locality,
+            'Municipio' => $titular->county?->name,
+            'Entidad federativa' => $titular->county?->state?->name,
+        ];
+
+        $datosAdscripcion = [
+            'Dependencia' => $titular->subdependency?->dependency?->name,
+            'Subdependencia' => $titular->subdependency?->name,
+            'Categoría' => $titular->rank?->name,
+            'Lugar de trabajo' => $titular->workplaceCounty?->name,
+            'Número de empleado' => $titular->employee_number,
+        ];
+
+        $familiares = $titular->beneficiaries->map(function ($familiar) {
+            $nombre = collect([$familiar->last_name_1, $familiar->last_name_2, $familiar->name])
+                ->filter(fn ($parte) => filled($parte))
+                ->implode(' ');
+
+            return [
+                'nombre' => $nombre ?: null,
+                'parentesco' => $familiar->relationship,
+                'folio' => $familiar->file_number,
+                'fecha_ingreso' => $this->formatDate($familiar->start_date),
+                'fecha_nacimiento' => $this->formatDate($familiar->birthday),
+                'curp' => $familiar->curp,
+                'sexo' => $familiar->sex,
+                'capacidades_diferentes' => $familiar->disabled_person,
+                'estatus' => $familiar->affiliate_status,
             ];
+        });
 
-            $row = Insured::with($relations)
-                ->where('id', $id)
-                ->first();
-        return view('socioeconomic_benefits.membership.show',['titular'=> $row]);
+        $credenciales = $titular->credencialInsured->map(fn ($credencial) => [
+            'numero' => $credencial->id,
+            'emitida' => $this->formatDate($credencial->issued_at, true),
+            'vigente_hasta' => $this->formatDate($credencial->expires_at),
+            'tipo_vigencia' => $credencial->expiration_types,
+            'estatus' => $credencial->credential_status,
+        ]);
 
+        return view('socioeconomic_benefits.membership.show', [
+            'nombreTitular' => $nombreTitular,
+            'folioAfiliacion' => $titular->file_number,
+            'estatusAfiliacion' => $titular->affiliationStatus?->name,
+            'fotoUrl' => $titular->photo
+                ? asset('photo/insureds/' . $titular->file_number . '.jpg')
+                : asset('images/icono_no_imagen.png'),
+            'datosGenerales' => $datosGenerales,
+            'datosPersonales' => $datosPersonales,
+            'datosDomicilio' => $datosDomicilio,
+            'datosAdscripcion' => $datosAdscripcion,
+            'familiares' => $familiares,
+            'credenciales' => $credenciales,
+        ]);
+
+    }
+
+    private function formatDate(?string $date, bool $includeTime = false): ?string
+    {
+        if (blank($date)) {
+            return null;
+        }
+
+        try {
+            return Carbon::parse($date)->format($includeTime ? 'd/m/Y H:i' : 'd/m/Y');
+        } catch (Exception) {
+            return $date;
+        }
     }
     public function edit(string $id)
     {
