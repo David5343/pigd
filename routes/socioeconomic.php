@@ -10,9 +10,14 @@ use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\InsuredReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\KpisOverviewReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\ReportsController;
+use App\Http\Controllers\SocioeconomicBenefits\SocioeconomicBenefitsDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
+    // Portada del módulo de Prestaciones Socioeconómicas
+    Route::get('/socioeconomic_benefits', [SocioeconomicBenefitsDashboardController::class, 'index'])
+        ->name('socioeconomic_benefits.index');
+
     //Rutas para titulares
     Route::get('/socioeconomic_benefits/membership', [MembershipController::class, 'index'])->name('membership.index');
     Route::get('/socioeconomic_benefits/membership/create', [MembershipController::class, 'create'])->name('membership.create');

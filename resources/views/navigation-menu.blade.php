@@ -131,6 +131,7 @@
         [
             'label' => 'Prestaciones',
             'icon' => 'benefits',
+            'route' => 'socioeconomic_benefits.index',
             'items' => [
                 ['heading' => 'Documentos'],
                 ['label' => 'Oficios', 'route' => 'dashboard'],
@@ -162,18 +163,39 @@
                     dropdownClasses="mt-2.5"
                     contentClasses="max-h-[70vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-900/15">
                     <x-slot name="trigger">
-                        <button type="button"
-                            class="group inline-flex min-h-16 items-center gap-2 whitespace-nowrap rounded-xl px-3 text-sm font-medium text-teal-50 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
-                            <x-module-icon :name="$section['icon']"
-                                class="h-[1.125rem] w-[1.125rem] shrink-0 text-teal-200 transition group-hover:text-white" />
-                            {{ $section['label'] }}
-                            <svg class="h-4 w-4 text-teal-200 transition group-hover:text-white" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </button>
+                        @if (isset($section['route']))
+                            <div class="group inline-flex min-h-16 items-center whitespace-nowrap rounded-xl text-sm font-medium text-teal-50 transition hover:bg-white/10 hover:text-white focus-within:ring-2 focus-within:ring-white/70">
+                                <a href="{{ route($section['route']) }}" class="inline-flex min-h-16 items-center gap-2 rounded-l-xl py-2 ps-3 pe-1 focus:outline-none">
+                                    <x-module-icon :name="$section['icon']"
+                                        class="h-[1.125rem] w-[1.125rem] shrink-0 text-teal-200 transition group-hover:text-white" />
+                                    {{ $section['label'] }}
+                                </a>
+                                <button type="button" :aria-expanded="open.toString()" aria-haspopup="true"
+                                    aria-label="Abrir menú de {{ $section['label'] }}"
+                                    class="inline-flex min-h-16 items-center rounded-r-xl py-2 ps-1 pe-3 focus:outline-none">
+                                    <svg class="h-4 w-4 text-teal-200 transition-transform group-hover:text-white"
+                                        :class="{ 'rotate-180': open }" viewBox="0 0 20 20" fill="currentColor"
+                                        aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                        @else
+                            <button type="button"
+                                class="group inline-flex min-h-16 items-center gap-2 whitespace-nowrap rounded-xl px-3 text-sm font-medium text-teal-50 transition hover:bg-white/10 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+                                <x-module-icon :name="$section['icon']"
+                                    class="h-[1.125rem] w-[1.125rem] shrink-0 text-teal-200 transition group-hover:text-white" />
+                                {{ $section['label'] }}
+                                <svg class="h-4 w-4 text-teal-200 transition group-hover:text-white" viewBox="0 0 20 20"
+                                    fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        @endif
                     </x-slot>
 
                     <x-slot name="content">
@@ -309,19 +331,38 @@
         <div class="mx-auto max-h-[calc(100vh-4rem)] max-w-[1440px] space-y-1 overflow-y-auto px-4 py-3 sm:px-6">
             @foreach ($menuSections as $section)
                 <div x-data="{ expanded: false }" class="overflow-hidden rounded-xl">
-                    <button type="button" @click="expanded = !expanded" :aria-expanded="expanded.toString()"
-                        class="flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold text-white transition hover:bg-white/10">
-                        <span class="flex items-center gap-2.5">
-                            <x-module-icon :name="$section['icon']" class="h-5 w-5 text-teal-200" />
-                            {{ $section['label'] }}
-                        </span>
-                        <svg class="h-4 w-4 text-teal-200 transition-transform" :class="{ 'rotate-180': expanded }"
-                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </button>
+                    @if (isset($section['route']))
+                        <div class="flex items-center justify-between text-sm font-semibold text-white transition hover:bg-white/10">
+                            <a href="{{ route($section['route']) }}" class="flex flex-1 items-center gap-2.5 px-3 py-3">
+                                <x-module-icon :name="$section['icon']" class="h-5 w-5 text-teal-200" />
+                                {{ $section['label'] }}
+                            </a>
+                            <button type="button" @click="expanded = !expanded" :aria-expanded="expanded.toString()"
+                                aria-label="Abrir menú de {{ $section['label'] }}"
+                                class="rounded-lg p-3 text-teal-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+                                <svg class="h-4 w-4 transition-transform" :class="{ 'rotate-180': expanded }"
+                                    viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    @else
+                        <button type="button" @click="expanded = !expanded" :aria-expanded="expanded.toString()"
+                            class="flex w-full items-center justify-between px-3 py-3 text-left text-sm font-semibold text-white transition hover:bg-white/10">
+                            <span class="flex items-center gap-2.5">
+                                <x-module-icon :name="$section['icon']" class="h-5 w-5 text-teal-200" />
+                                {{ $section['label'] }}
+                            </span>
+                            <svg class="h-4 w-4 text-teal-200 transition-transform" :class="{ 'rotate-180': expanded }"
+                                viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 7.47a.75.75 0 0 1 1.06 0L10 11.19l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 8.53a.75.75 0 0 1 0-1.06Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    @endif
                     <div x-show="expanded" x-cloak x-transition class="space-y-1 bg-black/10 px-2 py-2">
                         @foreach ($section['items'] as $item)
                             @if (isset($item['heading']))
