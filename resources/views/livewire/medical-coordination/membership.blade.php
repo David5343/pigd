@@ -3,11 +3,48 @@
         <div class="flex flex-col">
             <div class="overflow-x-auto sm:-mx-4 lg:-mx-5">
                 <div class="inline-block min-w-full py-2 sm:px-4 lg:px-5">
-                    <div class="relative">
-                        <input wire:model.live="search" type="search"
-                            class="relative m-0 block w-full rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
-                            placeholder="Buscar por folio, número de empleado, nombre, RFC o CURP" aria-label="Buscar titulares"
-                            id="exampleFormControlInput4" />
+                    <section class="mb-5 rounded-xl border border-[#E7DFD9] bg-[#F7F3EC] p-4 sm:p-5"
+                        aria-labelledby="medical-insured-search-heading">
+                        <div class="mb-3 flex items-center gap-3">
+                            <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white text-[#651F34] shadow-sm">
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M9 3.5a5.5 5.5 0 1 0 3.46 9.78l3.63 3.63a.75.75 0 1 0 1.06-1.06l-3.63-3.63A5.5 5.5 0 0 0 9 3.5ZM5 9a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <div>
+                                <h2 id="medical-insured-search-heading" class="text-sm font-semibold text-[#651F34]">
+                                    Buscar titulares
+                                </h2>
+                                <p class="mt-0.5 text-xs text-slate-600">
+                                    Filtra por folio, número de empleado, nombre, RFC o CURP.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <label for="medical-insured-search" class="sr-only">Buscar titulares</label>
+                            <input wire:model.live="search" id="medical-insured-search" type="search"
+                                class="block w-full min-w-0 flex-1 rounded-lg border border-[#D9CBC5] bg-white px-3 py-2.5 text-base text-surface outline-none transition placeholder:text-neutral-500 focus:border-[#651F34] focus:ring-2 focus:ring-[#651F34]/20"
+                                placeholder="Escribe un criterio de búsqueda"
+                                aria-label="Buscar titulares por folio, número de empleado, nombre, RFC o CURP" />
+                            <div class="flex items-center gap-2 text-sm text-slate-700">
+                                <label for="medical-insured-rows" class="font-medium">Mostrar</label>
+                                <select wire:model.live="numberRows" id="medical-insured-rows"
+                                    class="rounded-lg border border-[#D9CBC5] bg-white px-3 py-2.5 text-sm focus:border-[#651F34] focus:outline-none focus:ring-2 focus:ring-[#651F34]/20">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <span>por página</span>
+                            </div>
+                        </div>
+
+                        <div wire:loading.delay class="mt-3 text-sm text-slate-500" role="status">
+                            Actualizando búsqueda…
+                        </div>
                     </div>
                     <div class="overflow-hidden">
                         <table class="min-w-full text-left text-sm font-light text-surface dark:text-white">
