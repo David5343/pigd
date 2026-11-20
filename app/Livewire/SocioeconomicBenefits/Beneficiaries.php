@@ -9,98 +9,54 @@ use Livewire\WithPagination;
 class Beneficiaries extends Component
 {
     use WithPagination;
+
     public $search = '';
     public $numberRows = 10;
-    public function updatingSearch()
+
+    public function updatingSearch(): void
     {
         $this->resetPage();
     }
-    public function updatingnumberRows()
+
+    public function updatingNumberRows(): void
     {
         $this->resetPage();
     }
-    public function getBeneficiaryTotalFathersProperty()
-    {
-        return Beneficiary::where('relationship','Padre')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryTotalMothersProperty()
-    {
-        return Beneficiary::where('relationship','Madre')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryTotalChildrenProperty()
-    {
-        return Beneficiary::where('relationship','Hijo')
-                            ->where('sex','Hombre')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryTotalDaughtersProperty()
-    {
-        return Beneficiary::where('relationship','Hija')
-                            ->where('sex','Mujer')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryTotalHusbandsProperty()
-    {
-        return Beneficiary::where('relationship','Esposo')
-                            ->where('sex','Hombre')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryTotalWivesProperty()
-    {
-        return Beneficiary::where('relationship','Esposa')
-                            ->where('sex','Mujer')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryTotalCommonLawMarriageProperty()
-    {
-        return Beneficiary::where('relationship','Concubina')
-                            ->where('sex','Mujer')
-                            ->whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryBajasPendientesProperty()
-    {
-        return Beneficiary::where('affiliate_status','Baja por aplicar')->count();
-    }
-    public function getBeneficiaryBajasProperty()
-    {
-        return Beneficiary::where('affiliate_status','Baja')->count();
-    }
-    public function getBeneficiaryActivosProperty()
-    {
-        return Beneficiary::whereIn('affiliate_status',['Activo','Baja por aplicar'])->count();
-    }
-    public function getBeneficiaryTotalProperty()
-    {
-        return Beneficiary::all()->count();
-    }
+
     public function render()
     {
-        $terms = array_filter(explode(' ', trim($this->search)));
+        $terms = preg_split('/\s+/', trim($this->search), -1, PREG_SPLIT_NO_EMPTY);
+        $numberRows = in_array((int) $this->numberRows, [10, 25, 50, 100], true)
+            ? (int) $this->numberRows
+            : 10;
 
-        $lista = Beneficiary::where(function ($query) use ($terms) {
+        $query = Beneficiary::query();
 
+        if ($terms !== []) {
+            $query->where(function ($query) use ($terms) {
                 foreach ($terms as $term) {
                     $term = "%{$term}%";
 
                     $query->where(function ($q) use ($term) {
-                        $q->where('last_name_1', 'like', $term)
-                        ->orWhere('last_name_2', 'like', $term)
-                        ->orWhere('name', 'like', $term)
-                        ->orWhere('rfc', 'like', $term)
-                        ->orWhere('curp', 'like', $term)
-                        ->orWhere('file_number', 'like', $term)
-                        ->orWhereRaw(
-                            "CONCAT(name, ' ', last_name_1, ' ', last_name_2) LIKE ?",
-                            [$term]
-                        );
+                        $q->where('file_number', 'like', $term)
+                            ->orWhere('name', 'like', $term)
+                            ->orWhere('last_name_1', 'like', $term)
+                            ->orWhere('last_name_2', 'like', $term)
+                            ->orWhere('rfc', 'like', $term)
+                            ->orWhere('curp', 'like', $term)
+                            ->orWhereRaw("CONCAT(name, ' ', last_name_1, ' ', last_name_2) LIKE ?", [$term]);
                     });
                 }
+            });
+        }
 
-            })
+        $lista = $query
             ->orderBy('file_number', 'asc')
-            ->paginate($this->numberRows);
-        return view('livewire.socioeconomic-benefits.beneficiaries',['lista'=>$lista]);
+            ->orderBy('id', 'asc')
+            ->paginate($numberRows);
+
+        return view('livewire.socioeconomic-benefits.beneficiaries', [
+            'lista' => $lista,
+        ]);
     }
 }

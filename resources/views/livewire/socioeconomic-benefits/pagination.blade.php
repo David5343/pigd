@@ -12,7 +12,7 @@
     @endif
 
     @if ($paginator->hasPages())
-        <nav role="navigation" aria-label="Paginación de titulares" class="flex items-center gap-1">
+        <nav role="navigation" aria-label="Paginación de resultados" class="flex items-center gap-1">
             @if ($paginator->onFirstPage())
                 <span aria-disabled="true" aria-label="Anterior"
                     class="inline-flex h-9 items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm font-medium text-slate-400">
