@@ -1,361 +1,180 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Prestaciones SocioEconómicas/Afiliación/Familiares') }}
-        </h2>
-    </x-slot>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class=" text-center">
-                    <p>
-                    <h3 class="mb-2 mt-0 text-3xl font-medium leading-tight text-primary">FICHA TÉCNICA</h3>
-                    </p>
-                    <p>
-                    <h4 class="mb-2 mt-0 text-2xl font-medium leading-tight text-primary">FOLIO AFILIACIÓN:</h4>
-                    </p>
-                    <p>
-                    <h5 class="mb-2 mt-0 text-xl font-medium leading-tight text-primary">{{ $familiar->file_number }}
-                    </h5>
-                    </p>
-                </div>
-                <div class="flex justify-center mt-5">
-                    <figure class="mb-4 inline-block max-w-sm">
-                        @php
-                        $imagePath = public_path('photo/beneficiaries/' . $familiar->file_number . '.jpg');
-                        @endphp
-                        <img src="{{ (empty($familiar->photo) || !file_exists($imagePath)) 
-                        ? asset('images/icono_no_imagen.png') 
-                        : asset('photo/beneficiaries/' . $familiar->file_number . '.jpg') }}"
-                        class="mb-4 h-auto max-w-full max-h-full rounded-lg align-middle leading-none shadow-lg">
-                        <figcaption class="text-center text-sm text-neutral-600 dark:text-neutral-400">
-                            <p><span>ESTATUS DE AFILIACIÓN</span></p>
-                            @php
-                                $status = $familiar->affiliate_status;
-
-                                $statusColors = match ($status) {
-                                    'Activo' => 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400',
-                                    'Baja',
-                                    'Baja por Aplicar'
-                                        => 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-400',
-                                    default
-                                        => 'bg-gray-100 text-gray-700 dark:bg-gray-950 dark:text-gray-400', // Color por defecto si no coincide
-                                };
-                            @endphp
-
-                            <p>
-                                <span class="inline-block whitespace-nowrap rounded-md px-2 py-1 {{ $statusColors }}">
-                                    {{ $familiar->affiliate_status }}
-                                </span>
-                            </p>
-
-
-                        </figcaption>
-                    </figure>
-                </div>
-                <div id="accordionExample">
-                    <!-- Sección 1 -->
-                    <div x-data="{ open: false }"
-                        class="rounded-t-lg border border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark">
-                        <h2 class="mb-0" id="headingOne">
-                            <button @click="open = !open"
-                                class="group relative flex w-full items-center rounded-t-lg border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
-                                type="button">
-                                DATOS GENERALES
-                                <span
-                                    class="-me-1 ms-auto h-5 w-5 shrink-0 transition-transform duration-200 ease-in-out"
-                                    :class="open ? 'rotate-180' : ''">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                </span>
-                            </button>
-                        </h2>
-                        <div x-show="open" x-collapse class="px-5 py-4 border-t bg-white dark:bg-gray-800">
-                            <!-- Tabla -->
-                            <div class="overflow-x-auto">
-                                <table class="w-full border-collapse border border-gray-300 dark:border-gray-700">
-                                    <tbody>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>FOLIO AFILIACIÓN:</strong> {{ $familiar->file_number }}</p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>FECHA DE INGRESO:</strong> {{ $familiar->start_date }}</p>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-gray-100 dark:bg-gray-700">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>OBSERVACIONES:</strong>
-                                                    @if (($familiar->observations == '') | ($familiar->observations == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->observations }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>FECHA DE BAJA DE SISTEMA:</strong>
-                                                    @if (($familiar->inactive_date == '') | ($familiar->inactive_date == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->inactive_date }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>MOTIVO DE BAJA:</strong>
-                                                    @if (($familiar->inactive_motive == '') | ($familiar->inactive_motive == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->inactive_motive }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>FECHA DE REINGRESO:</strong>
-                                                    @if (($familiar->reentry_date == '') | ($familiar->reentry_date == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->reentry_date }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-gray-100 dark:bg-gray-700">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>ESTATUS DE REGISTRO:</strong> {{ $familiar->status }}</p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sección 2 -->
-                    <div x-data="{ open: false }"
-                        class="border border-t-0 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark">
-                        <h2 class="mb-0" id="headingTwo">
-                            <button @click="open = !open"
-                                class="group relative flex w-full items-center border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
-                                type="button">
-                                DATOS PERSONALES
-                                <span
-                                    class="-me-1 ms-auto h-5 w-5 shrink-0 transition-transform duration-200 ease-in-out"
-                                    :class="open ? 'rotate-180' : ''">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                </span>
-                            </button>
-                        </h2>
-                        <div x-show="open" x-collapse class="px-5 py-4 border-t bg-white dark:bg-gray-800">
-                            <!-- Tabla -->
-                            <div class="overflow-x-auto">
-                                <table class="w-full border-collapse border border-gray-300 dark:border-gray-700">
-                                    <tbody>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>NOMBRE:</strong>
-                                                    {{ $familiar->last_name_1 . ' ' . $familiar->last_name_2 . ' ' . $familiar->name }}
-                                                </p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>FECHA DE NACIMIENTO:</strong>
-                                                    @if (($familiar->birthday == '') | ($familiar->birthday == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->birthday }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-gray-100 dark:bg-gray-700">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>CURP:</strong>
-                                                    @if (($familiar->curp == '') | ($familiar->curp == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->curp }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>SEXO:</strong> {{ $familiar->sex }}</p>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>PARENTESCO:</strong> {{ $familiar->relationship }}</p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-                                                <p><strong>DIVERSAS CAPACIDADES:</strong>
-                                                    @if (($familiar->curp == '') | ($familiar->curp == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->curp }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-gray-100 dark:bg-gray-700">
-                                            <td class="border border-gray-300 px-4 py-2">
-                                                <p><strong>DIRECCIÓN:</strong>
-                                                    @if (($familiar->address == '') | ($familiar->address == null))
-                                                        NO DISPONIBLE
-                                                    @else
-                                                        {{ $familiar->address }}
-                                                    @endif
-                                                </p>
-                                            </td>
-                                            <td class="border border-gray-300 px-4 py-2 hidden md:table-cell">
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sección 3 -->
-                    <div x-data="{ open: false }"
-                        class="rounded-b-lg border border-t-0 border-neutral-200 bg-white dark:border-neutral-600 dark:bg-body-dark">
-                        <h2 class="mb-0" id="headingThree">
-                            <button @click="open = !open"
-                                class="group relative flex w-full items-center border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition hover:z-[2] focus:z-[3] focus:outline-none dark:bg-body-dark dark:text-white"
-                                type="button">
-                                FAMILIAR DE:
-                                {{ $familiar->insured->last_name_1 . ' ' . $familiar->insured->last_name_2 . ' ' . $familiar->insured->name . '-(' . $familiar->insured->file_number . ')' }}
-                                <a class="mx-3"
-                                    href="{{ url('socioeconomic_benefits/membership/' . $familiar->insured->id) }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                    </svg>
-
-                                </a>
-                                <span
-                                    class="-me-1 ms-auto h-5 w-5 shrink-0 transition-transform duration-200 ease-in-out"
-                                    :class="open ? 'rotate-180' : ''">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                    </svg>
-                                </span>
-                            </button>
-                        </h2>
-                        <div x-show="open" x-collapse class="px-5 py-4 border-t bg-white dark:bg-gray-800">
-                            <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                                    <div class="overflow-hidden">
-                                        <table
-                                            class="min-w-full text-left text-sm font-light text-surface dark:text-white">
-                                            <tbody>
-                                                <tr
-                                                    class="border-b border-neutral-200 bg-black/[0.02] dark:border-white/10">
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>FOLIO AFILIACIÓN:</strong>
-                                                            @if (($familiar->insured->file_number == '') | ($familiar->insured->file_number == null))
-                                                                NO DISPONIBLE
-                                                            @else
-                                                                {{ $familiar->insured->file_number }}
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>FECHA DE INGRESO:</strong>
-                                                            @if (($familiar->insured->start_date == '') | ($familiar->insured->start_date == null))
-                                                                NO DISPONIBLE
-                                                            @else
-                                                                {{ $familiar->insured->start_date }}
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-body-dark">
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>NOMBRE:</strong>
-                                                            {{ $familiar->insured->last_name_1 . ' ' . $familiar->insured->last_name_2 . ' ' . $familiar->insured->name }}
-                                                        </p>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>FECHA DE NACIMIENTO:</strong>
-                                                            @if (($familiar->insured->birthday == '') | ($familiar->insured->birthday == null))
-                                                                NO DISPONIBLE
-                                                            @else
-                                                                {{ $familiar->insured->birthday }}
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="border-b border-neutral-200 bg-black/[0.02] dark:border-white/10">
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>RFC:</strong>
-                                                            @if (($familiar->insured->rfc == '') | ($familiar->insured->rfc == null))
-                                                                NO DISPONIBLE
-                                                            @else
-                                                                {{ $familiar->insured->rfc }}
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>CURP:</strong>
-                                                            @if (($familiar->insured->curp == '') | ($familiar->insured->curp == null))
-                                                                NO DISPONIBLE
-                                                            @else
-                                                                {{ $familiar->insured->curp }}
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                                <tr
-                                                    class="border-b border-neutral-200 bg-white dark:border-white/10 dark:bg-body-dark">
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>DEPENDENCIA:</strong>
-                                                            @if (
-                                                                ($familiar->insured->subdependency->dependency->name == '') |
-                                                                    ($familiar->insured->subdependency->dependency->name == null))
-                                                                NO DISPONIBLE
-                                                            @else
-                                                                {{ $familiar->insured->subdependency->dependency->name }}
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        <p><strong>ESTATUS DE AFILIACIÓ:</strong>
-                                                            @if (($familiar->insured->affiliate_status == '') | ($familiar->insured->affiliate_status == null))
-                                                                NO DISPONIBLE
-                                                            @else
-                                                                {{ $familiar->insured->affiliate_status }}
-                                                            @endif
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <h2 class="font-semibold text-xl leading-tight text-[#651F34]">
+                Prestaciones Socioeconómicas / Familiares / Expediente electrónico
+            </h2>
+            <a href="{{ route('beneficiaries.index') }}"
+                class="inline-flex items-center rounded-md border border-[#E7DFD9] bg-white px-4 py-2 text-sm font-medium text-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34]">
+                Volver al listado
+            </a>
         </div>
-    </div>
+    </x-slot>
+
+    @php
+        $estatus = $estatusAfiliacion ?: 'Sin estatus de afiliación';
+        $claseEstatus = match (mb_strtolower($estatus)) {
+            'activo' => 'bg-green-100 text-green-800 ring-green-600/20',
+            'preafiliado' => 'bg-yellow-100 text-yellow-800 ring-yellow-600/20',
+            'bloqueado' => 'bg-gray-100 text-gray-700 ring-gray-500/20',
+            'baja' => 'bg-red-100 text-red-800 ring-red-600/20',
+            'baja por aplicar' => 'bg-orange-100 text-orange-800 ring-orange-600/20',
+            default => 'bg-gray-100 text-gray-700 ring-gray-500/20',
+        };
+    @endphp
+
+    <main class="min-h-screen bg-[#F7F3EC] py-8">
+        <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
+            <div x-data="{ fotoAbierta: false }">
+                <section class="overflow-hidden rounded-xl border border-[#E7DFD9] bg-white shadow-sm">
+                    <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+                        <button type="button" @click="fotoAbierta = true"
+                            :aria-expanded="fotoAbierta.toString()" aria-haspopup="dialog"
+                            aria-label="Ampliar fotografía de {{ $nombreFamiliar ?: 'familiar' }}"
+                            class="cursor-zoom-in self-center rounded-md focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-2 sm:self-auto">
+                            <img src="{{ $fotoUrl }}"
+                                onerror="this.onerror=null;this.src='{{ asset('images/icono_no_imagen.png') }}';"
+                                alt="Fotografía de {{ $nombreFamiliar ?: 'familiar' }}"
+                                class="h-32 w-24 rounded-md border border-[#E7DFD9] object-cover">
+                        </button>
+
+                        <div class="min-w-0 flex-1 text-center sm:text-left">
+                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#8A6670]">Expediente electrónico</p>
+                            <h1 class="mt-1 text-2xl font-bold text-[#651F34] sm:text-3xl">
+                                {{ $nombreFamiliar ?: 'Nombre no disponible' }}
+                            </h1>
+                            <p class="mt-3 text-sm text-gray-700">
+                                <span class="font-semibold text-gray-900">Folio de afiliación:</span>
+                                {{ $folioAfiliacion ?: 'No disponible' }}
+                            </p>
+                        </div>
+
+                        <div class="shrink-0 self-center sm:self-start">
+                            <span class="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold ring-1 ring-inset {{ $claseEstatus }}">
+                                {{ $estatus }}
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <div x-cloak x-show="fotoAbierta" x-transition.opacity
+                    @click.self="fotoAbierta = false" @keydown.escape.window="fotoAbierta = false"
+                    role="dialog" aria-modal="true" aria-label="Fotografía ampliada"
+                    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4">
+                    <div class="relative">
+                        <button type="button" @click="fotoAbierta = false" aria-label="Cerrar fotografía ampliada"
+                            class="absolute -right-3 -top-3 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-700 shadow-lg transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#651F34]">
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                            </svg>
+                        </button>
+                        <img src="{{ $fotoUrl }}"
+                            onerror="this.onerror=null;this.src='{{ asset('images/icono_no_imagen.png') }}';"
+                            alt="Fotografía ampliada de {{ $nombreFamiliar ?: 'familiar' }}"
+                            class="block h-auto max-h-[90vh] w-auto max-w-[90vw] rounded-lg bg-white object-contain shadow-2xl">
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                @foreach ([
+                    'Datos personales' => $datosPersonales,
+                    'Domicilio' => $datosDomicilio,
+                    'Afiliación y vínculo' => $datosAfiliacion,
+                ] as $titulo => $datos)
+                    <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                        <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">{{ $titulo }}</h2>
+                        <dl class="mt-4 space-y-4">
+                            @foreach ($datos as $etiqueta => $valor)
+                                <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
+                                    <dd class="break-words text-sm text-gray-900">
+                                        {{ filled($valor) ? $valor : 'No disponible' }}
+                                    </dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    </section>
+                @endforeach
+
+                <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                    <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-[#E7DFD9] pb-3">
+                        <h2 class="text-lg font-semibold text-[#651F34]">Titular asociado</h2>
+                        @if ($idTitular)
+                            <a href="{{ route('membership.show', $idTitular) }}"
+                                class="text-sm font-semibold text-[#651F34] hover:underline">
+                                Ver expediente
+                            </a>
+                        @endif
+                    </div>
+
+                    @if ($datosTitular)
+                        <dl class="mt-4 space-y-4">
+                            @foreach ($datosTitular as $etiqueta => $valor)
+                                <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
+                                    <dd class="break-words text-sm text-gray-900">
+                                        {{ filled($valor) ? $valor : 'No disponible' }}
+                                    </dd>
+                                </div>
+                            @endforeach
+                        </dl>
+                    @else
+                        <p class="mt-4 rounded-lg bg-[#F7F3EC] px-4 py-5 text-center text-sm text-gray-600">
+                            Este familiar no tiene un titular asociado disponible.
+                        </p>
+                    @endif
+                </section>
+            </div>
+
+            <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-[#E7DFD9] pb-3">
+                    <h2 class="text-lg font-semibold text-[#651F34]">Historial de credenciales</h2>
+                    <span class="text-sm text-gray-500">{{ $credenciales->count() }} registros</span>
+                </div>
+
+                @if ($credenciales->isNotEmpty())
+                    <div class="mt-4 overflow-x-auto">
+                        <table class="min-w-full divide-y divide-[#E7DFD9] text-left text-sm">
+                            <thead class="bg-[#F7F3EC] text-xs uppercase tracking-wide text-gray-600">
+                                <tr>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Número de credencial</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Fecha de emisión</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Vigente hasta</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Tipo de vigencia</th>
+                                    <th scope="col" class="px-4 py-3 font-semibold">Estatus de credencial</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#E7DFD9]">
+                                @foreach ($credenciales as $credencial)
+                                    @php
+                                        $claseEstatusCredencial = match (strtoupper($credencial['estatus'] ?? '')) {
+                                            'VIGENTE' => 'bg-green-100 text-green-800',
+                                            'VENCIDA' => 'bg-gray-100 text-gray-700',
+                                            default => 'bg-yellow-100 text-yellow-800',
+                                        };
+                                    @endphp
+                                    <tr>
+                                        <td class="whitespace-nowrap px-4 py-3 font-medium text-gray-900">{{ $credencial['numero'] }}</td>
+                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['emitida'] ?: 'No disponible' }}</td>
+                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['vigente_hasta'] ?: 'No disponible' }}</td>
+                                        <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['tipo_vigencia'] ?: 'No disponible' }}</td>
+                                        <td class="whitespace-nowrap px-4 py-3">
+                                            <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold {{ $claseEstatusCredencial }}">
+                                                {{ $credencial['estatus'] ?: 'Sin estatus' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p class="mt-4 rounded-lg bg-[#F7F3EC] px-4 py-5 text-center text-sm text-gray-600">
+                        Este familiar no tiene credenciales registradas.
+                    </p>
+                @endif
+            </section>
+        </div>
+    </main>
 </x-app-layout>
