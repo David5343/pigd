@@ -2,6 +2,9 @@
 
 namespace App\Livewire\SocioeconomicBenefits;
 
+use App\Livewire\MedicalCoordination\InsuredCredentialsModal;
+use App\Livewire\MedicalCoordination\InsuredExpedientModal;
+use App\Livewire\MedicalCoordination\InsuredFamiliesModal;
 use App\Models\SocioeconomicBenefits\Insured;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,6 +33,24 @@ class Membership extends Component
     public function closeCreateModal(): void
     {
         $this->showingCreateModal = false;
+    }
+
+    public function openExpedient(int $insuredId): void
+    {
+        $this->dispatch('open-medical-insured-expedient', insuredId: $insuredId)
+            ->to(InsuredExpedientModal::class);
+    }
+
+    public function openFamilies(int $insuredId): void
+    {
+        $this->dispatch('open-medical-insured-families', insuredId: $insuredId)
+            ->to(InsuredFamiliesModal::class);
+    }
+
+    public function openCredentials(int $insuredId): void
+    {
+        $this->dispatch('open-medical-insured-credentials', insuredId: $insuredId)
+            ->to(InsuredCredentialsModal::class);
     }
 
     public function insuredCreated(string $message): void

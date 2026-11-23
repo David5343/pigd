@@ -20,6 +20,8 @@ class InsuredFamiliesModal extends Component
             'JefaturaCoordinacion',
             'CoordinacionMedica',
             'JefaturaAdministracion',
+            'PrestacionesSocioEconomicas',
+            'JefaturaPrestaciones',
             'SuperAdmin',
         ]), 403);
 
