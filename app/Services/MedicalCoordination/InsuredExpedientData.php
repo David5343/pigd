@@ -118,6 +118,7 @@ class InsuredExpedientData
                 ->implode(' ');
 
             return [
+                'id' => $familiar->id,
                 'nombre' => $nombre ?: null,
                 'parentesco' => $familiar->relationship,
                 'folio' => $familiar->file_number,

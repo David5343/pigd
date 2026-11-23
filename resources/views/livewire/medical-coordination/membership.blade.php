@@ -150,5 +150,6 @@
         <livewire:medical-coordination.insured-expedient-modal />
         <livewire:medical-coordination.insured-families-modal />
         <livewire:medical-coordination.insured-credentials-modal />
+        <livewire:medical-coordination.beneficiary-expedient-modal />
     </div>
 </div>

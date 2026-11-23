@@ -8,7 +8,7 @@
     };
 @endphp
 
-<div class="space-y-6">
+<div class="space-y-6" x-data>
     <div x-data="{ fotoAbierta: false }">
         <section class="overflow-hidden rounded-xl border border-[#E7DFD9] bg-white shadow-sm">
             <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
@@ -92,6 +92,7 @@
                                 <th scope="col" class="px-3 py-3 font-semibold">Parentesco</th>
                                 <th scope="col" class="px-3 py-3 font-semibold">Folio</th>
                                 <th scope="col" class="px-3 py-3 text-center font-semibold">Estatus</th>
+                                <th scope="col" class="px-3 py-3 text-center font-semibold">Expediente</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-[#E7DFD9]">
@@ -117,6 +118,23 @@
                                                 aria-hidden="true"></span>
                                             {{ $estatusFamiliar ?: 'Sin estatus de afiliación' }}
                                         </span>
+                                    </td>
+                                    <td class="whitespace-nowrap px-3 py-3 text-center">
+                                        <button type="button"
+                                            x-on:click="$dispatch('open-medical-beneficiary-expedient', { beneficiaryId: {{ $familiar['id'] }} })"
+                                            title="Abrir expediente electrónico del familiar"
+                                            aria-label="Abrir expediente electrónico de {{ $familiar['nombre'] ?: 'familiar' }}"
+                                            aria-haspopup="dialog"
+                                            class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M13.5 6H19.5m0 0v6m0-6-9 9" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M19.5 13.5v4.875A1.875 1.875 0 0 1 17.625 20.25H6.375A1.875 1.875 0 0 1 4.5 18.375V7.125A1.875 1.875 0 0 1 6.375 5.25H11.25" />
+                                            </svg>
+                                            <span class="sr-only">Abrir expediente del familiar</span>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach

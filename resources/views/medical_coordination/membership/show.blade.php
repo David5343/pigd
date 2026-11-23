@@ -16,4 +16,6 @@
             @include('medical_coordination.membership.partials.expedient-content', $expediente)
         </div>
     </main>
+
+    <livewire:medical-coordination.beneficiary-expedient-modal />
 </x-app-layout>
