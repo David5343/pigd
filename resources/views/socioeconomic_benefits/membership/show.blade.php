@@ -75,7 +75,7 @@
             </div>
 
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+                <section class="min-w-0 rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
                     <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">
                         Adscripción y afiliación
                     </h2>
@@ -91,16 +91,16 @@
                     </dl>
                 </section>
 
-                <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6 lg:col-span-2">
+                <section class="min-w-0 rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
                     <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-[#E7DFD9] pb-3">
                         <h2 class="text-lg font-semibold text-[#651F34]">Familiares vinculados</h2>
                         <span class="text-sm text-gray-500">{{ $familiares->count() }} registrados</span>
                     </div>
 
                     @if ($familiares->isNotEmpty())
-                        <div class="mt-4 overflow-x-auto">
-                            <table class="min-w-full divide-y divide-[#E7DFD9] text-left text-sm">
-                                <thead class="bg-[#F7F3EC] text-xs uppercase tracking-wide text-gray-600">
+                        <div class="mt-4 block max-h-72 min-w-0 max-w-full overflow-x-auto overflow-y-auto rounded-lg">
+                            <table class="w-max min-w-full divide-y divide-[#E7DFD9] text-left text-sm">
+                                <thead class="sticky top-0 z-10 bg-[#F7F3EC] text-xs uppercase tracking-wide text-gray-600">
                                     <tr>
                                         <th scope="col" class="px-3 py-3 font-semibold">Nombre completo</th>
                                         <th scope="col" class="px-3 py-3 font-semibold">Parentesco</th>
