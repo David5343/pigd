@@ -21,6 +21,24 @@ class Membership extends Component
         $this->resetPage();
     }
 
+    public function openExpedient(int $insuredId): void
+    {
+        $this->dispatch('open-medical-insured-expedient', insuredId: $insuredId)
+            ->to(InsuredExpedientModal::class);
+    }
+
+    public function openFamilies(int $insuredId): void
+    {
+        $this->dispatch('open-medical-insured-families', insuredId: $insuredId)
+            ->to(InsuredFamiliesModal::class);
+    }
+
+    public function openCredentials(int $insuredId): void
+    {
+        $this->dispatch('open-medical-insured-credentials', insuredId: $insuredId)
+            ->to(InsuredCredentialsModal::class);
+    }
+
     public function render()
     {
         $terms = preg_split('/\s+/', trim($this->search), -1, PREG_SPLIT_NO_EMPTY);

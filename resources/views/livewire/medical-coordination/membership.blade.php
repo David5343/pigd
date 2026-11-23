@@ -54,6 +54,8 @@
                             <th scope="col" class="px-4 py-3">Nombre</th>
                             <th scope="col" class="whitespace-nowrap px-4 py-3">RFC</th>
                             <th scope="col" class="whitespace-nowrap px-4 py-3 text-center">Estatus</th>
+                            <th scope="col" class="whitespace-nowrap px-4 py-3 text-center">Familiares vinculados</th>
+                            <th scope="col" class="whitespace-nowrap px-4 py-3 text-center">Historial de credenciales</th>
                             <th scope="col" class="whitespace-nowrap px-4 py-3 text-center">Expediente electrónico</th>
                         </tr>
                     </thead>
@@ -71,7 +73,7 @@
                                     default => ['badge' => 'border-slate-200 bg-slate-50 text-slate-700', 'dot' => 'bg-slate-400'],
                                 };
                             @endphp
-                            <tr class="hover:bg-neutral-50 dark:hover:bg-neutral-800/60">
+                            <tr wire:key="insured-{{ $item->id }}" class="hover:bg-neutral-50 dark:hover:bg-neutral-800/60">
                                 <td class="whitespace-nowrap px-4 py-3 font-medium">{{ $item->id }}</td>
                                 <td class="whitespace-nowrap px-4 py-3">{{ $item->file_number }}</td>
                                 <td class="max-w-xs break-words px-4 py-3">{{ $nombreTitular ?: 'Nombre no disponible' }}</td>
@@ -84,9 +86,40 @@
                                     </span>
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3 text-center">
-                                    <a href="{{ route('membership_medical.show', $item->id) }}"
+                                    <button type="button" wire:click="openFamilies({{ $item->id }})"
+                                        title="Ver familiares vinculados"
+                                        aria-label="Ver familiares vinculados de {{ $nombreTitular ?: 'titular' }}"
+                                        aria-haspopup="dialog"
+                                        class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 19.128a9.094 9.094 0 0 0 3.742-.9 3.75 3.75 0 0 0-4.992-5.628M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                        </svg>
+                                        <span class="sr-only">Ver familiares vinculados</span>
+                                    </button>
+                                </td>
+                                <td class="whitespace-nowrap px-4 py-3 text-center">
+                                    <button type="button" wire:click="openCredentials({{ $item->id }})"
+                                        title="Ver historial de credenciales"
+                                        aria-label="Ver historial de credenciales de {{ $nombreTitular ?: 'titular' }}"
+                                        aria-haspopup="dialog"
+                                        class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                            <rect x="3" y="4.5" width="18" height="15" rx="2.25" />
+                                            <circle cx="8.25" cy="10" r="2" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M5.5 15.5a2.75 2.75 0 0 1 5.5 0m3-5.5h4m-4 3h4m-4 3h2.5" />
+                                        </svg>
+                                        <span class="sr-only">Ver historial de credenciales</span>
+                                    </button>
+                                </td>
+                                <td class="whitespace-nowrap px-4 py-3 text-center">
+                                    <button type="button" wire:click="openExpedient({{ $item->id }})"
                                         title="Abrir expediente electrónico"
                                         aria-label="Abrir expediente electrónico de {{ $nombreTitular ?: 'titular' }}"
+                                        aria-haspopup="dialog"
                                         class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
@@ -97,12 +130,12 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M7 13.25h10m-10 3h6" />
                                         </svg>
                                         <span class="sr-only">Abrir expediente</span>
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                                <td colspan="8" class="px-6 py-8 text-center text-gray-500">
                                     No se encontraron titulares que coincidan con la búsqueda.
                                 </td>
                             </tr>
@@ -113,5 +146,9 @@
 
             {{ $lista->links('livewire.medical-coordination.pagination') }}
         </section>
+
+        <livewire:medical-coordination.insured-expedient-modal />
+        <livewire:medical-coordination.insured-families-modal />
+        <livewire:medical-coordination.insured-credentials-modal />
     </div>
 </div>
