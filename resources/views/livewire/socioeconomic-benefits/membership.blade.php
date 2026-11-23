@@ -178,14 +178,14 @@
                 wire:click.self="closeCreateModal"
                 x-on:keydown.escape.window="$wire.closeCreateModal()"
                 role="dialog" aria-modal="true" aria-labelledby="create-insured-modal-title">
-                <div class="flex max-h-[95vh] w-full max-w-7xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
+                <div class="flex max-h-[95vh] w-full max-w-7xl flex-col overflow-hidden rounded-2xl border border-[#E7DFD9] bg-[#F7F3EC] shadow-2xl"
                     wire:click.stop>
-                    <div class="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-7">
-                        <h2 id="create-insured-modal-title" class="text-lg font-semibold text-slate-900">
+                    <div class="flex shrink-0 items-center justify-between border-b border-[#E7DFD9] bg-white px-5 py-4 sm:px-7">
+                        <h2 id="create-insured-modal-title" class="text-lg font-semibold text-[#651F34]">
                             Nuevo titular
                         </h2>
                         <button type="button" wire:click="closeCreateModal"
-                            class="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#651F34]"
+                            class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#651F34]"
                             aria-label="Cerrar formulario">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true">
