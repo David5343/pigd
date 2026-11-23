@@ -11,7 +11,33 @@ class Membership extends Component
     use WithPagination;
 
     public $search = '';
+
     public $numberRows = 10;
+
+    public bool $showingCreateModal = false;
+
+    public ?string $successMessage = null;
+
+    public int $createModalInstance = 0;
+
+    public function openCreateModal(): void
+    {
+        $this->successMessage = null;
+        $this->createModalInstance++;
+        $this->showingCreateModal = true;
+    }
+
+    public function closeCreateModal(): void
+    {
+        $this->showingCreateModal = false;
+    }
+
+    public function insuredCreated(string $message): void
+    {
+        $this->successMessage = $message;
+        $this->showingCreateModal = false;
+        $this->resetPage();
+    }
 
     public function updatingSearch(): void
     {

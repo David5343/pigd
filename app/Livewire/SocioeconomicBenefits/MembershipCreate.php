@@ -8,20 +8,22 @@ use App\Models\Catalogs\State;
 use App\Models\Catalogs\Subdependency;
 use App\Models\SocioeconomicBenefits\Insured;
 use App\Models\SocioeconomicBenefits\Rank;
-use Exception;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Illuminate\Database\QueryException;
 use Throwable;
-use Illuminate\Support\Facades\Log;
 
 class MembershipCreate extends Component
 {
+    public bool $inModal = false;
+
     public $folio;
+
     #[Validate('required|max:8|unique:insureds,file_number')]
     public $file_number;
 
@@ -108,12 +110,13 @@ class MembershipCreate extends Component
 
     #[Validate('nullable|min:5|max:85')]
     public $locality;
+
     public function guardar()
     {
         try {
             DB::beginTransaction();
             $this->validate();
-            $titular = new Insured();
+            $titular = new Insured;
             $titular->file_number = Str::of($this->file_number)->trim();
             $titular->subdependency_id = $this->subdependency_id;
             $titular->rank_id = $this->rank_id;
@@ -151,23 +154,32 @@ class MembershipCreate extends Component
             $titular->save();
             DB::commit();
             $this->limpiar();
-            session()->flash('msg', 'Registro con No. de Expediente: '.$titular->file_number.' creado con éxito!');
-            $this->js("alert('Registro con No. de Expediente:".$titular->file_number." creado con éxito!')");
+            $this->dispatch(
+                'insured-created',
+                message: 'Registro con No. de Expediente: '.$titular->file_number.' creado con éxito!'
+            );
         } catch (QueryException $e) {
             DB::rollBack();
-            Log::error('Error en la consulta SQL: ' . $e->getMessage());
+            Log::error('Error en la consulta SQL: '.$e->getMessage());
             session()->flash('msg_warning', 'Error en la base de datos. Contacte al administrador.');
         } catch (Throwable $e) {
             DB::rollBack();
-            Log::error('Error inesperado: ' . $e->getMessage());
+            Log::error('Error inesperado: '.$e->getMessage());
             session()->flash('msg_warning', 'Ocurrió un error inesperado. Contacte al administrador.');
         }
     }
+
     public function limpiar()
     {
         $this->reset();
         $this->resetValidation();
     }
+
+    public function cerrarModal(): void
+    {
+        $this->dispatch('close-membership-modal');
+    }
+
     public function render()
     {
         $select1 = Subdependency::where('status', 'active')->get();
@@ -175,14 +187,15 @@ class MembershipCreate extends Component
         $select3 = County::where('status', 'active')->get();
         $select4 = Bank::where('status', 'active')->get();
         $select5 = Rank::where('status', 'active')->get();
-        
+
         $this->folio = IdGenerator::generate(['table' => 'insureds', 'field' => 'file_number', 'length' => 8, 'prefix' => 'T']);
         $this->file_number = $this->folio;
+
         return view('livewire.socioeconomic-benefits.membership-create', ['select1' => $select1,
-        'select2' => $select2,
-        'select3' => $select3,
-        'select4' => $select4,
-        'select5' => $select5,
-        'folio' => $this->folio]);
+            'select2' => $select2,
+            'select3' => $select3,
+            'select4' => $select4,
+            'select5' => $select5,
+            'folio' => $this->folio]);
     }
 }

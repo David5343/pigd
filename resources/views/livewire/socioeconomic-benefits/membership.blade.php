@@ -1,14 +1,24 @@
 <div class="bg-white p-4 lg:p-5">
     <section aria-label="Listado de titulares">
         <div class="mb-4 flex justify-end">
-            <a href="{{ route('membership.create') }}"
+            <button type="button" wire:click="openCreateModal"
                 class="inline-flex items-center gap-2 rounded bg-neutral-100 px-6 py-2.5 text-xs font-medium uppercase text-neutral-700 transition hover:bg-blue-300 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:hover:bg-neutral-700">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                 </svg>
                 Nuevo titular
-            </a>
+            </button>
         </div>
+            @if ($successMessage)
+                <div class="mb-4 flex items-center justify-between gap-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
+                    role="status">
+                    <span>{{ $successMessage }}</span>
+                    <button type="button" wire:click="$set('successMessage', null)"
+                        class="font-semibold hover:text-green-950" aria-label="Cerrar mensaje">
+                        &times;
+                    </button>
+                </div>
+            @endif
             <div class="mb-5 rounded-xl border border-[#E7DFD9] bg-[#F7F3EC] p-4 sm:p-5"
                 aria-labelledby="insured-search-heading">
                 <div class="mb-3 flex items-center gap-3">
@@ -129,5 +139,36 @@
             </div>
             {{ $lista->links('livewire.socioeconomic-benefits.pagination') }}
         </section>
+
+        @if ($showingCreateModal)
+            <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-2 sm:p-5"
+                wire:click.self="closeCreateModal"
+                x-on:keydown.escape.window="$wire.closeCreateModal()"
+                role="dialog" aria-modal="true" aria-labelledby="create-insured-modal-title">
+                <div class="flex max-h-[95vh] w-full max-w-7xl flex-col overflow-hidden rounded-xl bg-white shadow-2xl"
+                    wire:click.stop>
+                    <div class="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-7">
+                        <h2 id="create-insured-modal-title" class="text-lg font-semibold text-slate-900">
+                            Nuevo titular
+                        </h2>
+                        <button type="button" wire:click="closeCreateModal"
+                            class="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#651F34]"
+                            aria-label="Cerrar formulario">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" class="h-5 w-5" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m6 6 12 12M18 6 6 18" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="min-h-0 overflow-y-auto">
+                        <livewire:socioeconomic-benefits.membership-create
+                            :in-modal="true"
+                            @insured-created="insuredCreated($event.detail.message)"
+                            @close-membership-modal="closeCreateModal"
+                            :key="'membership-create-modal-'.$createModalInstance" />
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </div>

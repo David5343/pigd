@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+<div class="w-full bg-white p-4 sm:p-6">
     @session('msg_busqueda')
         <div class="p-4" x-data="{ show: true }">
             <div x-show="show" x-transition
@@ -313,10 +313,17 @@
         </fieldset> --}}
         <!-- Botones alineados a la derecha -->
         <div class="w-full flex justify-end gap-3 mt-4">
-            <a href="{{ route('membership.index') }}"
-                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
-                Cancelar
-            </a>
+            @if ($inModal)
+                <button type="button" wire:click="cerrarModal"
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
+                    Cancelar
+                </button>
+            @else
+                <a href="{{ route('membership.index') }}"
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
+                    Cancelar
+                </a>
+            @endif
             <button type="submit"
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Enviar</button>
         </div>
