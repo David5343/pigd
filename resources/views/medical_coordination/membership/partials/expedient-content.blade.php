@@ -66,30 +66,6 @@
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
-            <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Datos personales y contacto</h2>
-            <dl class="mt-4 space-y-4">
-                @foreach ($datosPersonales as $etiqueta => $valor)
-                    <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
-                        <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
-                        <dd class="break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
-                    </div>
-                @endforeach
-            </dl>
-        </section>
-
-        <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
-            <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Domicilio</h2>
-            <dl class="mt-4 space-y-4">
-                @foreach ($datosDomicilio as $etiqueta => $valor)
-                    <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
-                        <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
-                        <dd class="break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
-                    </div>
-                @endforeach
-            </dl>
-        </section>
-
-        <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
             <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Adscripción y afiliación</h2>
             <dl class="mt-4 space-y-4">
                 @foreach ($datosAdscripcion as $etiqueta => $valor)
@@ -152,6 +128,30 @@
                     Este titular no tiene familiares registrados.
                 </p>
             @endif
+        </section>
+
+        <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+            <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Datos personales y contacto</h2>
+            <dl class="mt-4 space-y-4">
+                @foreach ($datosPersonales as $etiqueta => $valor)
+                    <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
+                        <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
+                        <dd class="break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
+                    </div>
+                @endforeach
+            </dl>
+        </section>
+
+        <section class="rounded-xl border border-[#E7DFD9] bg-white p-5 shadow-sm sm:p-6">
+            <h2 class="border-b border-[#E7DFD9] pb-3 text-lg font-semibold text-[#651F34]">Domicilio</h2>
+            <dl class="mt-4 space-y-4">
+                @foreach ($datosDomicilio as $etiqueta => $valor)
+                    <div class="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(9rem,0.8fr)_1.2fr] sm:gap-4">
+                        <dt class="text-sm font-medium text-gray-500">{{ $etiqueta }}</dt>
+                        <dd class="break-words text-sm text-gray-900">{{ filled($valor) ? $valor : 'No disponible' }}</dd>
+                    </div>
+                @endforeach
+            </dl>
         </section>
     </div>
 
