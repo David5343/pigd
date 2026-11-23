@@ -177,6 +177,7 @@
         <livewire:medical-coordination.insured-expedient-modal />
         <livewire:medical-coordination.insured-families-modal />
         <livewire:medical-coordination.insured-credentials-modal />
+        <livewire:medical-coordination.beneficiary-expedient-modal />
 
         @if ($showingCreateModal)
             <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-2 sm:p-5"

@@ -13,7 +13,7 @@ class InsuredExpedientModal extends Component
     public ?array $expediente = null;
 
     #[On('open-medical-insured-expedient')]
-    public function open(int $insuredId): void
+    public function open(int $insuredId, string $origin = 'medical'): void
     {
         abort_unless(auth()->user()?->hasAnyRole([
             'Enlace',
@@ -26,6 +26,9 @@ class InsuredExpedientModal extends Component
         ]), 403);
 
         $this->expediente = app(InsuredExpedientData::class)->forId($insuredId);
+        $this->expediente['beneficiaryExpedientOrigin'] = $origin === 'socioeconomic'
+            ? 'socioeconomic'
+            : 'medical';
         $this->isOpen = true;
     }
 

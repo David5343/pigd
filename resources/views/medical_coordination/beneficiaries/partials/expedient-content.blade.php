@@ -83,7 +83,7 @@
             <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-[#E7DFD9] pb-3">
                 <h2 class="text-lg font-semibold text-[#651F34]">Titular asociado</h2>
                 @if ($idTitular)
-                    <a href="{{ route('membership_medical.show', $idTitular) }}"
+                    <a href="{{ route($titularExpedienteRouteName ?? 'membership_medical.show', $idTitular) }}"
                         class="text-sm font-semibold text-[#075e56] hover:underline">
                         Ver expediente
                     </a>

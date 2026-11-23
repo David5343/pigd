@@ -1,4 +1,5 @@
 @php
+    $beneficiaryExpedientOrigin = $beneficiaryExpedientOrigin ?? 'medical';
     $estatus = $estatusAfiliacion ?: 'Sin estatus de afiliación';
     $claseEstatus = match ($estatus) {
         'Activo' => 'bg-green-100 text-green-800 ring-green-600/20',
@@ -121,7 +122,7 @@
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-3 text-center">
                                         <button type="button"
-                                            x-on:click="$dispatch('open-medical-beneficiary-expedient', { beneficiaryId: {{ $familiar['id'] }} })"
+                                            x-on:click="$dispatch('open-medical-beneficiary-expedient', { beneficiaryId: {{ $familiar['id'] }}, origin: @js($beneficiaryExpedientOrigin) })"
                                             title="Abrir expediente electrónico del familiar"
                                             aria-label="Abrir expediente electrónico de {{ $familiar['nombre'] ?: 'familiar' }}"
                                             aria-haspopup="dialog"

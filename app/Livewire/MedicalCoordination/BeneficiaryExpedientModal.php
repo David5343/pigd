@@ -13,17 +13,22 @@ class BeneficiaryExpedientModal extends Component
     public ?array $expediente = null;
 
     #[On('open-medical-beneficiary-expedient')]
-    public function open(int $beneficiaryId): void
+    public function open(int $beneficiaryId, string $origin = 'medical'): void
     {
         abort_unless(auth()->user()?->hasAnyRole([
             'Enlace',
             'JefaturaCoordinacion',
             'CoordinacionMedica',
             'JefaturaAdministracion',
+            'PrestacionesSocioEconomicas',
+            'JefaturaPrestaciones',
             'SuperAdmin',
         ]), 403);
 
         $this->expediente = app(BeneficiaryExpedientData::class)->forId($beneficiaryId);
+        $this->expediente['titularExpedienteRouteName'] = $origin === 'socioeconomic'
+            ? 'membership.show'
+            : 'membership_medical.show';
         $this->isOpen = true;
     }
 

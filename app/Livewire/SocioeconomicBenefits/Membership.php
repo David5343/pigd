@@ -37,7 +37,7 @@ class Membership extends Component
 
     public function openExpedient(int $insuredId): void
     {
-        $this->dispatch('open-medical-insured-expedient', insuredId: $insuredId)
+        $this->dispatch('open-medical-insured-expedient', insuredId: $insuredId, origin: 'socioeconomic')
             ->to(InsuredExpedientModal::class);
     }
 
