@@ -44,18 +44,6 @@ class MembershipController extends Controller
             ->filter(fn ($parte) => filled($parte))
             ->implode(' ');
 
-        $datosGenerales = [
-            'Folio de afiliación' => $titular->file_number,
-            'Fecha de ingreso' => $this->formatDate($titular->start_date),
-            'Motivo de registro' => $titular->register_motive,
-            'Observaciones' => $titular->observations,
-            'Fecha de baja en la dependencia' => $this->formatDate($titular->inactive_date_dependency),
-            'Fecha de baja en el sistema' => $this->formatDate($titular->inactive_date),
-            'Motivo de baja' => $titular->inactive_motive,
-            'Fecha de reingreso' => $this->formatDate($titular->reentry_date),
-            'Estatus del registro' => $titular->status,
-        ];
-
         $datosPersonales = [
             'Fecha de nacimiento' => $this->formatDate($titular->birthday),
             'Edad' => $this->formatAge($titular->birthday),
@@ -82,11 +70,19 @@ class MembershipController extends Controller
         ];
 
         $datosAdscripcion = [
-            'Dependencia' => $titular->subdependency?->dependency?->name,
-            'Subdependencia' => $titular->subdependency?->name,
+            'Dependencia de adscripción' => $titular->subdependency?->dependency?->name,
+            'Área o unidad' => $titular->subdependency?->name,
             'Categoría' => $titular->rank?->name,
-            'Lugar de trabajo' => $titular->workplaceCounty?->name,
+            'Fecha de alta en el Fideicomiso' => $this->formatDate($titular->start_date),
             'Número de empleado' => $titular->employee_number,
+            'Lugar de trabajo' => $titular->workplaceCounty?->name,
+            'Motivo de registro' => $titular->register_motive,
+            'Observaciones' => $titular->observations,
+            'Fecha de baja en la dependencia' => $this->formatDate($titular->inactive_date_dependency),
+            'Fecha de baja en el sistema' => $this->formatDate($titular->inactive_date),
+            'Motivo de baja' => $titular->inactive_motive,
+            'Fecha de reingreso' => $this->formatDate($titular->reentry_date),
+            'Estatus del registro' => $titular->status,
         ];
 
         $familiares = $titular->beneficiaries->map(function ($familiar) {
@@ -122,10 +118,9 @@ class MembershipController extends Controller
             'fotoUrl' => $titular->photo
                 ? asset('photo/insureds/' . $titular->file_number . '.jpg')
                 : asset('images/icono_no_imagen.png'),
-            'datosGenerales' => $datosGenerales,
+            'datosAdscripcion' => $datosAdscripcion,
             'datosPersonales' => $datosPersonales,
             'datosDomicilio' => $datosDomicilio,
-            'datosAdscripcion' => $datosAdscripcion,
             'familiares' => $familiares,
             'credenciales' => $credenciales,
         ]);
