@@ -24,13 +24,13 @@
                 <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <label for="medical-beneficiary-search" class="sr-only">Buscar familiares</label>
                     <input wire:model.live="search" id="medical-beneficiary-search" type="search"
-                        class="block w-full min-w-0 flex-1 rounded-lg border border-[#D9CBC5] bg-white px-3 py-2.5 text-base text-surface outline-none transition placeholder:text-neutral-500 focus:border-[#651F34] focus:ring-2 focus:ring-[#651F34]/20"
+                        class="block w-full min-w-0 flex-1 rounded-lg border border-[#D9CBC5] bg-white px-3 py-2.5 text-base text-surface outline-none transition placeholder:text-neutral-500 focus:border-[#651F34] focus:ring-2 focus:ring-[#651F34]/20 sm:max-w-2xl"
                         placeholder="Escribe un criterio de búsqueda"
                         aria-label="Buscar familiares por folio, nombre, apellidos o CURP" />
-                    <div class="flex items-center gap-2 text-sm text-slate-700">
+                    <div class="flex shrink-0 items-center gap-2 text-sm text-slate-700 sm:ml-auto">
                         <label for="medical-beneficiary-rows" class="font-medium">Mostrar</label>
                         <select wire:model.live="numberRows" id="medical-beneficiary-rows"
-                            class="rounded-lg border border-[#D9CBC5] bg-white px-3 py-2.5 text-sm focus:border-[#651F34] focus:outline-none focus:ring-2 focus:ring-[#651F34]/20">
+                            class="w-24 shrink-0 rounded-lg border border-[#D9CBC5] bg-white py-2.5 pl-3 pr-8 text-sm focus:border-[#651F34] focus:outline-none focus:ring-2 focus:ring-[#651F34]/20">
                             <option value="10">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
