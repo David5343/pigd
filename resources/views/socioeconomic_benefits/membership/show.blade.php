@@ -116,6 +116,17 @@
                                 </thead>
                                 <tbody class="divide-y divide-[#E7DFD9]">
                                     @foreach ($familiares as $familiar)
+                                        @php
+                                            $estatusFamiliar = trim($familiar['estatus'] ?? '');
+                                            $clasesEstatusFamiliar = match (mb_strtolower($estatusFamiliar)) {
+                                                'preafiliado' => ['badge' => 'border-amber-200 bg-amber-50 text-amber-800', 'dot' => 'bg-amber-500'],
+                                                'activo' => ['badge' => 'border-green-200 bg-green-50 text-green-800', 'dot' => 'bg-green-500'],
+                                                'bloqueado' => ['badge' => 'border-gray-200 bg-gray-100 text-gray-700', 'dot' => 'bg-gray-500'],
+                                                'baja' => ['badge' => 'border-red-200 bg-red-50 text-red-800', 'dot' => 'bg-red-500'],
+                                                'baja por aplicar' => ['badge' => 'border-orange-200 bg-orange-50 text-orange-800', 'dot' => 'bg-orange-500'],
+                                                default => ['badge' => 'border-slate-200 bg-slate-50 text-slate-700', 'dot' => 'bg-slate-400'],
+                                            };
+                                        @endphp
                                         <tr>
                                             <td class="whitespace-nowrap px-3 py-3 font-medium text-gray-900">{{ $familiar['nombre'] ?: 'No disponible' }}</td>
                                             <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['parentesco'] ?: 'No disponible' }}</td>
@@ -125,7 +136,13 @@
                                             <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['curp'] ?: 'No disponible' }}</td>
                                             <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['sexo'] ?: 'No disponible' }}</td>
                                             <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['capacidades_diferentes'] ?: 'No disponible' }}</td>
-                                            <td class="whitespace-nowrap px-3 py-3 text-gray-700">{{ $familiar['estatus'] ?: 'No disponible' }}</td>
+                                            <td class="whitespace-nowrap px-3 py-3 text-center">
+                                                <span class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold shadow-sm {{ $clasesEstatusFamiliar['badge'] }}">
+                                                    <span class="h-2 w-2 rounded-full ring-2 ring-white {{ $clasesEstatusFamiliar['dot'] }}"
+                                                        aria-hidden="true"></span>
+                                                    {{ $estatusFamiliar ?: 'Sin estatus de afiliación' }}
+                                                </span>
+                                            </td>
                                             <td class="whitespace-nowrap px-3 py-3 text-center">
                                                 <button type="button"
                                                     x-on:click="$dispatch('open-medical-beneficiary-expedient', { beneficiaryId: {{ $familiar['id'] }}, origin: 'socioeconomic' })"
