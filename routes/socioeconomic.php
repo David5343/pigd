@@ -15,6 +15,7 @@ use App\Http\Controllers\SocioeconomicBenefits\InsuredPhotoController;
 use App\Http\Controllers\SocioeconomicBenefits\InsuredSignatureController;
 use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryPhotoController;
 use App\Http\Controllers\SocioeconomicBenefits\InsuredCredentialPdfController;
+use App\Http\Controllers\SocioeconomicBenefits\PensionerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/socioeconomic_benefits/insureds/{insuredId}/photo', [InsuredPhotoController::class, 'show'])
@@ -47,6 +48,8 @@ Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEcono
     Route::get('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiaryController::class, 'show'])->name('beneficiaries.show');
     Route::get('/socioeconomic_benefits/beneficiaries/{id}/edit', [BeneficiaryController::class, 'edit'])->name('beneficiaries.edit');
     Route::put('/socioeconomic_benefits/beneficiaries/{id}', [BeneficiaryController::class, 'update'])->name('beneficiaries.update');
+    //Rutas para pensionados
+    Route::get('/socioeconomic_benefits/pensioners', [PensionerController::class, 'index'])->name('pensioners.index');
     //Rutas para Dependencias
     Route::get('/socioeconomic_benefits/catalogs/dependencies', [DependencyController::class, 'index'])->name('dependencies.index');
     Route::get('/socioeconomic_benefits/catalogs/dependencies/create', [DependencyController::class, 'create'])->name('dependencies.create');
