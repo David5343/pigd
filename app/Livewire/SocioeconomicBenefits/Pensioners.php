@@ -14,6 +14,19 @@ class Pensioners extends Component
 
     public int $numberRows = 10;
 
+    public function openFamilies(int $pensionerId): void
+    {
+        abort_unless(auth()->user()?->hasAnyRole([
+            'JefaturaCoordinacion',
+            'PrestacionesSocioEconomicas',
+            'JefaturaPrestaciones',
+            'SuperAdmin',
+        ]), 403);
+
+        $this->dispatch('open-pensioner-families', pensionerId: $pensionerId)
+            ->to(PensionerFamiliesModal::class);
+    }
+
     public function updatingSearch(): void
     {
         $this->resetPage();

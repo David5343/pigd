@@ -147,7 +147,7 @@
                 ['label' => 'Titulares', 'route' => 'membership.index'],
                 ['label' => 'Familiares', 'route' => 'beneficiaries.index'],
                 ['label' => 'Pensionados', 'route' => 'pensioners.index'],
-                ['label' => 'Beneficiarios de pensión', 'route' => 'dashboard'],
+                ['label' => 'Familiares de Pensionados', 'route' => 'pensioner-beneficiaries.index'],
                 ['heading' => 'Consulta'],
                 ['label' => 'Reportes', 'route' => 'reports.index'],
             ],

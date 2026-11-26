@@ -56,6 +56,7 @@
                         <th scope="col" class="whitespace-nowrap px-4 py-3">Tipo de pensión</th>
                         <th scope="col" class="whitespace-nowrap px-4 py-3">RFC</th>
                         <th scope="col" class="whitespace-nowrap px-4 py-3 text-center">Estatus</th>
+                        <th scope="col" class="whitespace-nowrap px-4 py-3 text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-neutral-200 dark:divide-white/10">
@@ -100,10 +101,26 @@
                                     {{ $estatus ?: 'Sin estatus' }}
                                 </span>
                             </td>
+                            <td class="whitespace-nowrap px-4 py-3">
+                                <div class="flex min-w-max items-center justify-center gap-2">
+                                    <button type="button" wire:click="openFamilies({{ $item->id }})"
+                                        title="Ver familiares del pensionado"
+                                        aria-label="Ver familiares de {{ $nombrePensionado ?: 'pensionado' }}"
+                                        aria-haspopup="dialog"
+                                        class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 19.128a9.094 9.094 0 0 0 3.742-.9 3.75 3.75 0 0 0-4.992-5.628M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                        </svg>
+                                        <span class="sr-only">Ver familiares</span>
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                            <td colspan="7" class="px-6 py-8 text-center text-gray-500">
                                 No se encontraron pensionados que coincidan con la búsqueda.
                             </td>
                         </tr>
@@ -113,5 +130,6 @@
         </div>
 
         {{ $lista->links('livewire.socioeconomic-benefits.pagination') }}
+        <livewire:socioeconomic-benefits.pensioner-families-modal />
     </section>
 </div>
