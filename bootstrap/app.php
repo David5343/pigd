@@ -4,6 +4,8 @@ use App\Http\Middleware\CheckIfActive;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
@@ -25,5 +27,11 @@ return Application::configure(basePath: dirname(__DIR__))
             ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (UnauthorizedException $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return null;
+            }
+
+            return response()->view('errors.403', status: 403);
+        });
     })->create();

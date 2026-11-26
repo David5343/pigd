@@ -105,7 +105,9 @@ class InsuredExpedientData
             'tipoDerechohabiente' => 'Titular',
             'estatusAfiliacion' => $titular->affiliationStatus?->name,
             'fotoUrl' => $titular->photo
-                ? asset('photo/insureds/' . $titular->file_number . '.jpg')
+                ? (str_starts_with($titular->photo, 'fotografias/titulares/' . $titular->id . '/')
+                    ? route('socioeconomic_benefits.insured-photo', $titular->id)
+                    : asset('photo/insureds/' . $titular->file_number . '.jpg'))
                 : asset('images/icono_no_imagen.png'),
         ];
     }
@@ -133,7 +135,7 @@ class InsuredExpedientData
             'numero' => $credencial->id,
             'emitida' => $this->formatDate($credencial->issued_at, true),
             'vigente_hasta' => $this->formatDate($credencial->expires_at),
-            'motivo' => 'No especificado',
+            'tipo_vigencia' => $credencial->expiration_types ?: 'No especificado',
             'estatus' => $credencial->credential_status,
         ])->all();
     }

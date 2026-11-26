@@ -19,7 +19,7 @@ class BeneficiaryController extends Controller
     }
     public function create()
     {
-        return view('socioeconomic_benefits.beneficiaries.create');
+        return redirect()->route('beneficiaries.index');
     }
     public function show(string $id)
     {
@@ -84,7 +84,9 @@ class BeneficiaryController extends Controller
             'folioAfiliacion' => $familiar->file_number,
             'estatusAfiliacion' => $familiar->affiliate_status,
             'fotoUrl' => $familiar->photo
-                ? asset('photo/beneficiaries/' . $familiar->file_number . '.jpg')
+                ? (Str::startsWith($familiar->photo, 'fotografias/familiares/'.$familiar->id.'/')
+                    ? route('socioeconomic_benefits.beneficiary-photo', $familiar->id)
+                    : asset('photo/beneficiaries/'.$familiar->file_number.'.jpg'))
                 : asset('images/icono_no_imagen.png'),
             'datosPersonales' => $datosPersonales,
             'datosDomicilio' => $datosDomicilio,
@@ -125,12 +127,20 @@ class BeneficiaryController extends Controller
     }
     public function edit(string $id)
     {
-        $row = Beneficiary::find($id);
+        $row = Beneficiary::query()
+            ->where('affiliate_status', 'Activo')
+            ->where('status', 'active')
+            ->findOrFail($id);
 
         return view('socioeconomic_benefits.beneficiaries.edit', ['familiar' => $row]);
     }
     public function update(Request $request, string $id)
     {
+        Beneficiary::query()
+            ->where('affiliate_status', 'Activo')
+            ->where('status', 'active')
+            ->findOrFail($id);
+
         $validated = $request->validate([
             'start_date' => ['required', 'date'],
             'last_name_1' => ['required', 'max:20'],
@@ -149,7 +159,11 @@ class BeneficiaryController extends Controller
 
         try {
 
-            $row = Beneficiary::find($id);
+            $row = Beneficiary::query()
+                ->where('affiliate_status', 'Activo')
+                ->where('status', 'active')
+                ->lockForUpdate()
+                ->findOrFail($id);
             $row->start_date = $request->input('start_date');
             $row->last_name_1 = Str::of($request->input('last_name_1'))->trim();
             $row->last_name_2 = Str::of($request->input('last_name_2'))->trim();

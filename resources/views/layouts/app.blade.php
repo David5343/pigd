@@ -64,6 +64,10 @@
 
     @stack('modals')
 
+    @if (request()->routeIs('membership.index'))
+        <script src="{{ asset('vendor/sigweb/SigWebTablet.js') }}"></script>
+    @endif
+
     @livewireScripts
 </body>
 

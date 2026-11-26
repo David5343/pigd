@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\SocioeconomicBenefits;
 use App\Http\Controllers\Controller;
 use App\Models\SocioeconomicBenefits\Beneficiary;
 use App\Models\SocioeconomicBenefits\Insured;
+use App\Services\SocioeconomicBenefits\InsuredFileNumberAllocator;
 use Exception;
-use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,29 +102,16 @@ class InsuredApiController extends Controller
         }
     }
 
-    public function idgenerator()
+    public function idgenerator(InsuredFileNumberAllocator $fileNumberAllocator)
     {
         try {
-            $file_number = IdGenerator::generate([
-                'table'  => 'insureds',
-                'field'  => 'file_number',
-                'length' => 8,
-                'prefix' => 'T'
-            ]);
-
-            if (!$file_number) {
-                return response()->json([
-                    'status'      => 'fail',
-                    'message'     => 'Folio no generado',
-                    'file_number' => null,
-                ], 500);
-            }
+            $file_number = $fileNumberAllocator->reserve('api');
 
             return response()->json([
                 'status'      => 'success',
                 'message'     => 'Folio generado correctamente',
                 'file_number' => $file_number,
-            ], 200);
+            ], 200)->header('Cache-Control', 'no-store, private');
         } catch (\Exception $e) {
             return response()->json([
                 'status'  => 'fail',
@@ -134,7 +121,7 @@ class InsuredApiController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request, InsuredFileNumberAllocator $fileNumberAllocator)
     {
 
         $rules = [
@@ -144,11 +131,10 @@ class InsuredApiController extends Controller
             'Birthplace_county_id' => 'nullable',
             'Affiliation_status_id' => 'required',
             'County_id' => 'nullable',
-            //Valida si ya hay un registro en la tabla insureds con el mismo numero de afiliacion con un estatus de activo
             'File_number' => [
                 'required',
                 'max:8',
-                Rule::unique('insureds')->where(fn(Builder $query) => $query->where('affiliation_status_id', 2)),
+                Rule::unique('insureds', 'file_number'),
             ],
             'Employee_number' => 'nullable|min:6|max:6',
             'Start_date' => 'required|date|max:10',
@@ -190,6 +176,21 @@ class InsuredApiController extends Controller
         }
         DB::beginTransaction();
         try {
+            $fileNumber = trim((string) $request->input('File_number'));
+
+            if (! $fileNumberAllocator->consume($fileNumber, 'api')) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => 'warning',
+                    'message' => 'El folio no fue reservado para esta alta, ya fue utilizado o ya existe.',
+                    'insured' => null,
+                    'errors' => [
+                        'File_number' => ['Solicita un nuevo folio e intenta nuevamente.'],
+                    ],
+                ], 422);
+            }
+
             $insured = new Insured();
             $insured->subdependency_id = $request->input('Subdependency_id');
             $insured->rank_id = $request->input('Rank_id');
@@ -197,7 +198,7 @@ class InsuredApiController extends Controller
             $insured->birthplace_county_id = $request->input('Birthplace_county_id');
             $insured->affiliation_status_id = $request->input('Affiliation_status_id');
             $insured->county_id = $request->input('County_id');
-            $insured->file_number = Str::of($request->input('File_number'))->trim();
+            $insured->file_number = $fileNumber;
             $insured->employee_number = Str::of($request->input('Employee_number'))->trim();
             $insured->name = Str::of($request->input('Name'))->trim();
             $insured->last_name_1 = Str::of($request->input('Last_name_1'))->trim();
@@ -233,6 +234,8 @@ class InsuredApiController extends Controller
                 'insured' => $insured,
             ], 201);
         } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'status' => 'fail',
                 'message' => 'Error en el servidor',

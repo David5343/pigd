@@ -1,6 +1,6 @@
 <div>
     @if ($isOpen && $expediente)
-        <div wire:click.self="close" wire:keydown.escape.window="close"
+        <div wire:click.self="close" wire:keydown.escape.window="handleEscape"
             role="dialog" aria-modal="true" aria-labelledby="insured-credentials-modal-title"
             class="fixed inset-0 z-[90] overflow-y-auto bg-black/60 p-3 sm:p-6">
             <section
@@ -28,6 +28,27 @@
                 </div>
 
                 <div class="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6">
+                    @if ($successMessage)
+                        <p class="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
+                            role="status">
+                            {{ $successMessage }}
+                        </p>
+                    @endif
+
+                    @if ($canCreateCredential)
+                        <div class="mb-4 flex justify-end">
+                            <button type="button" wire:click="openCreateCredential"
+                                class="inline-flex items-center gap-2 rounded-lg border border-[#E7DFD9] bg-white px-4 py-2.5 text-xs font-medium uppercase text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 5v14m-7-7h14" />
+                                </svg>
+                                Nueva credencial
+                            </button>
+                        </div>
+                    @endif
+
                     @if (!empty($expediente['credenciales']))
                         <div class="overflow-x-auto rounded-lg border border-[#E7DFD9]">
                             <table class="min-w-full divide-y divide-[#E7DFD9] text-left text-sm">
@@ -36,8 +57,9 @@
                                         <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Número de credencial</th>
                                         <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Fecha de emisión</th>
                                         <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Vigente hasta</th>
-                                        <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Motivo de emisión</th>
+                                        <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Tipo de vigencia</th>
                                         <th scope="col" class="whitespace-nowrap px-4 py-3 font-semibold">Estatus de credencial</th>
+                                        <th scope="col" class="whitespace-nowrap px-4 py-3 text-center font-semibold">PDF</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-[#E7DFD9]">
@@ -53,11 +75,25 @@
                                             <td class="whitespace-nowrap px-4 py-3 font-medium text-gray-900">{{ $credencial['numero'] }}</td>
                                             <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['emitida'] ?: 'No disponible' }}</td>
                                             <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['vigente_hasta'] ?: 'No disponible' }}</td>
-                                            <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['motivo'] }}</td>
+                                            <td class="whitespace-nowrap px-4 py-3 text-gray-700">{{ $credencial['tipo_vigencia'] }}</td>
                                             <td class="whitespace-nowrap px-4 py-3">
                                                 <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold {{ $claseEstatus }}">
                                                     {{ $credencial['estatus'] ?: 'Sin estatus' }}
                                                 </span>
+                                            </td>
+                                            <td class="whitespace-nowrap px-4 py-3 text-center">
+                                                <a href="{{ route('socioeconomic_benefits.insured-credential-pdf', [$expediente['id'], $credencial['numero']]) }}"
+                                                    target="_blank" rel="noopener"
+                                                    title="Ver o imprimir credencial"
+                                                    aria-label="Ver o imprimir la credencial {{ $credencial['numero'] }}"
+                                                    class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M6.75 8.25V3.75h10.5v4.5m-10.5 9H5.25A2.25 2.25 0 0 1 3 15v-4.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 10.5V15a2.25 2.25 0 0 1-2.25 2.25h-1.5m-10.5 0v4.5h10.5v-4.5m-10.5 0h10.5m-10.5-6h.008v.008H8.25v-.008Z" />
+                                                    </svg>
+                                                    <span class="sr-only">Ver PDF</span>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -73,4 +109,6 @@
             </section>
         </div>
     @endif
+
+    <livewire:socioeconomic-benefits.insured-credential-create-form />
 </div>

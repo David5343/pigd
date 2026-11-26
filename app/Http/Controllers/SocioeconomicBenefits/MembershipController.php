@@ -117,7 +117,9 @@ class MembershipController extends Controller
             'folioAfiliacion' => $titular->file_number,
             'estatusAfiliacion' => $titular->affiliationStatus?->name,
             'fotoUrl' => $titular->photo
-                ? asset('photo/insureds/' . $titular->file_number . '.jpg')
+                ? (str_starts_with($titular->photo, 'fotografias/titulares/' . $titular->id . '/')
+                    ? route('socioeconomic_benefits.insured-photo', $titular->id)
+                    : asset('photo/insureds/' . $titular->file_number . '.jpg'))
                 : asset('images/icono_no_imagen.png'),
             'datosAdscripcion' => $datosAdscripcion,
             'datosPersonales' => $datosPersonales,

@@ -11,7 +11,24 @@ use App\Http\Controllers\SocioeconomicBenefits\InsuredReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\KpisOverviewReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\ReportsController;
 use App\Http\Controllers\SocioeconomicBenefits\SocioeconomicBenefitsDashboardController;
+use App\Http\Controllers\SocioeconomicBenefits\InsuredPhotoController;
+use App\Http\Controllers\SocioeconomicBenefits\InsuredSignatureController;
+use App\Http\Controllers\SocioeconomicBenefits\BeneficiaryPhotoController;
+use App\Http\Controllers\SocioeconomicBenefits\InsuredCredentialPdfController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/socioeconomic_benefits/insureds/{insuredId}/photo', [InsuredPhotoController::class, 'show'])
+    ->middleware('role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|Enlace|CoordinacionMedica|JefaturaAdministracion|SuperAdmin')
+    ->name('socioeconomic_benefits.insured-photo');
+Route::get('/socioeconomic_benefits/beneficiaries/{beneficiaryId}/photo', [BeneficiaryPhotoController::class, 'show'])
+    ->middleware('role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|Enlace|CoordinacionMedica|JefaturaAdministracion|SuperAdmin')
+    ->name('socioeconomic_benefits.beneficiary-photo');
+Route::get('/socioeconomic_benefits/insureds/{insuredId}/credentials/{credentialId}/pdf', [InsuredCredentialPdfController::class, 'show'])
+    ->middleware('role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|Enlace|CoordinacionMedica|JefaturaAdministracion|SuperAdmin')
+    ->name('socioeconomic_benefits.insured-credential-pdf');
+Route::get('/socioeconomic_benefits/insureds/{insuredId}/signature', [InsuredSignatureController::class, 'show'])
+    ->middleware('role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|Enlace|CoordinacionMedica|JefaturaAdministracion|SuperAdmin')
+    ->name('socioeconomic_benefits.insured-signature');
 
 Route::group(['middleware' => ['role:JefaturaCoordinacion|PrestacionesSocioEconomicas|JefaturaPrestaciones|SuperAdmin']], function () {
     // Portada del módulo de Prestaciones Socioeconómicas

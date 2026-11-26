@@ -4,7 +4,6 @@ namespace App\Livewire\SocioeconomicBenefits;
 
 use App\Livewire\MedicalCoordination\InsuredCredentialsModal;
 use App\Livewire\MedicalCoordination\InsuredExpedientModal;
-use App\Livewire\MedicalCoordination\InsuredFamiliesModal;
 use App\Models\SocioeconomicBenefits\Insured;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -21,6 +20,8 @@ class Membership extends Component
 
     public ?string $successMessage = null;
 
+    public string $successTitle = 'Titular registrado';
+
     public int $createModalInstance = 0;
 
     public function openCreateModal(): void
@@ -35,6 +36,12 @@ class Membership extends Component
         $this->showingCreateModal = false;
     }
 
+    public function openEditModal(int $insuredId): void
+    {
+        $this->dispatch('open-membership-edit', insuredId: $insuredId)
+            ->to(MembershipEdit::class);
+    }
+
     public function openExpedient(int $insuredId): void
     {
         $this->dispatch('open-medical-insured-expedient', insuredId: $insuredId, origin: 'socioeconomic')
@@ -43,7 +50,7 @@ class Membership extends Component
 
     public function openFamilies(int $insuredId): void
     {
-        $this->dispatch('open-medical-insured-families', insuredId: $insuredId)
+        $this->dispatch('open-socioeconomic-insured-families', insuredId: $insuredId)
             ->to(InsuredFamiliesModal::class);
     }
 
@@ -53,11 +60,36 @@ class Membership extends Component
             ->to(InsuredCredentialsModal::class);
     }
 
+    public function openPhotoCapture(int $insuredId): void
+    {
+        $this->dispatch('open-insured-photo-capture', insuredId: $insuredId)
+            ->to(InsuredPhotoCapture::class);
+    }
+
+    public function openSignatureCapture(int $insuredId): void
+    {
+        $this->dispatch('open-insured-signature-capture', insuredId: $insuredId)
+            ->to(InsuredSignatureCapture::class);
+    }
+
     public function insuredCreated(string $message): void
     {
+        $this->successTitle = 'Titular registrado';
         $this->successMessage = $message;
         $this->showingCreateModal = false;
         $this->resetPage();
+    }
+
+    public function insuredUpdated(string $message): void
+    {
+        $this->successTitle = 'Titular actualizado';
+        $this->successMessage = $message;
+        $this->resetPage();
+    }
+
+    public function dismissSuccessModal(): void
+    {
+        $this->successMessage = null;
     }
 
     public function updatingSearch(): void

@@ -26,7 +26,7 @@ class BeneficiaryExpedientData
         $datosPersonales = [
             'Fecha de nacimiento' => $this->formatDate($familiar->birthday),
             'Edad' => filled($familiar->birthday)
-                ? Carbon::parse($familiar->birthday)->age . ' años'
+                ? Carbon::parse($familiar->birthday)->age.' años'
                 : null,
             'RFC' => $familiar->rfc,
             'CURP' => $familiar->curp,
@@ -63,7 +63,7 @@ class BeneficiaryExpedientData
             'numero' => $credencial->id,
             'emitida' => $this->formatDate($credencial->issued_at, true),
             'vigente_hasta' => $this->formatDate($credencial->expires_at),
-            'motivo' => 'No especificado',
+            'tipo_vigencia' => $credencial->expiration_types ?: 'No especificado',
             'estatus' => $credencial->credential_status,
         ])->all();
 
@@ -74,7 +74,9 @@ class BeneficiaryExpedientData
             'tipoDerechohabiente' => 'Familiar',
             'estatusAfiliacion' => $familiar->affiliate_status,
             'fotoUrl' => $familiar->photo
-                ? url($familiar->photo)
+                ? (str_starts_with($familiar->photo, 'fotografias/familiares/'.$familiar->id.'/')
+                    ? route('socioeconomic_benefits.beneficiary-photo', $familiar->id)
+                    : url($familiar->photo))
                 : asset('images/icono_no_imagen.png'),
             'datosPersonales' => $datosPersonales,
             'datosDomicilio' => $datosDomicilio,

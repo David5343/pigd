@@ -9,16 +9,6 @@
                 Nuevo titular
             </button>
         </div>
-            @if ($successMessage)
-                <div class="mb-4 flex items-center justify-between gap-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
-                    role="status">
-                    <span>{{ $successMessage }}</span>
-                    <button type="button" wire:click="$set('successMessage', null)"
-                        class="font-semibold hover:text-green-950" aria-label="Cerrar mensaje">
-                        &times;
-                    </button>
-                </div>
-            @endif
             <div class="mb-5 rounded-xl border border-[#E7DFD9] bg-[#F7F3EC] p-4 sm:p-5"
                 aria-labelledby="insured-search-heading">
                 <div class="mb-3 flex items-center gap-3">
@@ -104,15 +94,43 @@
                                 </td>
                                 <td class="whitespace-nowrap px-4 py-3">
                                     <div class="flex min-w-max items-center justify-center gap-2">
-                                        <a href="{{ url('socioeconomic_benefits/membership/' . $item->id . '/edit') }}"
+                                        <button type="button" wire:click="openEditModal({{ $item->id }})"
                                             title="Editar titular"
                                             aria-label="Editar titular {{ $nombreTitular ?: 'sin nombre' }}"
+                                            aria-haspopup="dialog"
                                             class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                             </svg>
                                             <span class="sr-only">Editar</span>
-                                        </a>
+                                        </button>
+                                        <button type="button" wire:click="openPhotoCapture({{ $item->id }})"
+                                            title="Tomar fotografía"
+                                            aria-label="Abrir captura de fotografía para {{ $nombreTitular ?: 'titular' }}"
+                                            aria-haspopup="dialog"
+                                            class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M6.75 7.5 8.1 5.7a1.5 1.5 0 0 1 1.2-.6h5.4a1.5 1.5 0 0 1 1.2.6l1.35 1.8h1.5A2.25 2.25 0 0 1 21 9.75v8.1a2.25 2.25 0 0 1-2.25 2.25h-13.5A2.25 2.25 0 0 1 3 17.85v-8.1A2.25 2.25 0 0 1 5.25 7.5h1.5Z" />
+                                                <circle cx="12" cy="13.5" r="3.25" />
+                                        </svg>
+                                            <span class="sr-only">Tomar fotografía</span>
+                                        </button>
+                                        <button type="button" wire:click="openSignatureCapture({{ $item->id }})"
+                                            title="Capturar firma"
+                                            aria-label="Abrir captura de firma para {{ $nombreTitular ?: 'titular' }}"
+                                            aria-haspopup="dialog"
+                                            class="inline-flex items-center justify-center rounded-lg border border-[#E7DFD9] bg-white p-2 text-[#651F34] shadow-sm transition hover:border-[#651F34] hover:bg-[#F7F3EC] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="h-5 w-5" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M3 17.25V21h3.75L18.81 8.94l-3.75-3.75L3 17.25Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m13.5 6.75 3.75 3.75M3 21h18" />
+                                            </svg>
+                                            <span class="sr-only">Capturar firma</span>
+                                        </button>
                                         <button type="button" wire:click="openFamilies({{ $item->id }})"
                                             title="Ver familiares vinculados"
                                             aria-label="Ver familiares vinculados de {{ $nombreTitular ?: 'titular' }}"
@@ -169,9 +187,50 @@
         </section>
 
         <livewire:medical-coordination.insured-expedient-modal />
-        <livewire:medical-coordination.insured-families-modal />
+        <livewire:socioeconomic-benefits.insured-families-modal />
         <livewire:medical-coordination.insured-credentials-modal />
         <livewire:medical-coordination.beneficiary-expedient-modal />
+        <livewire:socioeconomic-benefits.insured-photo-capture />
+        <livewire:socioeconomic-benefits.insured-signature-capture />
+        <livewire:socioeconomic-benefits.membership-edit
+            :in-modal="true"
+            @insured-updated="insuredUpdated($event.detail.message)"
+            :key="'membership-edit-modal'" />
+
+        @if ($successMessage)
+            <div class="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm"
+                wire:click.self="dismissSuccessModal"
+                x-on:keydown.escape.window="$wire.dismissSuccessModal()"
+                role="dialog" aria-modal="true" aria-labelledby="insured-created-title"
+                aria-describedby="insured-created-message">
+                <section class="w-full max-w-md overflow-hidden rounded-2xl border border-[#E7DFD9] bg-white shadow-2xl"
+                    wire:click.stop>
+                    <div class="h-2 bg-[#651F34]"></div>
+                    <div class="p-6 text-center sm:p-8">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" class="h-9 w-9" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="m5 12.5 4.5 4.5L19 7.5" />
+                            </svg>
+                        </div>
+                        <p class="mt-5 text-xs font-semibold uppercase tracking-[0.16em] text-[#8A6670]">
+                            Prestaciones Socioeconómicas
+                        </p>
+                        <h2 id="insured-created-title" class="mt-2 text-2xl font-bold text-[#651F34]">
+                            {{ $successTitle }}
+                        </h2>
+                        <p id="insured-created-message" class="mt-3 text-sm leading-6 text-slate-600">
+                            {{ $successMessage }}
+                        </p>
+                        <button type="button" wire:click="dismissSuccessModal"
+                            class="mt-7 inline-flex w-full items-center justify-center rounded-lg bg-[#651F34] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#4F1728] focus:outline-none focus:ring-2 focus:ring-[#651F34] focus:ring-offset-2 sm:w-auto sm:min-w-36">
+                            Continuar
+                        </button>
+                    </div>
+                </section>
+            </div>
+        @endif
 
         @if ($showingCreateModal)
             <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-2 sm:p-5"

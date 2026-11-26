@@ -3,6 +3,7 @@
 namespace App\Livewire\SocioeconomicBenefits;
 
 use App\Models\SocioeconomicBenefits\Beneficiary;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -11,7 +12,88 @@ class Beneficiaries extends Component
     use WithPagination;
 
     public $search = '';
+
     public $numberRows = 10;
+
+    public ?string $successMessage = null;
+
+    public string $successTitle = 'Familiar registrado';
+
+    public function openCreateModal(): void
+    {
+        abort_unless(auth()->user()?->hasAnyRole([
+            'JefaturaCoordinacion',
+            'PrestacionesSocioEconomicas',
+            'JefaturaPrestaciones',
+            'SuperAdmin',
+        ]), 403);
+
+        $this->successMessage = null;
+        $this->dispatch('open-beneficiary-create-form')
+            ->to(BeneficiaryCreateForm::class);
+    }
+
+    public function openEditModal(int $beneficiaryId): void
+    {
+        abort_unless(auth()->user()?->hasAnyRole([
+            'JefaturaCoordinacion',
+            'PrestacionesSocioEconomicas',
+            'JefaturaPrestaciones',
+            'SuperAdmin',
+        ]), 403);
+
+        $this->successMessage = null;
+        $this->dispatch('open-beneficiary-edit-form', beneficiaryId: $beneficiaryId)
+            ->to(BeneficiaryEditForm::class);
+    }
+
+    public function openPhotoCapture(int $beneficiaryId): void
+    {
+        abort_unless(auth()->user()?->hasAnyRole([
+            'JefaturaCoordinacion',
+            'PrestacionesSocioEconomicas',
+            'JefaturaPrestaciones',
+            'SuperAdmin',
+        ]), 403);
+
+        $this->dispatch('open-beneficiary-photo-capture', beneficiaryId: $beneficiaryId)
+            ->to(BeneficiaryPhotoCapture::class);
+    }
+
+    public function openCredentials(int $beneficiaryId): void
+    {
+        abort_unless(auth()->user()?->hasAnyRole([
+            'JefaturaCoordinacion',
+            'PrestacionesSocioEconomicas',
+            'JefaturaPrestaciones',
+            'SuperAdmin',
+        ]), 403);
+
+        $this->dispatch('open-beneficiary-credentials', beneficiaryId: $beneficiaryId)
+            ->to(BeneficiaryCredentialsModal::class);
+    }
+
+    #[On('beneficiary-created')]
+    public function beneficiaryCreated(string $message): void
+    {
+        $this->successTitle = 'Familiar registrado';
+        $this->successMessage = $message;
+        $this->search = '';
+        $this->resetPage();
+    }
+
+    #[On('beneficiary-updated')]
+    public function beneficiaryUpdated(string $message): void
+    {
+        $this->successTitle = 'Familiar actualizado';
+        $this->successMessage = $message;
+        $this->resetPage();
+    }
+
+    public function dismissSuccessModal(): void
+    {
+        $this->successMessage = null;
+    }
 
     public function updatingSearch(): void
     {
